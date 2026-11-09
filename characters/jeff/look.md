@@ -1,0 +1,27 @@
+# Jeff — look
+
+## Must survive every art style
+- Chicken costume on the upper body: yellow body, red comb on the hood, orange beak above his face. His real face shows through the beak opening.
+- Blue jeans, a little flared.
+- Barefoot. Big, friendly feet.
+- Player colour: **green** accents — the costume's wing tips, a green headband or bandana under the comb, green stitching on the jeans. Enough that he reads as "the green one" from the couch.
+- Relaxed posture, slight slouch, arms loose.
+
+## Silhouette
+Round hooded head with a comb spike, puffy torso, thin legs, big feet. Identifiable in outline alone.
+
+## Face
+Half-lidded happy eyes, big easy grin, two-tooth smile. Expressions: delighted, blissed-out, surprised-delighted.
+
+## Fixed colours
+- Costume yellow: #FFD84D
+- Comb red: use the game's palette red, NOT the player red (#E4393C), to avoid confusion with Chuck
+- Jeans blue: #3B5BA5
+- Player green (accents): #3CC24A
+
+## Per-technique notes
+- Low-poly 3D (Spaceballs): flat-shaded, costume as a soft blob mesh, comb as a separate floppy bone.
+- Pixel art: 32 px tall at stage 1 of any pixel game; comb must still read at 16 px.
+
+## Refs
+`refs/` — to be produced by the Character lane after approval. Technique-neutral line art first.

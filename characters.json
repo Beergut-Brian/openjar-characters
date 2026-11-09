@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "characters": [
+    {
+      "id": "chuck",
+      "name": "Chuck",
+      "kind": "player_locked",
+      "player": 1,
+      "first_appears": "Spaceballs (kicker).",
+      "approved": false,
+      "bible": "characters/chuck/bible.md",
+      "look": "characters/chuck/look.md",
+      "refs": "characters/chuck/refs/",
+      "voice": "characters/chuck/voice/",
+      "barks": []
+    },
+    {
+      "id": "jeff",
+      "name": "Jeff",
+      "kind": "player_locked",
+      "player": 0,
+      "first_appears": "Spaceballs (kicker).",
+      "approved": true,
+      "bible": "characters/jeff/bible.md",
+      "look": "characters/jeff/look.md",
+      "refs": "characters/jeff/refs/",
+      "voice": "characters/jeff/voice/",
+      "barks": []
+    }
+  ]
+}
