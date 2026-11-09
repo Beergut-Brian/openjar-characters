@@ -1,0 +1,88 @@
+{
+  "id": "jeff",
+  "name": "Jeff",
+  "notes": "From characters/jeff/look.md. Skin tone is not fixed by the look sheet. Comb uses raspberry #D63384, a stand-in for the Spaceballs palette red (not the player red) until that palette is picked.",
+  "head": {
+    "shape": "round",
+    "size": 1.0,
+    "ears": "none"
+  },
+  "skin": "#F0BE94",
+  "face": {
+    "eyes": "drop",
+    "brows": "soft",
+    "nose": "button",
+    "mouth": "grin_two",
+    "brow_color": "#9A6A42",
+    "lid": 0.42,
+    "lid_low": 0.2,
+    "lid_tilt": -0.08,
+    "blush": 0.5,
+    "expressions": {
+      "happy": {
+        "eye_mode": "arc",
+        "mouth": "grin_two",
+        "blush_add": 0.25
+      },
+      "surprised": {
+        "mouth": "o"
+      },
+      "determined": {
+        "lid": 0.5,
+        "lid_low": 0.1,
+        "lid_tilt": 0.12,
+        "brow_tilt": 0.2,
+        "brow_raise": -0.02,
+        "mouth": "smile"
+      }
+    }
+  },
+  "hair": {
+    "style": "none"
+  },
+  "headwear": {
+    "type": "chicken_hood",
+    "color": "#FFD84D",
+    "comb": "#D63384",
+    "beak": "#F7932F",
+    "headband": "#3CC24A"
+  },
+  "body": {
+    "build": "puffy",
+    "height": 1.0,
+    "leg_scale": 0.85
+  },
+  "outfit": {
+    "top": {
+      "style": "costume",
+      "color": "#FFD84D"
+    },
+    "bottoms": {
+      "style": "flared",
+      "color": "#3B5BA5"
+    },
+    "shoes": {
+      "style": "barefoot"
+    }
+  },
+  "costume": [
+    {
+      "piece": "wing_tips",
+      "color": "#3CC24A"
+    },
+    {
+      "piece": "tail_feathers",
+      "color": "#FFD84D"
+    },
+    {
+      "piece": "jeans_stitch",
+      "color": "#3CC24A"
+    }
+  ],
+  "posture": {
+    "spine_lean": 6,
+    "head_lean": -4,
+    "arm_out": 3
+  },
+  "ref_kick_expression": "happy"
+}

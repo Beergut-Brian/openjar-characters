@@ -1,0 +1,81 @@
+{
+  "id": "chuck",
+  "name": "Chuck",
+  "notes": "From characters/chuck/look.md (look approved; personality not yet, so the expression set is the kit's four plus his look-sheet face). Skin tone is not fixed by the look sheet. The hat is a separate object (chuck_hat) on the head bone so a game can detach it.",
+  "head": {
+    "shape": "soft_square",
+    "size": 1.0,
+    "ears": "round"
+  },
+  "skin": "#E0A97C",
+  "face": {
+    "eyes": "round",
+    "brows": "thick",
+    "nose": "bump",
+    "mouth": "smirk",
+    "brow_color": "#3A2418",
+    "lid": 0.34,
+    "lid_tilt": 0.12,
+    "brow_tilt": 0.22,
+    "blush": 0.2,
+    "expressions": {
+      "happy": {
+        "eye_mode": "arc",
+        "mouth": "grin_top",
+        "brow_tilt": 0.05
+      },
+      "surprised": {
+        "mouth": "o",
+        "brow_tilt": -0.2
+      },
+      "determined": {
+        "lid": 0.45,
+        "lid_tilt": 0.3,
+        "brow_tilt": 0.45,
+        "brow_raise": -0.04,
+        "mouth": "grit"
+      }
+    }
+  },
+  "hair": {
+    "style": "short",
+    "color": "#5A3A26"
+  },
+  "headwear": {
+    "type": "trucker",
+    "color": "#2B2B33",
+    "patch": "#FFD84D",
+    "brim": "#E4393C",
+    "piping": "#E4393C",
+    "separate": true,
+    "tilt_deg": 12
+  },
+  "body": {
+    "build": "boxy",
+    "height": 1.0
+  },
+  "outfit": {
+    "top": {
+      "style": "tiedye",
+      "color": "#1E1E26",
+      "accent": "#E4393C"
+    },
+    "bottoms": {
+      "style": "pants",
+      "color": "#3B5BA5"
+    },
+    "shoes": {
+      "style": "boots",
+      "color": "#8A5A2B",
+      "sole": "#5A3A1C",
+      "stitch": "#E4393C"
+    }
+  },
+  "costume": [],
+  "posture": {
+    "spine_lean": -5,
+    "head_lean": -6,
+    "arm_out": 6
+  },
+  "ref_kick_expression": "determined"
+}
