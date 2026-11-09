@@ -22,7 +22,7 @@ Thick eyebrows, squint, determined mouth. Expressions: smug, outraged, grudging 
 - Player red (accents): #E4393C
 
 ## Per-technique notes
-- Low-poly 3D (Spaceballs): hat is a separate rigid body so it can fly off and return.
+- Jarling 3D (Spaceballs, Kaden 2026-11-09: Wii Sports as the visual reference): smooth-shaded Jarling from `avatar/`, params in `jarling.json`; hat is a separate object so it can fly off and return.
 - Pixel art: 32 px tall; the hat brim must read at 16 px.
 
 ## Refs
