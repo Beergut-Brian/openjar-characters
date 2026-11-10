@@ -363,8 +363,8 @@ def fishing_rod():
         parts.append((tube_bm([pts[i], pts[i + 1]], max(r, 0.0018)), rodm))
     parts.append((lathe([(-0.012, 0, 0, 0.0, -0.045), (-0.012, 0.016, 0.012, 0.0, -0.045), (0.012, 0.016, 0.012, 0.0, -0.045), (0.012, 0, 0, 0.0, -0.045)], 18), reelm))
     tip = pts[-1]
-    parts.append((tube_bm([tip, (tip[0], tip[1] - 0.01, tip[2] - 0.12), (tip[0], tip[1] - 0.01, tip[2] - 0.30)], 0.0018), line))
-    b = (tip[0], tip[1] - 0.01, tip[2] - 0.33)
+    parts.append((tube_bm([tip, (tip[0], tip[1] - 0.03, tip[2] - 0.20), (tip[0], tip[1] - 0.045, tip[2] - 0.40)], 0.003), line))
+    b = (tip[0], tip[1] - 0.045, tip[2] - 0.43)
     parts.append((ellipsoid_bm((b[0], b[1], b[2] + 0.013), (0.015, 0.015, 0.014), segs=14, rings=8), yel))
     parts.append((ellipsoid_bm((b[0], b[1], b[2] - 0.013), (0.015, 0.015, 0.014), segs=14, rings=8), blue))
     obj("fishing_rod_body", parts, root)

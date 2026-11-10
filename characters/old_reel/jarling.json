@@ -63,12 +63,13 @@
    }
   },
   "bottoms": {
-   "style": "pants",
+   "style": "shorts",
    "color": "#6E4B30"
   },
   "shoes": {
    "style": "rain_boots",
-   "color": "#F6C833"
+   "color": "#F6C833",
+   "height": 0.3
   }
  },
  "costume": [],
