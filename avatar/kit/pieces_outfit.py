@@ -7,7 +7,7 @@ a layer inherits `color`/`accent` from the top/bottoms dict):
   hstripe      accent "#F2F2EE", v 0.58, width 0.10, edge null (thin edge lines colour, e.g. silver on hi-vis)
   stars        accent "#FFE066", count 26 (top) / 14 (bottoms), size 1.0, seed 3
   patches      accent "#E8A33D", accent2 "#5B8FD6", stitch null (default darker accent), count 3 (2 or 3)
-  emblem       shape "star" ("shield"|"star"|"circle"), accent "#FFD23F", size 0.09 (half height in V), v 0.62, rim null, inner null
+  emblem       shape "star" ("shield"|"star"|"circle"), accent "#FFD23F", size 0.13 (half height in V), v 0.62, rim null, inner null
   buttons      accent "#2A2F5A", rows 1 (1 or 2), count 5, line null (rows 1: darker centre line, default shade of color)
   vest         accent "#5A4A8C" (vest), open 0.10 (front strip half width in U), pockets true, trim null
   collar       accent "#8A5CC9", depth 0.34 (how far the V comes down, in V), width 0.07, inner null (colour inside the V)
@@ -26,7 +26,7 @@ Shoes (`outfit.shoes.style`; `color` is per side, `size`/`socks` are the core's)
   chunky_boots     color "#8B5A2B", sole "#3A3330", cap null (toe cap, default darker color)
 Costume (`costume: [{"piece": name, ...}]`):
   whistle_cord  color "#FFD23F" (whistle), cord "#2A6FD6", t 0.56 (height on the torso), x 0.0 (turn off centre, radians)
-  sash          color "#C8A2F0", side "L" (the shoulder it goes over), width 0.11 (in torso height)
+  sash          color "#C8A2F0", side "L" (the shoulder it goes over), width 0.17 (in torso height)
   cape          (part "cape") color "#7A2E8C", trim "#F2D16B", length 1.0 (1 = knee height), flare 0.3
   back_spikes   color "#2FA88A", count 5, size 1.0
   dino_tail     (part "tail") color "#5FB85A", spikes null (colour: adds soft spikes along the top), length 1.0
@@ -250,7 +250,7 @@ def pat_patches(img, U, V, spec, part):
         _put(sub, sd, spec.get("stitch") or shade(col, 0.55))
 
 def pat_emblem(img, U, V, spec, part):
-    shape, s = spec.get("shape", "star"), float(spec.get("size", 0.09))
+    shape, s = spec.get("shape", "star"), float(spec.get("size", 0.13))
     vc = float(spec.get("v", 0.62))
     col = spec.get("accent", "#FFD23F")
     w = _window(U, V, 0.5, vc, s * 1.5)
@@ -289,15 +289,15 @@ def pat_buttons(img, U, V, spec, part):
         xs = [0.0]
     else:
         _put(sub, np.maximum(np.abs(X - 0.035) - 0.003, 0.26 - Yv), spec.get("line") or shade(base, 0.85))   # wrap edge
-        xs = [-0.075, 0.075]
+        xs = [-0.09, 0.09]
     for k in range(n):
         v = 0.33 + (0.86 - 0.33) * k / max(1, n - 1)
         for x in xs:
-            d = _sd_circle(X, Yv, x, v, 0.019)
+            d = _sd_circle(X, Yv, x, v, 0.027)
             _put(sub, d, shade(col, 0.7))
             _put(sub, d + 0.005, col)
             for hx in (-0.005, 0.005):
-                _put(sub, _sd_circle(X, Yv, x + hx, v, 0.0028), shade(col, 0.55))
+                _put(sub, _sd_circle(X, Yv, x + hx * 1.3, v, 0.0038), shade(col, 0.55))
 
 def pat_vest(img, U, V, spec, part):
     col = spec.get("accent", "#5A4A8C")
@@ -621,7 +621,7 @@ def sash(B, piece):
     mat = B.mats.flat("sash", piece.get("color", "#C8A2F0"), rough=0.7, spec=0.25)
     s = 1 if piece.get("side", "L") == "L" else -1
     peak = 0.0 if s > 0 else math.pi
-    hw = float(piece.get("width", 0.11)) / 2
+    hw = float(piece.get("width", 0.17)) / 2
     def fn(u, v):
         th = 2 * math.pi * u
         t = 0.60 + 0.34 * math.cos(th - peak) + (v - 0.5) * 2 * hw
@@ -781,14 +781,14 @@ def long_skirt(B, piece):
     hip_bot = L["hip_z"] - 0.06
     z_bot = hip_bot + ((L["ankle_z"] + 0.015) - hip_bot) * ln
     leg_r = getattr(B, "leg_r", 0.047 * L["limb"])
-    rxb = max(rx0 * 1.05, (L["ank_x"] + leg_r * 1.7) * (0.9 + 0.35 * ln) * float(piece.get("flare", 1.0)))
+    rxb = max(rx0 * 1.05, (L["ank_x"] + leg_r * 1.7) * (0.9 + 0.35 * ln)) * (1 + 0.28 * ln * float(piece.get("flare", 1.0)))
     ry_b = max(ry0 * 1.05, rxb * 0.8)
     rings = []   # bottom (open hem) up to the waist, closed at the top inside the body
     n = 12
     for k in range(n, -1, -1):
         t = k / n
         z = top_z + (z_bot - top_z) * t
-        e = t ** 0.8
+        e = t ** 1.25
         rings.append((z, rx0 + (rxb - rx0) * e, ry0 + (ry_b - ry0) * e, 0, (ryb - ry0) / 2 * (1 - e)))
     rings.append((top_z + 0.012, 0, 0, 0, 0))
     bm = lathe(rings, 48)
@@ -801,7 +801,7 @@ def long_skirt(B, piece):
         for s, side in ((1, "L"), (-1, "R")):
             if z_bot < knee - 0.02:   # on the skirt front over the knees
                 tk = (knee - top_z) / (z_bot - top_z)
-                e = tk ** 0.8
+                e = tk ** 1.25
                 rx = rx0 + (rxb - rx0) * e; ry = ry0 + (ry_b - ry0) * e
                 a = -math.pi / 2 + s * 0.45
                 p = Vector((rx * math.cos(a), ry * math.sin(a), knee))
@@ -810,8 +810,8 @@ def long_skirt(B, piece):
             else:
                 p = Vector((s * L["hip_x"], -leg_r * 0.95, knee)); nrm = Vector((0, -1, 0)); bone = f"leg.{side}"
             rot = Vector((0, 1, 0)).rotation_difference(-nrm).to_matrix()
-            B.add(ellipsoid_bm(p, (0.03, 0.006, 0.022), rot=rot, segs=16, rings=8), mud, bone)
-            B.add(ellipsoid_bm(p + Vector((s * 0.018, 0, -0.016)), (0.014, 0.005, 0.011), rot=rot, segs=12, rings=6), mud, bone)
+            B.add(ellipsoid_bm(p - nrm * 0.002, (0.03, 0.0035, 0.022), rot=rot, segs=16, rings=8), mud, bone)
+            B.add(ellipsoid_bm(p - nrm * 0.002 + Vector((s * 0.018, 0, -0.016)), (0.014, 0.003, 0.011), rot=rot, segs=12, rings=6), mud, bone)
 
 for _n, _f in (("whistle_cord", whistle_cord), ("sash", sash), ("cape", cape), ("back_spikes", back_spikes),
                ("dino_tail", dino_tail), ("box_torso", box_torso), ("hose_arms", hose_arms), ("long_skirt", long_skirt)):
