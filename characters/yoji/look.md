@@ -43,6 +43,32 @@ Checked against the player colours with CIEDE2000 (`avatar/kit/colour_rule.py`, 
 ## Signature props
 - The cowboy hat. Also available as head-slot gear `avatar/gear/cowboy_hat` for any Jarling.
 
+## Per-technique notes
+
+### Jarling 3D
+Built 2026-11-10 from `characters/yoji/jarling.json` (standard humanoid body, kit v2).
+- **body:** `stocky`, height 1.0, leg_scale 1.0, width 1.15, belly 0.25
+- **head:** `round`, skin `#E8B48A`; `short` hair `#6B4A2E` tucked under the hat (shows at the sides and back)
+- **headwear:** new kit piece `cowboy_hat` (`avatar/kit/pieces_headwear.py`): tan `#C8955A`, band `#5A3A22`, brim_width 0.8, crown_height 1.1,
+  fit 0.45 (brim sits 0.45 R above the head centre, about 1.8 R wide each side), tilt 0 (level). Wide brim curled up at the sides,
+  cattleman crown with front pinches and a centre crease. It is the `headwear` body part. The same shape is head-slot gear
+  `avatar/gear/cowboy_hat` (replaces `headwear`), so any Jarling can wear it.
+- **top:** `tee` navy `#1F3A6B` with the new `jersey` pattern (gold `#F2B632` collar and outline, white `#F7F7F5` "55" front and back,
+  "CHAMPIONS" across the upper back; letters drawn in code from a 5x7 block font), plus the new `shoulder_pads` costume piece
+  (navy, gold sleeve stripes, white hem)
+- **bottoms:** new `boxers` style (shorter and puffier than shorts, gold waistband) white `#F7F7F5` with `stars` navy `#1F3A6B`
+  (count 34, size 2.0); bare legs below
+- **shoes:** new `high_tops` style: black `#1A1A1E`, blue `#2A6FD6` collar and panels, white sole and laces, no logos
+- **ref action:** `cheer` frame 13, happy face (the touchdown cheer; the standard cheer, arms up)
+- Weak spots: the side view only catches the edge of the "55"; a short strip of bare leg shows between boxers and high-tops.
+
+## Refs
+- `refs/jarling/yoji.glb`: the 3D master (idle, run, kick, cheer; ten slots)
+- `refs/jarling/yoji_turnaround.png`, `yoji_expressions.png`, `yoji_cheer.png`
+- `refs/jarling/yoji_side.png`, `yoji_side_sprite.png`: side view and its sprite-scale tracing base
+- `refs/pixel/yoji_pixel.png`, `yoji_frames.png` (+ `.json`), `yoji_pixel_sheet.png`: The Hill pixel form
+- `../yoji_read_check.png` (read check), `../yoji_lineup.png` (Jeff, Chuck and Yoji at true scale)
+
 ## Alt form: the-hill pixel: proposed
 Sprite source: `tools/pixel/yoji.py` (`yoji()`)
 
