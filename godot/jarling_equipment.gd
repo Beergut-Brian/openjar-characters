@@ -28,6 +28,8 @@ var _hidden := {}   # body part -> how many worn items hide it
 var _markers := {}  # slot -> Node3D
 var _scanned := false
 var _body_type := "standard"
+var _hold: JarlingHold   # under the Skeleton3D once a held item (gear with grips) is worn
+var _fists := {}         # hand slot -> fist node
 
 
 func _ready() -> void:
@@ -82,6 +84,9 @@ func equip(item: JarlingGear) -> bool:
 		pop.add_child(piece)
 		marker.add_child(holder)
 		w.holders[s] = holder
+		if s == item.slots[0] and _is_held(item):      # grips: the fist closes on grip_r, the off hand goes to grip_l
+			piece.transform = JarlingHold.item_transform(item.hold)
+			_start_hold(s, item, holder, piece)
 		if not item.spring.is_empty():
 			var pivot := piece.find_child(String(item.spring.get("node", "")), true, false) as Node3D
 			if pivot:
@@ -111,6 +116,8 @@ func unequip(slot: StringName) -> JarlingGear:
 	var id: StringName = _slot_id[slot]
 	var w: Dictionary = _worn[id]
 	var item: JarlingGear = w.item
+	if _is_held(item):
+		_stop_hold(item.slots[0], item)
 	for s in item.slots:
 		var h: Node3D = w.holders.get(s)
 		if h:
@@ -155,6 +162,17 @@ func level_up(slot: StringName) -> int:
 
 func level(slot: StringName) -> int:
 	return _worn[_slot_id[slot]].level if _slot_id.has(slot) else 0
+
+
+## The held item's hold style in `slot` ("" when the slot is empty or the item has no grips).
+func hold_style(slot: StringName) -> String:
+	var it := equipped(slot)
+	return String(it.hold.get("style", "")) if it and _is_held(it) else ""
+
+
+## Metres between each fist and its grip right now: {"main": d, "off": d}. Empty without a held item.
+func grip_error(slot: StringName) -> Dictionary:
+	return _hold.grip_error(slot) if _hold else {}
 
 
 ## The slot_<name> marker on the Jarling (follows its bone). Falls back to the Jarling root.
@@ -240,6 +258,80 @@ func _scan() -> void:
 			if not _parts.has(StringName(part)):
 				_parts[StringName(part)] = []
 			_parts[StringName(part)].append(n)
+
+
+func _is_held(item: JarlingGear) -> bool:
+	return item.hold.has("grip_r") and String(item.slots[0]).begins_with("hand_")
+
+
+func _off_slot(slot: StringName) -> StringName:
+	return &"hand_l" if slot == &"hand_r" else &"hand_r"
+
+
+func _start_hold(slot: StringName, item: JarlingGear, holder: Node3D, piece: Node3D) -> void:
+	var sk := _root().find_child("Skeleton3D", true, false) as Skeleton3D
+	if sk == null:
+		return
+	if _hold == null:
+		_hold = JarlingHold.new()
+		_hold.name = "JarlingHold"
+		_hold.player = _root().find_child("AnimationPlayer", true, false) as AnimationPlayer
+		sk.add_child(_hold)
+	var off: Node3D = _markers.get(_off_slot(slot)) if item.hold.has("grip_l") else null
+	if not _hold.add_hold(slot, item.hold, slot_node(slot), off, holder, piece, _body_type):
+		return
+	_add_fist(slot, item)
+	if off:
+		_add_fist(_off_slot(slot), item)
+
+
+func _stop_hold(slot: StringName, item: JarlingGear) -> void:
+	if _hold:
+		_hold.remove_hold(slot)
+	for s in [slot, _off_slot(slot)]:
+		if _fists.has(s):
+			var f: Node3D = _fists[s]
+			_fists.erase(s)
+			if is_instance_valid(f):
+				f.queue_free()
+			_hide_part(s, false)
+
+
+## A closed mitten on the hand slot, in the hand's own material; the open hand part is hidden.
+func _add_fist(slot: StringName, item: JarlingGear) -> void:
+	if _fists.has(slot) or is_part_hidden(slot) or not _markers.has(slot):
+		return
+	var spec: Dictionary = item.hold.get("fist", {})
+	var mat: Material = null
+	for n in _parts.get(slot, []):
+		if n is MeshInstance3D and (n as MeshInstance3D).mesh:
+			mat = (n as MeshInstance3D).get_active_material(0)
+	var side := -1.0 if slot == &"hand_r" else 1.0
+	var fist := Node3D.new()
+	fist.name = "fist"
+	for part in [[Vector3.ZERO, JarlingHold.vec(spec.get("radii", [0.04, 0.044, 0.047]))],
+			[JarlingHold.vec(spec.get("thumb", [-0.012, 0.004, 0.036])) * Vector3(side, 1, 1), JarlingHold.vec(spec.get("thumb_radii", [0.02, 0.026, 0.018]))]]:
+		var mi := MeshInstance3D.new()
+		var sm := SphereMesh.new()
+		sm.radius = 1.0
+		sm.height = 2.0
+		sm.radial_segments = 20
+		sm.rings = 10
+		mi.mesh = sm
+		mi.position = part[0]
+		mi.scale = part[1]
+		mi.material_override = mat
+		fist.add_child(mi)
+	_markers[slot].add_child(fist)
+	_fists[slot] = fist
+	_hide_part(slot, true)
+
+
+func _process(_delta: float) -> void:
+	if _hold and is_instance_valid(_hold) and not _fists.is_empty():      # keep the hold applied even when no animation plays
+		var sk := _hold.get_skeleton()
+		if sk and sk.get_bone_count() > 0:
+			sk.set_bone_pose_position(0, sk.get_bone_pose_position(0))
 
 
 func _slot_id_set(item: JarlingGear, w: Dictionary) -> void:

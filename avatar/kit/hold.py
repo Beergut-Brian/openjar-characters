@@ -242,7 +242,7 @@ def apply(j, holds, action="idle"):
         out[(key, "main")] = 0.0
         if h.get("grip_l") is None:
             continue
-        for _ in range(3):      # parents with squash and stretch make one pass slightly inexact
+        for _ in range(8):      # parents with squash and stretch make one pass slightly inexact
             pbh, pbo = rig.pose.bones[f"hand.{S}"], rig.pose.bones[f"arm.{O}"]
             W, c = pbh.head.copy(), pbo.head.copy()
             g = (inv() @ j.slots[f"hand_{S.lower()}"].matrix_world) @ Vector(h["grip_l"])
@@ -258,7 +258,7 @@ def apply(j, holds, action="idle"):
                 along = (t0 - c).dot(yb); perp2 = max(r * r - along * along, 0.0)
                 D = (p - c).length
                 k = math.sqrt(max(D * D - perp2, 1e-8)) / max(along, 1e-6)
-                pbo.scale.y = min(max(pbo.scale.y * k, 0.6), 1.8)
+                pbo.scale.y = min(max(pbo.scale.y * k, 0.5), 2.5)
                 bpy.context.view_layer.update()
                 t0 = (inv() @ j.slots[f"hand_{O.lower()}"].matrix_world).translation
             pbo.matrix = _about(c, arc(t0 - c, p - c)) @ pbo.matrix

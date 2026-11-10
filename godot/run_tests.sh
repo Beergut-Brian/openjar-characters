@@ -54,7 +54,7 @@ else
   echo "  FAIL blender not found: kit v2 checks need it"; status=1
 fi
 godot --headless --path . --import >/dev/null 2>&1 || true
-for t in test_roster test_equipment test_bodies test_kit_v2; do
+for t in test_roster test_equipment test_bodies test_kit_v2 test_hold; do
   timeout 300 godot --headless --path . -s "res://tests/$t.gd" 2>&1 | grep -v "^Godot Engine\|^$"
   rc=${PIPESTATUS[0]}
   [ "$rc" -eq 0 ] || { echo "  ($t exited $rc)"; status=1; }
