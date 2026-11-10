@@ -607,16 +607,17 @@ def whistle_cord(B, piece):
     B.add(tube_bm([tuple(p) for p in pts], 0.0042), cord, "spine")
     p = _tp(B, tw_, front + off, 1.0)
     n = _normal(B, tw_, front + off)
-    p = p + n * 0.02
+    sz = float(piece.get("size", 1.0))              # 1.0 = the original whistle
+    p = p + n * 0.02 * sz
     # whistle: a short barrel pointing sideways-down with a round chamber
     side = Vector((1, 0, 0)) - n * n.x
     side.normalize()
-    a = p + side * 0.03 + Vector((0, 0, -0.004)); b = p - side * 0.012
-    B.add(capsule_bm(tuple(a), tuple(b), 0.012, 0.014, segs=16, hem=4), yel, "spine")
-    B.add(ellipsoid_bm(p - side * 0.012 + Vector((0, 0, -0.004)), (0.021, 0.019, 0.021), segs=18, rings=10), yel, "spine")
-    B.add(tube_bm([tuple(pts[0]), tuple(p + Vector((0, 0, 0.012)))], 0.0042), cord, "spine")
+    a = p + (side * 0.03 + Vector((0, 0, -0.004))) * sz; b = p - side * 0.012 * sz
+    B.add(capsule_bm(tuple(a), tuple(b), 0.012 * sz, 0.014 * sz, segs=16, hem=4), yel, "spine")
+    B.add(ellipsoid_bm(p + (-side * 0.012 + Vector((0, 0, -0.004))) * sz, (0.021 * sz, 0.019 * sz, 0.021 * sz), segs=18, rings=10), yel, "spine")
+    B.add(tube_bm([tuple(pts[0]), tuple(p + Vector((0, 0, 0.012 * sz)))], 0.0042), cord, "spine")
     hole = B.mats.flat("whistle_hole", "#2A2A33", rough=0.6, spec=0.2)
-    B.add(ellipsoid_bm(a + side * 0.011, (0.004, 0.008, 0.006), segs=10, rings=6), hole, "spine")
+    B.add(ellipsoid_bm(a + side * 0.011 * sz, (0.004 * sz, 0.008 * sz, 0.006 * sz), segs=10, rings=6), hole, "spine")
 
 def sash(B, piece):
     mat = B.mats.flat("sash", piece.get("color", "#C8A2F0"), rough=0.7, spec=0.25)
