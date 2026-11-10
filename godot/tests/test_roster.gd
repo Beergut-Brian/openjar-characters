@@ -1,6 +1,8 @@
 extends SceneTree
 ## Headless roster checks: godot --headless --path godot -s res://tests/test_roster.gd
 ## run_tests.sh copies characters.json to _lib/characters.json and every jarling.json to _lib/params/<id>.json.
+## Colour distances (CIE Delta E 2000: outfit main colours >= 20, skin and hair >= 10 from both player
+## colours) are checked by tools/check_colours.py in run_tests.sh; here: no exact player colour.
 ## Rules: README "Playable characters" and docs/roster.md.
 
 const Equipment := preload("res://jarling_equipment.gd")

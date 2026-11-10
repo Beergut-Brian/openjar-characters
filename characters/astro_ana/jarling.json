@@ -1,0 +1,83 @@
+{
+  "id": "astro_ana",
+  "name": "Astro Ana",
+  "notes": "From characters/astro_ana/look.md (Kaden's sheet 2026-11-10).",
+  "head": {
+    "shape": "round",
+    "size": 1.0,
+    "ears": "round"
+  },
+  "skin": "#BF8150",
+  "face": {
+    "eyes": "lash",
+    "brows": "arched",
+    "brow_color": "#2A1A14",
+    "mouth": "grin_top",
+    "blush": 0.4,
+    "lid": 0.18,
+    "lid_tilt": 0.2,
+    "brow_tilt": 0.3,
+    "brow_raise": -0.015,
+    "expressions": {
+      "happy": {
+        "eye_mode": "open",
+        "eye_scale": 1.15,
+        "lid": 0.0,
+        "lid_tilt": 0.0,
+        "brow_tilt": -0.1,
+        "brow_raise": 0.06,
+        "mouth": "grin",
+        "blush_add": 0.25
+      },
+      "surprised": {
+        "mouth": "o"
+      },
+      "determined": {
+        "lid": 0.4,
+        "lid_low": 0.08,
+        "lid_tilt": 0.3,
+        "brow_tilt": 0.42,
+        "brow_raise": -0.04,
+        "mouth": "set"
+      }
+    }
+  },
+  "hair": {
+    "style": "puffs",
+    "color": "#3B2A20"
+  },
+  "headwear": {
+    "type": "fishbowl",
+    "tint": "#D8EEF8",
+    "alpha": 0.14,
+    "collar": "#F2F4F6",
+    "collar_accent": "#F7941D"
+  },
+  "body": {
+    "build": "regular",
+    "height": 1.0
+  },
+  "outfit": {
+    "top": {
+      "style": "long",
+      "color": "#F2F4F6",
+      "pattern": {
+        "type": "hstripe",
+        "accent": "#F7941D",
+        "v": 0.62,
+        "width": 0.1
+      }
+    },
+    "bottoms": {
+      "style": "pants",
+      "color": "#F2F4F6"
+    },
+    "shoes": {
+      "style": "moon_boots",
+      "color": "#F7941D",
+      "sole": "#F2F4F6"
+    }
+  },
+  "costume": [],
+  "ref_action": {"action": "kick", "frame": 17, "expression": "determined", "yaw": -28}
+}

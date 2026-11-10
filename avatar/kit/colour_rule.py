@@ -1,8 +1,10 @@
 """The player-colour rule (README "Playable characters", rule 1). Pure Python, no Blender.
 
-P1 green and P2 red belong to the player slots. A playable character's MAIN colours (skin, hair,
-headwear, top, bottoms, shoes in jarling.json) must sit at least PLAYER_DE_MIN (CIE Delta E 2000)
-away from both, so a green alien uses a clearly different green, never P1's.
+P1 green and P2 red belong to the player slots. A playable character's main OUTFIT colours (headwear,
+top, bottoms, shoes in jarling.json) must sit at least PLAYER_DE_MIN (CIE Delta E 2000, 20) away from
+both. Skin and hair need SKIN_HAIR_DE_MIN (10): natural tones (sienna skin, auburn hair) always pass,
+while a neon-green alien skin still cannot pass for P1 (Gary's call, 2026-11-10: Kaden's sheet rule is
+about the main outfit colour).
 Used by jarling_kit.py, tools/check_colours.py and godot/run_tests.sh.
 """
 import math
@@ -65,7 +67,12 @@ def de2000_lab(lab1, lab2):
     Rt = -math.sin(math.radians(2 * dth)) * Rc
     return math.sqrt((dL / Sl) ** 2 + (dC / Sc) ** 2 + (dH / Sh) ** 2 + Rt * (dC / Sc) * (dH / Sh))
 
-PLAYER_DE_MIN = 20.0   # a playable character's main colours must be at least this far from P1 green and P2 red
+PLAYER_DE_MIN = 20.0      # main outfit colours (headwear, top, bottoms, shoes): at least this far from P1 green and P2 red
+SKIN_HAIR_DE_MIN = 10.0   # skin and hair: natural tones pass, a player-coloured skin does not
+OUTFIT_PARTS = ("headwear", "top", "bottoms", "shoes")
+
+def limit_for(part):
+    return PLAYER_DE_MIN if part in OUTFIT_PARTS else SKIN_HAIR_DE_MIN
 
 def main_colours(P):
     """The six main colours of a character's params (the ones the player-colour rule checks)."""
@@ -75,12 +82,13 @@ def main_colours(P):
         m[part] = o.get(part, {}).get("color")
     return {k: v for k, v in m.items() if isinstance(v, str) and v.startswith("#")}
 
-def player_colour_clashes(P, limit=PLAYER_DE_MIN):
-    """[(part, colour, player, deltaE)] for every main colour closer than `limit` to a player colour."""
+def player_colour_clashes(P, limit=None):
+    """[(part, colour, player, deltaE)] for every main colour closer to a player colour than its limit
+    (outfit parts PLAYER_DE_MIN, skin and hair SKIN_HAIR_DE_MIN; `limit` overrides both)."""
     out = []
     for part, col in main_colours(P).items():
         for who, pc in (("P1", PLAYER_GREEN), ("P2", PLAYER_RED)):
             d = delta_e2000(col, pc)
-            if d < limit:
+            if d < (limit if limit is not None else limit_for(part)):
                 out.append((part, col, who, round(d, 1)))
     return out

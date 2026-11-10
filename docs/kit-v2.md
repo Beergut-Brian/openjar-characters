@@ -43,8 +43,12 @@ skin so the face still reads. Human skins keep the original colours exactly (Jef
 unchanged). Overrides: `face.blush_color`, `face.line_color`, `face.brow_color`.
 
 **The rule** (`avatar/kit/colour_rule.py`, `tools/check_colours.py`, run by `godot/run_tests.sh`):
-a playable character's main colours (skin, hair, headwear, top, bottoms, shoes) must be at least
-**CIE ΔE2000 20** from P1 green `#3cc24a` and P2 red `#e4393c`. A green alien uses a clearly
+a playable character's main **outfit** colours (headwear, top, bottoms, shoes) must be at least
+**CIE ΔE2000 20** from P1 green `#3cc24a` and P2 red `#e4393c`; **skin and hair need ΔE2000 10**
+(Gary's call, 2026-11-10: Kaden's sheet rule is about the main outfit colour; at 20 the check refused
+natural tones such as sienna skin `#A0522D` and auburn hair `#A34E25`, both 16.3 from P2 red. At 10
+every natural tone passes and a skin near P1 green, e.g. `#4FCB5C` at 2.9, still fails). The
+distances below are against the outfit limit of 20; as a skin, anything from 10 up passes. A green alien uses a clearly
 different green. Greens that pass: lime `#D4F25A` (20.8), mint `#A8F0D0` (21.7), pale mint
 `#B8F5D8` (23.3), sea `#7FD9C4` (21.5), olive `#7C8A2E` (20.5), dark olive `#6E7A2A` (24.8), teal
 `#2A9DB0` (37.2). Greens that fail: `#B6E33B` (17.0), `#8FE3B0` (15.8), forest `#2E8B3A` (16.9).
@@ -122,7 +126,7 @@ or helmet still goes on top; each is the part `<id>_part_feature_<type>` on its 
 
 | Name | Params (defaults) |
 | --- | --- |
-| `antennae` | count 2 (1..4), color (default: darker skin), tip (default: color), length 0.75 (x R), spread 30 (deg from straight up), ball 0.15 (x R), thickness 0.035 (x R) |
+| `antennae` | count 2 (1..4), color (default: darker skin), tip (default: color), length 0.75 (x R), spread 30 (deg from straight up), ball 0.15 (x R), thickness 0.035 (x R), back 0 (deg the stalks lean toward the back of the head) |
 | `horns` | style "nub"/"curved", count 2 (1 = one centre horn), color "#F1E7CF", size 1.0 |
 | `pointy_ears` | color (default: skin), length 0.55 (x R), up 0.5 (how much they point up); replace the round ears |
 | `fins` | count 1/3 (centre crest, plus one each side), color (default: darker skin), size 1.0 |
@@ -189,7 +193,7 @@ Headwear (`headwear.type`; hair mode in HEADWEAR_OPTS):
 | Name | Params (defaults) |
 | --- | --- |
 | `animal_hood` | color="#2BB3A3", inner=<color darker>, opening_deg=52, eyes=None {"color": "#FFFFFF", "pupil": "#1B1B20", "size": 1.0, "el": 50, "apart": 34}, teeth=None (colour), teeth_n=6, teeth_span=110, spikes=None (colour), spike_n=6, ears=None (colour); hair hide |
-| `fishbowl` | tint="#CFE8FF", alpha=0.07, scale=1.0, collar="#F4F4F0", highlight=True; hair free |
+| `fishbowl` | tint="#CFE8FF", alpha=0.07, scale=1.0, collar="#F4F4F0", collar_size=1.0, collar_accent=None (colour), rim="#8FC7E8" (None: off), rim_alpha=0.55, rim_power=0.35, highlight=True, highlight_alpha=0.7, highlight_size=1.0; hair free |
 | `hard_hat` | color="#FFC93C", fit=0.30, tilt_deg=6, separate=False; hair tuck |
 | `top_hat` | color="#2A2A33", band="#7E57C2", height=1.6 (R), scale=1.0, tilt_deg=0, separate=False; hair tuck |
 | `miner_helmet` | color="#F4F4F0", lamp="#3A3A46", light="#FFF2C0", glow=6.0, lamp_size=1.0, watts=30, spot_deg=55, fit=0.28, tilt_deg=0, separate=False; hair tuck |
@@ -253,7 +257,7 @@ Costume (`costume: [{"piece": name, ...}]`):
 
 | Name | Params (defaults) |
 | --- | --- |
-| `whistle_cord` | color "#FFD23F" (whistle), cord "#2A6FD6", t 0.56 (height on the torso), x 0.0 (turn off centre, radians) |
+| `whistle_cord` | color "#FFD23F" (whistle), cord "#2A6FD6", t 0.56 (height on the torso), x 0.0 (turn off centre, radians), size 1.0 (whistle scale; Coach Whistle uses 1.5) |
 | `sash` | color "#C8A2F0", side "L" (the shoulder it goes over), width 0.17 (in torso height) |
 | `cape` | (part "cape") color "#7A2E8C", trim "#F2D16B", length 1.0 (1 = knee height), flare 0.3 |
 | `back_spikes` | color "#2FA88A", count 5, size 1.0 |
@@ -284,3 +288,12 @@ Actions:  `march`, `write`, `salute` (gnome); `polish`, `point`, `wave` (caveman
 
 
 <!-- PIECES:END -->
+
+## Gait
+
+`"gait"` (top level, optional) swaps a standard Jarling's `run` and `idle` for a cosmetic variant, registered
+in `kit.GAITS` by `avatar/kit/pieces_gait.py`. `"hop"` (Ribbit): `run` is a two-footed hop (crouch, push off,
+tucked in the air with the root rising, land with a squash) and `idle` settles and gives a small bounce now and
+then. Same action names, frame ranges and loop flags as the standard set (`run` 1-17, `idle` 1-49), the root
+only moves vertically (the game moves the character), `kick` and `cheer` are unchanged, and the rig gets the
+extra `jarling_gait`. Gameplay and collision never change. Without `"gait"` every action is exactly as before.

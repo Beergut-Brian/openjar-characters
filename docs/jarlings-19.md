@@ -1,6 +1,8 @@
 # The 19 new Jarlings (Kaden's sheets, 2026-11-10)
 
-Status: **proposed**. Text drafts in `proposals/<id>/` (README "Proposals"), not yet in `characters/`.
+Status: **proposed**. Text drafts in `proposals/<id>/` (README "Proposals"). Batch 1 (2026-11-10): the four Spaceballs
+Jarlings (`coach_whistle`, `zorp`, `ribbit`, `astro_ana`) are built and live in `characters/<id>/` as a playtest build
+(`Playable: true`, Status still proposed); the other 15 are not yet in `characters/`.
 Kaden's Look, Personality, Voice and sample lines are kept verbatim in each `look.md`, `bible.md`,
 `voice.md`. All are `kind: universal`, `Body: standard`, planned playable (header says
 `Playable: false` until each is complete and Kaden approves, per `docs/roster.md` step 5).

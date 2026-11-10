@@ -5,7 +5,7 @@
 # 2. test_roster.gd: roster, defaults, player-colour rule, standard-body rule (README "Playable characters").
 # 3. test_equipment.gd: gear on Jeff, Chuck and generic Jarlings.
 # 4. test_bodies.gd: per-body-type contract (bones, actions, expressions, slots, gear) for every character with a model.
-# 5. Kit v2: tools/check_colours.py (Delta E 2000 player-colour rule), avatar/kit/check_kit_v2.py (width/belly limits,
+# 5. Kit v2: tools/check_colours.py (Delta E 2000 player-colour rule: outfit >= 20, skin and hair >= 10), avatar/kit/check_kit_v2.py (width/belly limits,
 #    slots follow the surface, features as parts; needs Blender) and test_kit_v2.gd (gear on the widest and skinniest body).
 # 6. Held items: avatar/kit/render_hold.py --check (Blender: every fist within 3 mm of its grip in every hold-sheet pose)
 #    and test_hold.gd (Godot runtime: grips on all six characters, hold styles, gear without grips unchanged).
