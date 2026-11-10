@@ -11,6 +11,11 @@ extends Resource
 @export var scene: PackedScene
 ## Body parts hidden while worn (foot_l, foot_r, hand_l, hand_r, headwear, tail).
 @export var replaces_body_part: Array[StringName] = []
+## Head features hidden while worn (kit v2: antennae, horns, pointy_ears, fins ...). ["*"] hides
+## every feature. Features are body parts of the species, so most hats leave this empty and the
+## antennae simply poke out; a closed helmet that cannot fit them lists them here.
+## JSON: "hides_features": true | ["antennae", ...]
+@export var hides_features: Array[StringName] = []
 ## Optional per-build (or per-character id) tweak: {"puffy": {"offset": [x, y, z], "scale": 1.0 or [x, y, z]}}
 @export var fit: Dictionary = {}
 ## {"max": 3, "scale_step": 0.06}
@@ -33,6 +38,11 @@ static func load_json(path: String) -> JarlingGear:
 		g.slots.append(StringName(x))
 	for x in d.get("replaces_body_part", []):
 		g.replaces_body_part.append(StringName(x))
+	var hf = d.get("hides_features", [])
+	if hf is bool:
+		hf = ["*"] if hf else []
+	for x in hf:
+		g.hides_features.append(StringName(x))
 	g.fit = d.get("fit", {})
 	g.level_up = d.get("level_up", {})
 	g.spring = d.get("spring", {})
@@ -41,6 +51,18 @@ static func load_json(path: String) -> JarlingGear:
 		if g.scene == null:
 			push_error("JarlingGear: %s: cannot load scene %s" % [path, d["scene"]])
 	return g
+
+
+## Body parts this item hides on a Jarling that has `parts`: replaces_body_part plus the
+## `feature_<type>` parts named by hides_features.
+func hidden_parts(parts: Array) -> Array[StringName]:
+	var out: Array[StringName] = replaces_body_part.duplicate()
+	for p in parts:
+		var n := String(p)
+		if n.begins_with("feature_") and (hides_features.has(&"*") or hides_features.has(StringName(n.substr(8)))):
+			if not out.has(StringName(n)):
+				out.append(StringName(n))
+	return out
 
 
 func max_level() -> int:
