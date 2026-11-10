@@ -543,13 +543,24 @@ def _prop_side(B, piece, default):
             return pc.get("hand", default)
     return default
 
-def _for_prop(fn, piece, designed):
+def _for_prop(fn, piece, designed, hand_swing=0.0):
     """Wrap an action designed with `piece` in the `designed` hand: mirror it when the character
-    holds the prop in the other hand, so the prop hand always does the work."""
+    holds the prop in the other hand, so the prop hand always does the work. `hand_swing` is added
+    to the prop hand: the club used to stand up out of a hanging hand; now it runs through the fist
+    (hold system), which is the same pose with the hand swung 90 degrees."""
     def f(B):
         keys = fn(B)
-        if _prop_side(B, piece, designed) != designed:
+        side = _prop_side(B, piece, designed)
+        if side != designed:
             keys = [(fr, kit.mirror(pose)) for fr, pose in keys]
+        if hand_swing:
+            out = []
+            for fr, pose in keys:
+                pose = dict(pose); e = dict(pose.get(f"hand.{side}", {}))
+                e["swing"] = e.get("swing", 0.0) + hand_swing
+                pose[f"hand.{side}"] = e
+                out.append((fr, pose))
+            keys = out
         return keys
     return f
 
@@ -557,6 +568,6 @@ kit.ACTIONS.update({"march": (_for_prop(act_march, "clipboard", "L"), True),
                     "write": (_for_prop(act_write, "clipboard", "L"), True),
                     "salute": (_for_prop(act_salute, "clipboard", "L"), False),
                     "whistle": (act_whistle, False),
-                    "polish": (_for_prop(act_polish, "cloth_club", "R"), True),
-                    "point": (_for_prop(act_point, "cloth_club", "R"), False),
-                    "wave": (_for_prop(act_wave, "cloth_club", "R"), False)})
+                    "polish": (_for_prop(act_polish, "cloth_club", "R", 90.0), True),
+                    "point": (_for_prop(act_point, "cloth_club", "R", 90.0), False),
+                    "wave": (_for_prop(act_wave, "cloth_club", "R", 90.0), False)})
