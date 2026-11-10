@@ -23,9 +23,8 @@ j = kit.build_jarling(params)
 kit.pose_at(j, "idle", 1)
 
 bpy.ops.object.select_all(action="DESELECT")
-for ob in (j.rig, j.body, j.hat):
-    if ob:
-        ob.select_set(True)
+for ob in [j.rig] + list(j.rig.children_recursive):   # body, separable parts, hat, slot markers
+    ob.select_set(True)
 bpy.context.view_layer.objects.active = j.rig
 os.makedirs(os.path.dirname(os.path.abspath(a.out)), exist_ok=True)
 bpy.ops.export_scene.gltf(
