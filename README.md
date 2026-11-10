@@ -41,9 +41,10 @@ Players pick who they are in every game's start menu and in the launcher (see
 says `**Playable:** true|false`, `**Default for:** none|1|2` and `**Body:** standard|critter|giant` (the body types are in [`avatar/README.md`](avatar/README.md)); the index lists
 the playable ids in display order under `roster` (defaults first). Today: Jeff (P1 default) and
 Chuck (P2 default), then Astro Ana, Coach Whistle, Ribbit and Zorp (batch 1, proposed; lineups
-`characters/batch1_lineup.png`, `characters/batch1_pixel_lineup.png`, read check `characters/batch1_read_check.png`). The Hill residents (Mole, Gnome Foreman, Caveman, Dragon) are not playable.
-Chuck (P2 default), then Big Tiny, Foreman Dot, Granny Gravel, Lampy, Mayor Pip, Professor Fizz and Scrap (batch 2, proposed; lineups
-`characters/batch2_lineup.png`, `characters/batch2_pixel_lineup.png`, read check `characters/batch2_read_check.png`). The Hill residents (Mole, Gnome Foreman, Caveman, Dragon) are not playable.
+`characters/batch1_lineup.png`, `characters/batch1_pixel_lineup.png`, read check `characters/batch1_read_check.png`),
+then Big Tiny, Foreman Dot, Granny Gravel, Lampy, Mayor Pip, Professor Fizz and Scrap (batch 2, proposed; lineups
+`characters/batch2_lineup.png`, `characters/batch2_pixel_lineup.png`, read check `characters/batch2_read_check.png`).
+The Hill residents (Mole, Gnome Foreman, Caveman, Dragon) are not playable.
 
 **3D-first (Kaden, 2026-11-10).** A character is designed as a Jarling first; every other style is
 derived from that 3D master. The four Hill residents were drawn 2D-first, so their 3D masters were
