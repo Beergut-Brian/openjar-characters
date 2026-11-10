@@ -1,6 +1,6 @@
 # Zorp
 
-**Kind:** universal. **Playable:** false (planned playable: Kaden's sheet; flips to true only when the 3D master, pixel form and voice exist and Kaden approves). **Default for:** none. **Body:** standard. **Home game:** Spaceballs. **First appears:** Spaceballs.
+**Kind:** universal. **Playable:** true (proposed: Kaden's sheet 2026-11-10; playtest build). **Default for:** none. **Body:** standard. **Home game:** Spaceballs. **First appears:** Spaceballs.
 
 ## Who they are (Kaden's sheet, verbatim)
 An alien tourist visiting Earth and loving all of it. Fascinated by ordinary things like socks and puddles. Shows up once the ball reaches space.
@@ -29,4 +29,4 @@ Thinks Jeff's chicken costume is Jeff's real species and is very polite about it
 Spaceballs: shows up once the ball reaches space (Kaden's sheet). Zorp can float near the ball at the space altitude and react to it ("What a beautiful... 'ball'."), then cheer the kicker.
 
 ## Status
-Proposed (Kaden's sheet 2026-11-10). Text drafted by the Character writing lane; awaiting Kaden's OK or edits. Nothing visual is made yet.
+Proposed (Kaden's sheet 2026-11-10; playtest build). Kaden wrote this sheet himself and asked to playtest the chooser with these characters on 2026-11-10; that request is what moved this folder from `proposals/` to `characters/` and set Playable to true. Not yet signed off: names, colours and lines are his first drafts, and he can still edit or pull any of it. Text drafted by the Character writing lane; 3D master and pixel form built by the Jarlings batch 1 lane (2026-11-10).

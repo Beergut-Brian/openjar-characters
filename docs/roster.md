@@ -91,7 +91,7 @@ skipped.
 1. Approved `bible.md` and `look.md` (README "Process for a new character"). Header:
    `**Kind:** universal. **Playable:** false. **Default for:** none. **Body:** standard.`
 2. **3D master first**: `jarling.json` on the standard body (only `build`, `height` 0.8-1.3,
-   `leg_scale` 0.8-1.2, `width` 0.75-1.5, `belly` 0-1; main colours ΔE2000 >= 20 from both player colours (`tools/check_colours.py <file>`); no player green/red anywhere), built to `refs/jarling/<id>.glb`, with
+   `leg_scale` 0.8-1.2, `width` 0.75-1.5, `belly` 0-1; outfit main colours ΔE2000 >= 20 from both player colours, skin and hair >= 10 (`tools/check_colours.py <file>`); no player green/red anywhere), built to `refs/jarling/<id>.glb`, with
    turnaround and expression renders. Credits in `CREDITS.md`.
 3. **Pixel form** for The Hill, traced from the 3D side view: a `## Alt form: the-hill pixel`
    section in `look.md` with `Sprite source: \`tools/pixel/<file>.py\` (\`<id>()\`)`.

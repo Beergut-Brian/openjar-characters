@@ -41,7 +41,10 @@ Rules for every playable character (checked by `godot/run_tests.sh`):
 1. **Player colours belong to the player slot, never to a character.** P1 green `#3cc24a` and P2
    red `#e4393c` are for rings, arrows, glows and HUD around whoever you play. No playable character
    uses either as a main colour (skin, hair, headwear, top, bottoms, shoes in `jarling.json`): each
-   main colour must be at least CIE ΔE2000 20 from both (`tools/check_colours.py`), so a green
+   main **outfit** colour (headwear, top, bottoms, shoes) must be at least CIE ΔE2000 20 from both,
+   and skin and hair at least ΔE2000 10 (`tools/check_colours.py`; Gary's call 2026-11-10: the
+   sheet rule is about the main outfit colour, so natural tones such as sienna skin `#A0522D` and
+   auburn hair `#A34E25` pass, while a skin close to P1 green still fails). So a green
    alien uses a clearly different green such as lime `#D4F25A`, mint `#A8F0D0` or olive `#7C8A2E`. And
    new playable characters use neither anywhere. Jeff's green accents and Chuck's red accents are
    from their approved looks and stay until Kaden says otherwise (a look change needs him).
