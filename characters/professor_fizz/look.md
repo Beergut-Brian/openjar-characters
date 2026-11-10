@@ -50,10 +50,38 @@ Built 2026-11-10 from `characters/professor_fizz/jarling.json` (standard humanoi
 - **Not built:** a lab coat with a real hem; zap gun / notebook (held props; wait for the held-item hold styles, not on `main` yet)
 
 ### 2D pixel (The Hill)
-32 px tall at Jeff's scale (stage 1), side-on like `characters/residents_lineup.png`; traced from the 3D side view once it exists. Hair a 5-px-tall white spray above the head; goggles a brass row with two light-blue dots. Lab coat white with a purple collar pixel pair; socks one orange and one blue pixel above the black shoes.
+See "Alt form: the-hill pixel" below (as built).
 
 ## Refs
 - `refs/jarling/professor_fizz.glb`: the 3D master
 - `refs/jarling/professor_fizz_turnaround.png`, `professor_fizz_expressions.png`, `professor_fizz_cheer.png`
 - `refs/jarling/professor_fizz_side.png`, `professor_fizz_side_sprite.png`: side view and its sprite-scale tracing base
 - `refs/pixel/professor_fizz_pixel.png`, `professor_fizz_frames.png` (+ `.json`), `professor_fizz_pixel_sheet.png`: The Hill pixel form
+
+## Alt form: the-hill pixel: proposed
+Sprite source: `tools/pixel/professor_fizz.py` (`professor_fizz()`)
+
+- **Height:** 32 px with the outline (the 3D at true scale is 36 px with the hair, squeezed to the 32 px frame): hair spray
+  5 rows + crown 1, head 10 (hair/goggles on the forehead rows 7-9, one skin row, brow row, eyes 2, grin 2, chin 1),
+  lab coat 8, pants 3 (waist band + 2), sock 1, shoes 2.
+- **Palette:** hair `#F7F7F2` (+ `#D9D9D2`), goggles brass `#B8862E` with lens `#9FD3E6` (+ glint `#E6F5FA`), skin `#F7CFAE`
+  (+ `#DDAE8C`), scorched brow `#3A2E2A`, eyes `#2A1E2C` with a `#FFFFFF` catch-light, grin `#6A2232`, lab coat `#F4F5F2`
+  (+ `#D5D8D6`), collar V and buttons `#7B3FB5`, pants `#5E2F94` (+ `#4A2478`), socks `#FFB627` (her left) / `#3FA7D6`
+  (her right), shoes `#1B1B20` (+ toe glint `#44444E`), outline `#2A1E2C`.
+- **Frames:** front form (40 x 32) and the 128 x 224 player sheet: idle0-1, walk0-3, jump, fall, side0-2, down0-2, ride,
+  sleep0-1 (three-quarter view facing right, feet on row 30; hand at (22, 21) idle, The Hill's dig hand positions; jump
+  tucks the feet without lifting the body, since the hair already reaches row 1).
+- **Should read as:**
+  - mad-scientist hair straight up (not a crown, not a chef hat): 5 uneven spikes in the front form (4 in the frames), each a
+    1 px tip over a 2 px shaft shaded on its left, tips on rows 1-4, the outer ones leaning out, 1 px gaps down to the crown;
+    white hair also covers the back and side of the head down to the ear in the frames
+  - round goggles pushed up on the forehead (not glasses, not a second pair of eyes): a brass row across the forehead with
+    two 2 x 2 light-blue lenses in brass rings (front); one ringed lens at the front right with the brass strap row going
+    back through the hair (frames); a full skin row between the goggles and the eyes
+  - one scorched eyebrow: 3 dark `#3A2E2A` pixels with a 1 px break over her left eye only (image right in the front form,
+    the near eye in the frames), no brow over the other eye
+  - excited grin: a 4 px dark mouth row over a 2 px row, nothing poking out of it
+  - white lab coat with a purple collar: white top with a purple V (skin inside), purple button pixels, long white sleeves
+    with a grey shade, skin hands
+  - mismatched socks: one sock row each, orange on her left leg and blue on her right, above black shoes (front form and
+    every walk frame: near leg orange, far leg blue)
