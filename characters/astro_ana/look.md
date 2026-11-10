@@ -31,23 +31,45 @@ least ΔE00 20 from P1 green `#3cc24a` and P2 red `#e4393c`. Skin tone is not fi
 
 ## Per-technique notes
 
-### Jarling 3D (master, built by the kit lane from this sheet)
-Standard humanoid Jarling body (`avatar/kit`): only `build`, `height` (0.8-1.3) and `leg_scale` (0.8-1.2) change; same skeleton, actions, ten equipment slots and the same gameplay collision as every playable character.
-- **build:** `regular`
-- **height:** 1.0
-- **leg_scale:** 1.0
-- **width / belly:** regular, no belly
-- **head:** `round`, size 1.0
-- **hair:** **new** `two_puffs` (two round puffs at the sides of the head), dark brown; must fit inside the helmet
-- **headwear:** **new** `fishbowl_helmet` (transparent sphere, thin rim at the neck); transparency must work in every renderer the games use, with a fallback of rim-only
-- **top:** **new** `spacesuit_top` (white, padded) with orange chest stripe
-- **bottoms:** `pants`, white (spacesuit style)
-- **shoes:** **new** `moon_boots`, orange, chunky
-- **gear:** none
-- **pieces needed:** fishbowl helmet (transparent), two-puffs hair, spacesuit top + stripe, moon boots
-
-### 2D pixel (The Hill)
-32 px tall at Jeff's scale (stage 1), side-on like `characters/residents_lineup.png`; traced from the 3D side view once it exists. Helmet drawn as a 1-px light-blue circle outline with one white highlight pixel; face and two dark hair puffs inside. Orange stripe and orange 3-px boots.
+### Jarling 3D (master, built)
+Built on the standard humanoid Jarling body (`avatar/kit`) from `jarling.json`:
+- **body:** `build` regular, `height` 1.0 (no leg_scale / width / belly change)
+- **head:** `round`, size 1.0, round ears; skin `#BF8150`
+- **face:** eyes `lash`, brows `arched` `#2A1A14`, mouth `grin_top`, brows slightly down (neutral = determined grin).
+  Expressions: neutral = determined grin; happy = liftoff joy (open `grin`, eyes wide, brows up); surprised = `o`;
+  determined = countdown focus (`set` mouth, brows down, lids lowered)
+- **hair:** preset `puffs` `#3B2A20` (two round puffs at the upper sides, fully inside the bowl)
+- **headwear:** `fishbowl`, tint `#D8EEF8`, alpha 0.14, collar `#F2F4F6`, `collar_accent` `#F7941D`. Kit change
+  (`avatar/kit/pieces_headwear.py`, `fishbowl`): chunky lip torus at the neck (`collar_size`), optional orange
+  band (`collar_accent`), a light-blue edge (`rim` `#8FC7E8`, `rim_alpha`, `rim_power`) that exists only in the
+  Blender/Cycles renders (Layer Weight on a CYCLES output; the exported glTF material stays a plain alpha-blended
+  tint: alphaMode BLEND, baseColorFactor alpha 0.14, roughness 0.03), and a bigger glint streak high on the upper left
+  (`highlight_alpha`, `highlight_size`). In a game the bowl's edge comes from the engine's reflections; add a
+  fresnel rim in the game's shader if it reads too faint there.
+- **top:** `long` `#F2F4F6` with `hstripe` `#F7941D` across the chest; **bottoms:** `pants` `#F2F4F6`;
+  **shoes:** `moon_boots` `#F7941D`, sole `#F2F4F6`
+- **ref_action:** `kick` frame 17 (follow-through), expression determined
 
 ## Refs
-`refs/`: none yet. The kit lane builds the 3D master and renders after Kaden approves this sheet.
+- `refs/jarling/`: `astro_ana.glb`, `astro_ana_turnaround.png`, `astro_ana_expressions.png`, `astro_ana_kick.png`,
+  `astro_ana_side.png`, `astro_ana_side_sprite.png` (Blender kit renders)
+- `refs/pixel/`: `astro_ana_pixel.png`, `astro_ana_frames.png`, `astro_ana_frames.json`, `astro_ana_pixel_sheet.png`
+- Colours: all Fixed colours used as listed; the pixel form adds the ring `#8FC7E8`, white `#FFFFFF` and shades
+  `#9E6740` (skin), `#C9D1DA` (suit), `#D2741A` (boots).
+
+## Alt form: the-hill pixel: proposed
+Sprite source: `tools/pixel/astro_ana.py` (`astro_ana()`)
+
+- **Height:** 30 px drawn, 32 px with the outline. Body below the collar at true scale (traced from
+  `astro_ana_side_sprite.png`: boots + legs 9 px, torso 8 px); the 3D head + bowl would be 3 px taller than the
+  frame, so the head is drawn 2 px shorter and the bowl's clearance above the hair is 1 px of glass.
+- **Palette:** skin `#BF8150` (shade `#9E6740`), hair `#3B2A20`, suit `#F2F4F6` (shade `#C9D1DA`), orange
+  `#F7941D` (shade `#D2741A`), glass `#D8EEF8`, ring `#8FC7E8`, white `#FFFFFF`, outline `#2A1E2C`.
+- **Frames:** front form (40 x 32); 32 x 32 three-quarter frames facing right: idle0 idle1 walk0-3 jump fall
+  side0-2 down0-2, plus ride and sleep from `jarling_frames.sheet`; hand at (22, 21).
+- Should read as: a clear glass fishbowl space helmet (not a hood, not a halo, not a bubble of hair): an opaque
+  pixel bowl, 1 px light-blue ring inside the outline, pale glass fill, white glint at the upper left, white collar
+  row with an orange pixel at the neck.
+- Should read as: two hair puffs inside the helmet (dark 3 px puffs at the upper sides, 1 px of glass between puff and ring).
+- Should read as: orange moon boots (3 px orange with a white sole row).
+- Should read as: a white suit with an orange chest stripe (1 px row); a determined grin (corners up, white teeth).
