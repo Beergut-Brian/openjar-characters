@@ -245,7 +245,7 @@ def caveman(view="front", pose="idle", expr="delighted"):
 
 
 # ---------------------------------------------------------------- Jeff and Chuck (pixel form)
-JYEL, JOR, GRN, JEANS, COMB = "#FFD84D", "#F7932F", "#3CC24A", "#3B5BA5", "#C9302C"
+JYEL, JOR, GRN, JEANS, COMB = "#FFD84D", "#F7932F", "#3CC24A", "#3B5BA5", "#D63384"
 RED = "#E4393C"
 
 
