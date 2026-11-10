@@ -1,0 +1,1 @@
+{"id": "plain_hand", "name": "Test zapper (no grips)", "slots": ["hand_r"], "scene": "../../_lib/gear/hat.glb", "replaces_body_part": [], "fit": {}, "level_up": {"max": 3, "scale_step": 0.06}}

@@ -302,6 +302,78 @@ def sunglasses():
     obj("trim_shades_sparkle", star, node)
     return root
 
+# ------------------------------------------------------------------------------------------ held items
+# Hand slot: origin at the hand centre. A held item is modelled upright in its own space and says
+# where the hands close on it (`hold`: grip_r, grip_l, axis, style; avatar/kit/hold.py). The runtime
+# turns `axis` onto the fist and puts grip_r in the main fist; the off hand goes to grip_l.
+def rbox(c, hw, hd, hh, power=8, segs=28):
+    cx, cy, cz = c; k = 0.82
+    return lathe([(cz - hh, 0, 0, cx, cy), (cz - hh, hw * k, hd * k, cx, cy), (cz - hh * 0.9, hw, hd, cx, cy),
+                  (cz + hh * 0.9, hw, hd, cx, cy), (cz + hh, hw * k, hd * k, cx, cy), (cz + hh, 0, 0, cx, cy)], segs, power)
+
+def lantern():
+    root = empty("hand_r")
+    wood, glassm, cap = mat("lantern_frame", DARK, 0.4, 0.5), glow("lantern_glow", GOLD, 2.5), mat("lantern_cap", TEAL)
+    parts = [(capsule_bm((0, -0.05, 0), (0, 0.05, 0), 0.011, 0.011, segs=12, hem=3), wood)]       # the bar in the fist
+    for y in (-0.05, 0.05):                                                                        # bail down to the cap
+        parts.append((tube_bm([(0, y, 0), (0, y * 1.05, -0.04), (0, y * 0.5, -0.075)], 0.006), wood))
+    parts.append((lathe([(-0.10, 0, 0, 0, 0), (-0.10, 0.05, 0.05, 0, 0), (-0.085, 0.056, 0.056, 0, 0), (-0.07, 0.03, 0.03, 0, 0),
+                         (-0.062, 0, 0, 0, 0)], 28), cap))
+    parts.append((ellipsoid_bm((0, 0, -0.15), (0.047, 0.047, 0.056), segs=24, rings=14), glassm))
+    parts.append((lathe([(-0.215, 0, 0, 0, 0), (-0.215, 0.05, 0.05, 0, 0), (-0.195, 0.054, 0.054, 0, 0), (-0.19, 0, 0, 0, 0)], 28), cap))
+    for a in (0.785, 2.356, 3.927, 5.498):
+        x, y = 0.05 * math.cos(a), 0.05 * math.sin(a)
+        parts.append((tube_bm([(x, y, -0.10), (x, y, -0.20)], 0.005), wood))
+    obj("lantern_body", parts, root)
+    return root
+
+def pennant():
+    root = empty("hand_r")
+    parts = [(capsule_bm((0, 0, -0.075), (0, 0, 0.40), 0.012, 0.011, segs=14, hem=3), mat("pennant_stick", TAN)),
+             (ellipsoid_bm((0, 0, 0.41), (0.02, 0.02, 0.02), segs=14, rings=8), mat("pennant_knob", GOLD, 0.3, 0.7))]
+    flag = grid_bm(lambda u, v: (-0.012 - 0.19 * u, 0.012 * math.sin(u * 7.0), 0.385 - 0.065 * u - (0.13 * (1 - u)) * v), 10, 6)
+    parts.append((solidify_bm(flag, 0.006), mat("pennant_flag", ORANGE)))
+    obj("pennant_body", parts, root)
+    return root
+
+def shovel():
+    root = empty("hand_r")
+    wood, steel = mat("shovel_wood", TAN, 0.6, 0.3), mat("shovel_steel", STEEL, 0.35, 0.6)
+    parts = [(capsule_bm((0, 0, -0.09), (0, 0, 0.36), 0.013, 0.013, segs=16, hem=3), wood),
+             (tube_bm([(-0.035, 0, -0.10), (0.035, 0, -0.10)], 0.012), wood),                      # T grip at the end
+             (lathe([(0.335, 0, 0, 0, 0), (0.335, 0.017, 0.017, 0, 0), (0.39, 0.02, 0.018, 0, 0), (0.39, 0, 0, 0, 0)], 20), steel)]
+    prof = [(-0.004, 0.0, 0.0), (0.0, 0.050, 0.008), (0.012, 0.070, 0.010), (0.07, 0.076, 0.010),
+            (0.13, 0.070, 0.009), (0.18, 0.046, 0.008), (0.21, 0.020, 0.006), (0.22, 0.0, 0.0)]
+    blade = lathe([(0.385 + z, rx, ry * 2.0, 0, 0) for z, rx, ry in prof], 40)
+    for v in blade.verts:
+        v.co.y -= 0.02 * (v.co.x / 0.076) ** 2
+    parts.append((blade, steel))
+    obj("shovel_body", parts, root)
+    return root
+
+def crate():
+    root = empty("hand_r")
+    wood, band = mat("crate_wood", TAN, 0.7, 0.2), mat("crate_band", DARK, 0.5, 0.4)
+    parts = [(rbox((0, -0.02, 0.0), 0.095, 0.075, 0.07), wood)]
+    for z in (-0.045, 0.045):
+        parts.append((tube_bm(ring(0, -0.02, z, 0.097, 0.077, 40, 8), 0.006, cyclic=True), band))
+    for s in (-1, 1):                                                                              # rope handles in the fists
+        parts.append((tube_bm([(s * 0.092, -0.05, 0.02), (s * 0.125, -0.035, 0.0), (s * 0.125, 0.0, 0.0), (s * 0.125, 0.012, 0.0),
+                               (s * 0.092, 0.02, 0.02)], 0.008), band))
+    obj("crate_body", parts, root)
+    return root
+
+def parcel():
+    root = empty("hand_r")
+    parts = [(rbox((0, 0.0, 0.01), 0.07, 0.055, 0.075, power=6), mat("parcel_paper", "#E9D8B4", 0.8, 0.15))]
+    string = mat("parcel_string", PURPLE)
+    parts.append((tube_bm(ring(0, 0.0, 0.01, 0.072, 0.057, 36, 6), 0.006, cyclic=True), string))
+    parts.append((tube_bm([(0, -0.057, -0.065), (0, -0.057, 0.085), (0, 0.057, 0.085), (0, 0.057, -0.065)], 0.006), string))
+    for s in (-1, 1):
+        parts.append((ellipsoid_bm((s * 0.02, -0.03, 0.095), (0.022, 0.012, 0.014), segs=12, rings=8), string))
+    obj("parcel_body", parts, root)
+    return root
+
 # ------------------------------------------------------------------------------------------ items
 ITEMS = {
     "sneakers": dict(name="Sneakers", slots=["foot_l", "foot_r"], replaces_body_part=["foot_l", "foot_r"], fn=sneakers),
@@ -315,7 +387,18 @@ ITEMS = {
     "sunglasses": dict(name="Sunglasses", slots=["face"], fn=sunglasses),
     "gloves": dict(name="Gloves", slots=["hand_l", "hand_r"], replaces_body_part=["hand_l", "hand_r"], fn=gloves),
     "belt": dict(name="Belt", slots=["waist"], fn=belt, fit={"boxy": {"scale": [1.03, 1.0, 1.05]}}),
+    # held items: `hold` in item space, Blender axes here; the JSON stores them in glTF/Godot axes (y up, +z front)
+    "lantern": dict(name="Lantern", slots=["hand_r"], fn=lantern, fit={"critter": {"scale": 0.62}}, hold=dict(style="one_hand_low", grip_r=(0, 0, 0))),
+    "pennant": dict(name="Pennant", slots=["hand_r"], fn=pennant, fit={"critter": {"scale": 0.62}}, hold=dict(style="one_hand_raised", grip_r=(0, 0, 0), axis=(0, 0, 1))),
+    "shovel": dict(name="Shovel", slots=["hand_r"], fn=shovel, fit={"critter": {"scale": 0.62}},
+                   hold=dict(style="two_hand_diagonal", grip_r=(0, 0, 0), grip_l=(0, 0, 0.27), axis=(0, 0, 1))),
+    "crate": dict(name="Crate", slots=["hand_r"], fn=crate, hold=dict(style="two_hand_front", grip_r=(-0.125, 0, 0), grip_l=(0.125, 0, 0))),
+    "parcel": dict(name="Parcel", slots=["hand_r"], fn=parcel, hold=dict(style="chest_clutch", grip_r=(-0.078, 0, 0), grip_l=(0.078, 0, 0))),
 }
+
+def gl_axes(v):
+    """Blender (x, y, z) -> glTF / Godot (x, z, -y)."""
+    return [round(v[0], 5), round(v[2], 5), round(-v[1], 5) + 0.0]
 
 def export(root, path):
     bpy.ops.object.select_all(action="DESELECT")
@@ -343,6 +426,18 @@ if __name__ == "__main__":
              "level_up": {"max": 3, "scale_step": 0.06}}
         if "spring" in spec:
             d["spring"] = spec["spring"]
+        if "hold" in spec:      # grips + the resolved hold poses per body type, all in glTF / Godot axes
+            import hold as H
+            h = spec["hold"]
+            d["hold"] = {"style": h["style"], **{k: gl_axes(h[k]) for k in ("grip_r", "grip_l", "axis") if k in h}}
+            poses = {}
+            for bt in ["standard"] + sorted(H.BODY_STYLES):
+                st = H.style_for(h["style"], "R", bt)
+                poses[bt] = {k: (gl_axes(v) if k != "follow" else v) for k, v in st.items()}
+            d["hold"]["poses"] = poses
+            d["hold"]["action_follow"] = dict(H.ACTION_FOLLOW, **(h.get("follow") or {}))
+            d["hold"]["rigid_actions"] = sorted(H.ACTION_RIGID)
+            d["hold"]["fist"] = {"radii": gl_axes(H.FIST)[:2] + [H.FIST[1]], "thumb": gl_axes(H.THUMB[0]), "thumb_radii": [H.THUMB[1][0], H.THUMB[1][2], H.THUMB[1][1]]}
         with open(os.path.join(a.outdir, f"{gid}.json"), "w") as f:
             json.dump(d, f, indent=2); f.write("\n")
         print("GEAR_OK", gid)

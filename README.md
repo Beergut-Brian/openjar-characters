@@ -37,9 +37,13 @@ Chuck (P2 default), then Astro Ana, Coach Whistle, Ribbit and Zorp (batch 1, pro
 
 **3D-first (Kaden, 2026-11-10).** A character is designed as a Jarling first; every other style is
 derived from that 3D master. The four Hill residents were drawn 2D-first, so their 3D masters were
-backfilled (status: proposed). Gnome Foreman and Caveman use the standard body with new kit pieces;
+backfilled and then matched to the approved sprites (status: **approved**, Kaden 2026-11-10, D49 a
+with the Gnome whistle fix); their Hill pixel forms are now traced from the 3D
+(`tools/pixel/retrace.sh`). Gnome Foreman and Caveman use the standard body with new kit pieces;
 the Mole uses the `critter` body type and the Dragon the `giant` body type. All six in 3D:
-`characters/residents_3d_lineup.png`; 3D beside the approved 2D: `characters/residents_3d_compare.png`.
+`characters/residents_3d_lineup.png`; 3D beside the pixel redraw: `characters/residents_3d_compare.png`;
+every prop at game size: `characters/read_check.png`; everyone holding things:
+`avatar/kit/renders/hold_check.png` ([`avatar/README.md`](avatar/README.md) "Holding items").
 
 Rules for every playable character (checked by `godot/run_tests.sh`):
 

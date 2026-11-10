@@ -96,7 +96,7 @@ out["body_types"] = {
         "slots": SLOTS, "playable": True},
     "critter": {
         "rig": "avatar/kit/body_critter.py (small no-neck animal)",
-        "bones": BONES + ["prop"], "actions": ["idle", "run", "cheer", "popup", "bow"],
+        "bones": BONES + ["prop"], "actions": ["idle", "run", "cheer", "popup", "bow", "dig"],
         "loops": ["idle", "run", "cheer"], "slots": NO_KNEES, "playable": False},
     "giant": {
         "rig": "avatar/kit/body_giant.py (huge sitting creature)",

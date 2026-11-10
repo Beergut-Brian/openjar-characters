@@ -13,7 +13,7 @@
     "blush": 0.6,
     "eye_spacing": 0.56
   },
-  "body": {"type": "giant", "height": 6.0, "build": "giant"},
+  "body": {"type": "giant", "height": 3.5, "build": "giant"},
   "giant": {
     "shade": "#8C6FC8",
     "belly": {"on": true, "color": "#FFF0C9", "stripes": 4, "stripe_color": "#F0DAA6"},

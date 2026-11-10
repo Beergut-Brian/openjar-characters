@@ -1,9 +1,20 @@
-"""Pixel sprites for the Hill residents (Pillow only). Flat colours from .scratch/DESIGN.md."""
+"""Pixel sprites for the Hill residents (Pillow only). 3D-first redraw, 2026-11-10.
+
+The Mole, the Gnome Foreman, the Caveman and the Dragon (sitting) are TRACED from their 3D masters:
+`traced.py` holds the palette-snapped fill (tools/pixel/trace3d.py from avatar/kit/render_trace.py;
+re-run everything with tools/pixel/retrace.sh). Each function below then HAND-CLEANS the traced base
+with the explicit pixel edits listed in it (faces, the whistle, the clipboard lines, the ice-cube
+glint, the club's string...), placed from anchors found in the base (snout, nose, face, eyes), so a
+re-trace keeps them in place. Then the 1 px #2A1E2C outline. Jeff and Chuck are hand-drawn (approved).
+The Dragon's curled-asleep pose stays hand-drawn: the 3D master has no curled pose.
+"""
 from PIL import Image
-from px import Spr, OUT, rgba, PAPER
+from px import Spr, OUT, rgba, PAPER, mirror
+import traced as TR
 
 W, H = 40, 32
 TEAR, SWEAT, BLUSH = "#8FD3F4", "#8FD3F4", "#F7A6C0"
+WHITE = "#FFFFFF"
 EXPRS = {
     "mole": ["squint", "happy", "sorry", "hopeful", "startled"],
     "foreman": ["stern", "approving", "sorry", "hopeful", "whistle"],
@@ -12,14 +23,14 @@ EXPRS = {
 }
 
 
-def fin(s):
-    """Outline, then make the figure exactly rows 0..31 of the 40 x 32 canvas (asserts height 32)."""
+def fin(s, w=W, h=H):
+    """Outline, then stand the figure on the bottom row of the w x h canvas (feet on the ground line).
+    Every resident fits the frame; the Mole is shorter than 32 px (true 3D scale)."""
     im = s.done()
     bb = im.getbbox()
-    assert bb and bb[3] - bb[1] == H, f"height {bb[3]-bb[1] if bb else None}"
-    assert bb[0] >= 0 and bb[2] <= W
-    out = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    out.paste(im.crop((0, bb[1], W, bb[3])), (0, 0))
+    assert bb and bb[3] - bb[1] <= h and bb[0] >= 0 and bb[2] <= w, f"bbox {bb}"
+    out = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    out.paste(im.crop((0, bb[1], w, bb[3])), (0, h - (bb[3] - bb[1])))
     return out
 
 
@@ -27,79 +38,104 @@ def drop(s, x, y):
     s.px(SWEAT, (x, y), (x, y + 1), (x + 1, y + 1)); s.px(SWEAT, (x, y + 2))
 
 
+# ---------------------------------------------------------------- traced bases + anchors
+def base(key, cid, flip=False):
+    """A Spr holding the traced fill `key` (no outline). Side views are mirrored to face screen-right."""
+    rows, pal = TR.BASES[key], TR.PAL[cid]
+    s = Spr(len(rows[0]), len(rows))
+    pix = s.im.load()
+    for y, r in enumerate(rows):
+        for x, ch in enumerate(r):
+            if ch != ".":
+                pix[x, y] = rgba(pal[ch])
+    if flip:
+        s.im.paste(mirror(s.im))
+    return s
+
+
+def find(s, col, box=None):
+    """Pixels of colour `col` (inside box x0, y0, x1, y1 inclusive)."""
+    c, pix = rgba(col), s.im.load()
+    x0, y0, x1, y1 = box or (0, 0, s.im.width - 1, s.im.height - 1)
+    return [(x, y) for y in range(max(0, y0), min(s.im.height, y1 + 1))
+            for x in range(max(0, x0), min(s.im.width, x1 + 1)) if pix[x, y] == c]
+
+
+def bbox(pts):
+    xs, ys = [p[0] for p in pts], [p[1] for p in pts]
+    return min(xs), min(ys), max(xs), max(ys)
+
+
+def top_row(s):
+    return s.im.getbbox()[1]
+
+
+def recolour(s, pts, col):
+    s.px(col, *pts)
+
+
 # ---------------------------------------------------------------- the Mole
 SLATE, BELLY, PINK, NOSE, WOOD, STEEL, DIRT, DIRT2 = (
     "#56607A", "#8792AC", "#F2A0A8", "#E0607A", "#B07A3C", "#B8C4D0", "#8A5A3C", "#6E4528")
 
 
-def mole_face(s, ex, x0=0):
-    for sx in (16, 24):
-        x = sx + x0
-        if ex in ("squint",):
-            s.px(OUT, (x - 1, 5), (x, 5), (x + 1, 5))
-        elif ex == "happy":
-            s.px(OUT, (x - 1, 6), (x, 5), (x + 1, 6))
-        elif ex == "sorry":
-            s.px(OUT, (x - 1, 5), (x, 5), (x + 1, 5))
-        elif ex == "hopeful":
-            s.px(OUT, (x, 5), (x, 6)); s.px("#FFFFFF", (x + 1, 5))
-        elif ex == "startled":
-            s.r(x - 1, 4, x + 1, 6, "#FFFFFF"); s.px(OUT, (x, 5))
-    if ex == "sorry":
-        s.px(OUT, (14, 4), (15, 4), (16, 3), (17, 3), (23, 3), (24, 3), (25, 4), (26, 4))
-    if ex == "hopeful":
-        s.px(OUT, (15, 3), (16, 3), (17, 3), (23, 3), (24, 3), (25, 3))
-    if ex == "startled":
-        s.px(OUT, (15, 2), (16, 2), (17, 2), (23, 2), (24, 2), (25, 2))
-    if ex in ("happy", "sorry", "hopeful"):
-        s.px(PINK, (14, 8), (15, 8), (25, 8), (26, 8))
-    if ex in ("sorry", "startled"):
-        drop(s, 11, 5)
-    m = {"squint": [(19, 14), (20, 14), (21, 14)],
-         "happy": [(18, 14), (19, 15), (20, 15), (21, 15), (22, 14)],
-         "sorry": [(18, 14), (19, 13), (20, 14), (21, 13), (22, 14)],
-         "hopeful": [(19, 14), (20, 15), (21, 14)],
-         "startled": [(20, 14), (19, 15), (21, 15), (20, 16)]}[ex]
+def mole_face(s, ex, sx0, sy0, sx1, sy1):
+    """Snout box (sx0..sx1, sy0..sy1). Eyes: 2 px marks just above the snout's outer edges; mouth under it."""
+    ey, my, cx = sy0 - 1, sy1 + 1, (sx0 + sx1) // 2
+    eye = {"squint": [(-1, 0), (0, 0)], "happy": [(-1, 0), (0, -1)], "sorry": [(-1, -1), (0, 0)],
+           "hopeful": [(0, 0), (0, -1)], "startled": [(0, 0)]}[ex]
+    for x, d in ((sx0, 1), (sx1, -1)):
+        s.px(OUT, *[(x + dx * d, ey + dy) for dx, dy in eye])
+        if ex == "hopeful":
+            s.px(WHITE, (x - d, ey - 1))
+        if ex == "startled":
+            s.px(WHITE, (x - d, ey), (x, ey - 1))
+    m = {"squint": [(cx, my), (cx + 1, my)],
+         "happy": [(cx - 1, my), (cx, my + 1), (cx + 1, my + 1), (cx + 2, my)],
+         "sorry": [(cx - 1, my + 1), (cx, my), (cx + 1, my), (cx + 2, my + 1)],
+         "hopeful": [(cx, my), (cx + 1, my)],
+         "startled": [(cx, my), (cx + 1, my), (cx, my + 1), (cx + 1, my + 1)]}[ex]
     s.px(OUT, *m)
+    if ex in ("happy", "hopeful"):
+        s.px(PINK, (sx0 - 2, sy0 + 1), (sx1 + 2, sy0 + 1))
+    if ex in ("sorry", "startled"):
+        drop(s, sx1 + 4, ey - 3)
 
 
 def mole(view="front", pose="idle", expr="squint"):
-    s = Spr(W, H)
-    if view == "front":
-        if pose == "popup":
-            s.e(10, 8, 30, 26, SLATE)
-        else:
-            s.e(8, 9, 32, 29, SLATE)
-        s.e(13, 1, 27, 15, SLATE)
-        if pose != "popup":
-            s.e(13, 16, 27, 28, BELLY)
-            s.r(11, 29, 17, 30, PINK); s.r(23, 29, 29, 30, PINK)
-        s.e(18, 7, 22, 12, PINK); s.px(NOSE, (19, 11), (20, 11), (21, 11), (20, 12))
-        mole_face(s, expr)
-        if pose == "idle":
-            for x in (2, 31):
-                s.e(x, 17, x + 7, 26, PINK); s.px(NOSE, (x + 2, 24), (x + 3, 24), (x + 5, 24))
-        else:
-            if pose == "popup":
-                s.e(3, 21, 36, 40, DIRT); s.cut(0, 31, 39, 39)
-                s.e(3, 20, 12, 27, DIRT); s.e(28, 20, 37, 27, DIRT)
-                s.px(DIRT2, (8, 27), (10, 26), (20, 25), (31, 28), (28, 24), (14, 29), (5, 29))
-            s.r(30, 10, 31, 27, WOOD); s.p([(28, 9), (33, 9), (34, 3), (32, 1), (29, 1), (27, 3)], STEEL)
-            s.r(29, 3, 30, 7, "#FFFFFF")
-            for y in (17, 22) if pose == "bouquet" else (19, 23):
-                s.e(26, y, 34, y + 5, PINK); s.px(NOSE, (28, y + 4), (30, y + 4), (32, y + 4))
-    elif view == "side":
-        s.e(8, 9, 30, 29, SLATE); s.e(13, 1, 29, 15, SLATE); s.e(17, 16, 30, 28, BELLY)
-        s.e(3, 22, 11, 27, PINK); s.r(13, 29, 19, 30, PINK); s.r(21, 29, 27, 30, PINK)
-        s.p([(26, 6), (33, 9), (26, 12)], PINK); s.px(NOSE, (32, 9), (31, 9), (32, 10))
-        ex = {"squint": [(24, 5), (25, 5), (26, 5)], "happy": [(23, 6), (24, 5), (25, 6)]}.get(expr, [(24, 5), (25, 5), (26, 5)])
-        s.px(OUT, *ex)
-        s.e(24, 17, 32, 26, PINK); s.px(NOSE, (27, 24), (29, 24), (31, 24))
-    else:
-        s.e(8, 9, 32, 29, SLATE); s.e(13, 1, 27, 15, SLATE)
-        s.e(18, 24, 22, 29, PINK); s.r(11, 29, 17, 30, PINK); s.r(23, 29, 29, 30, PINK)
-        for x in (2, 31):
-            s.e(x, 17, x + 7, 26, PINK)
+    """Front/side/back; poses idle (claws out, no shovel), dig (shovel two-handed; `bouquet` is the old
+    name), popup (out of a dirt mound). Traced at true 3D scale: about 24 px tall."""
+    pose = "dig" if pose == "bouquet" else pose
+    key = f"mole_{pose}_front" if view == "front" and pose in ("popup", "dig") else f"mole_{view}"
+    s = base(key, "mole", flip=view == "side")
+    t = top_row(s)
+    snout = find(s, PINK, (0, t, W - 1, t + 7))
+    if view == "front" and snout:
+        sx0, sy0, sx1, sy1 = bbox(snout)
+        cx = (sx0 + sx1) // 2
+        s.px(NOSE, (cx, sy0 + 1), (cx + 1, sy0 + 1))                   # hand: nose tip (lost at 1/16)
+        mole_face(s, expr, sx0, sy0, sx1, sy1)
+        if pose == "dig":                                              # hand: the shovel, redrawn from the traced blade
+            st = find(s, STEEL)
+            if st:
+                bx0, by0, bx1, by1 = bbox(st)
+                body = find(s, SLATE); _, _, _, gy = bbox(body)
+                s.px(SLATE, *[p for p in st + find(s, WOOD) if p[0] <= bx0 + 1])
+                s.px(SLATE, *[p for p in find(s, PINK, (0, sy1 + 3, bx0 - 1, s.im.height - 1))])
+                s.l([(sx0 - 6, by0 - 4), (bx0 + 1, by0 + 1)], WOOD)    # handle across him, claw to blade
+                s.px(PINK, (sx0 - 7, by0 - 4), (sx0 - 6, by0 - 3), (sx0 - 7, by0 - 3))
+                s.p([(bx0 + 1, by0), (bx0 + 5, by0), (bx0 + 5, by0 + 3), (bx0 + 3, by0 + 5), (bx0 + 1, by0 + 3)], STEEL)
+                s.px(WHITE, (bx0 + 2, by0 + 1), (bx0 + 2, by0 + 2))
+                s.px(PINK, (bx0 - 1, by0 + 1), (bx0, by0 + 1), (bx0, by0 + 2))
+    elif view == "side" and snout:
+        sx0, sy0, sx1, sy1 = bbox(snout)
+        s.px(NOSE, (sx1, sy0 + 1))
+        s.px(OUT, (sx0 - 2, sy0 - 1), (sx0 - 3, sy0 - 1) if expr == "squint" else (sx0 - 2, sy0 - 2))
+    if pose == "popup":                                                # hand: the mound he pops out of
+        g = s.im.height - H                                            # rows of headroom above the frame
+        s.e(4, 25 + g, 36, 40 + g, DIRT); s.e(3, 24 + g, 12, 31 + g, DIRT); s.e(28, 24 + g, 37, 31 + g, DIRT)
+        s.cut(0, H - 1 + g, W - 1, s.im.height - 1)
+        s.px(DIRT2, *[(x, y + g) for x, y in ((8, 28), (10, 27), (20, 28), (31, 29), (28, 27), (14, 29), (5, 29), (24, 29))])
     return fin(s)
 
 
@@ -108,64 +144,94 @@ TEAL, HARD, BEARD, VEST, CREAM, SKIN, FNOSE, BOOT, YEL = (
     "#1E9AA0", "#F4F1E6", "#EDE6D6", "#F7932F", "#F4F1E6", "#E8B48C", "#E59A86", "#4A3B3B", "#FFD23F")
 
 
+def _gnome_eyes(s, e, lx, rx, ey):
+    for x, d in ((lx, 1), (rx, -1)):                                   # d points to the nose
+        if e == "approving":                                           # closed, smiling eyes
+            s.px(OUT, (x - 1, ey), (x, ey - 1), (x + 1, ey))
+        elif e == "hopeful":
+            s.px(OUT, (x, ey)); s.px(WHITE, (x - d, ey))
+        elif e == "whistle":
+            s.px(OUT, (x - d, ey), (x, ey))
+        else:
+            s.px(OUT, (x, ey))
+        if e == "stern":                                               # brows down at the nose
+            s.px(BEARD, (x - d, ey - 1), (x, ey - 1), (x + d, ey))
+        elif e == "sorry":                                             # brows up at the nose
+            s.px(BEARD, (x - d, ey), (x, ey - 1), (x + d, ey - 1))
+        else:
+            s.px(BEARD, (x - d, ey - 2 if e == "approving" else ey - 1), (x, ey - 2 if e == "approving" else ey - 1))
+
+
 def foreman(view="front", pose="idle", expr=None):
+    """Front/side/back; poses idle (clipboard, whistle hanging on his chest), whistle (raised to the mouth,
+    blowing), hat_in_hands. Traced at 32 px (1.23 m with the cone: true scale)."""
     expr = expr or ("whistle" if pose == "whistle" else "stern")
-    s = Spr(W, H)
-    s.p([(19, 1), (21, 1), (27, 15), (13, 15)], TEAL)
-    s.r(14, 15, 26, 15, TEAL)
-    s.r(14, 16, 26, 19, SKIN)
-    s.r(15, 23, 25, 28, VEST); s.r(14, 24, 26, 28, VEST); s.r(16, 24, 16, 28, CREAM); s.r(24, 24, 24, 28, CREAM)
-    s.r(14, 29, 19, 30, BOOT); s.r(21, 29, 26, 30, BOOT)
-    if view == "back":
-        s.r(14, 16, 26, 19, BEARD); s.p([(13, 19), (27, 19), (25, 25), (15, 25)], BEARD)
-    else:
-        s.p([(13, 19), (27, 19), (24, 25), (20, 27), (16, 25)], BEARD)
-    if view == "front":
-        s.e(18, 17, 22, 20, FNOSE)
-        e = expr
-        for sx, d in ((16, 1), (24, -1)):
-            if e == "approving":
-                s.px(OUT, (sx - 1, 18), (sx, 17), (sx + 1, 18))
-            elif e == "hopeful":
-                s.px(OUT, (sx, 17), (sx, 18), (sx + d, 17), (sx + d, 18)); s.px("#FFFFFF", (sx, 17))
-            else:
-                s.px(OUT, (sx, 17), (sx, 18))
-            by = 16
-            if e == "stern":
-                s.px(BEARD, (sx - 1, by), (sx, by), (sx + 1, by), (sx - d, by + 1) if False else (sx + d * 2, by + 1))
-            elif e == "sorry":
-                s.px(BEARD, (sx - 1, by), (sx, by), (sx + 1, by), (sx - d * 2, by + 1))
-            else:
-                s.px(BEARD, (sx - 1, by), (sx, by), (sx + 1, by))
-        if e in ("approving", "sorry", "hopeful"):
-            s.px(FNOSE, (14, 19), (26, 19))
-        if e == "sorry":
-            drop(s, 29, 15)
-        if e == "whistle" or pose == "whistle":
-            s.px(OUT, (19, 22), (21, 22), (20, 21), (20, 23)); s.px(YEL, (20, 22), (22, 22), (23, 22))
-        else:
-            s.px(YEL, (25, 25), (26, 25), (25, 26)); s.px("#C98A1A", (24, 24), (23, 23), (22, 22), (21, 22))
-    if pose == "hat_in_hands":
-        s.e(15, 20, 25, 27, OUT); s.e(16, 21, 24, 26, HARD); s.r(13, 25, 27, 26, OUT); s.r(14, 25, 26, 25, HARD); s.px(OUT, (18, 23), (19, 23))
-        s.r(14, 24, 16, 26, SKIN); s.r(24, 24, 26, 26, SKIN)
-    else:
-        s.e(18, 1, 22, 4, HARD); s.r(17, 4, 23, 4, HARD); s.r(18, 3, 22, 4, HARD)
-        if pose == "whistle":
-            s.r(3, 21, 10, 28, WOOD); s.r(4, 22, 9, 27, PAPER); s.r(10, 25, 12, 26, SKIN)
-            s.p([(26, 23), (28, 22), (33, 16), (31, 15)], VEST); s.r(32, 13, 35, 16, SKIN)
-            s.px(YEL, (10, 18), (10, 19), (10, 20), (6, 17), (6, 18), (6, 19), (7, 14), (8, 14))
-            s.px(YEL, (30, 9), (31, 9), (32, 9))
-        else:
-            s.r(4, 19, 12, 28, WOOD); s.r(5, 20, 11, 27, PAPER); s.r(7, 18, 9, 19, STEEL)
-            s.px(WOOD, (6, 22), (7, 22), (8, 22), (9, 22), (10, 22), (6, 24), (7, 24), (8, 24), (9, 25), (7, 26))
-            s.r(12, 24, 14, 26, SKIN)
-            s.r(27, 24, 29, 28, VEST); s.r(28, 29, 29, 29, SKIN)
-        if pose == "whistle":
-            pass
-    if pose == "hat_in_hands":
-        s.r(11, 24, 14, 28, VEST); s.r(26, 24, 29, 28, VEST)
-    if view == "side":
-        s.e(24, 17, 29, 21, FNOSE); s.px(OUT, (22, 17), (22, 18)); s.px(BEARD, (21, 16), (22, 16), (23, 16))
+    blowing = pose == "whistle" or expr == "whistle"
+    key = "gnome_foreman_whistle_" + view if blowing and view in ("front", "side") else "gnome_foreman_" + view
+    s = base(key, "gnome_foreman", flip=view == "side")
+    nose = find(s, FNOSE)
+    if view == "front" and nose:
+        nx0, ny0, nx1, ny1 = bbox(nose)
+        nx1 = max(nx1, nx0 + 1)
+        s.r(nx0, ny0, nx1, ny0 + 1, FNOSE)                             # hand: round 2 x 2 nose
+        _gnome_eyes(s, expr, nx0 - 2, nx1 + 2, ny0)
+        if expr in ("approving", "hopeful", "sorry"):
+            s.px(FNOSE, (nx0 - 3, ny0 + 1), (nx1 + 3, ny0 + 1))         # rosy cheeks
+        if expr == "sorry":
+            drop(s, nx1 + 7, ny0 - 3)
+    elif view == "side" and nose:
+        nx0, ny0, nx1, ny1 = bbox(nose)
+        s.r(nx0, ny0, nx1 + 1, ny0 + 1, FNOSE)
+        s.px(OUT, (nx0 - 2, ny0)); s.px(BEARD, (nx0 - 3, ny0 - 1), (nx0 - 2, ny0 - 1))
+    t = top_row(s)
+    hat = find(s, HARD, (0, t, W - 1, t + 5))
+    if hat:                                                            # hand: the tiny hard hat, a clean dome + brim on the cone tip
+        for p in hat:
+            s.cut(*p, *p)
+        cone = find(s, TEAL); ct = min(p[1] for p in cone)
+        tip = [p[0] for p in cone if p[1] == ct]; c = (min(tip) + max(tip)) // 2
+        if pose != "hat_in_hands":
+            s.r(c - 1, ct - 2, c + 1, ct - 2, HARD); s.r(c - 2, ct - 1, c + 2, ct - 1, HARD); s.r(c - 3, ct, c + 3, ct, HARD)
+    # the whistle: always hand-placed. Clear what the trace made of it, then draw it.
+    recolour(s, find(s, YEL), VEST)
+    beard = find(s, BEARD, (0, t + 12, W - 1, s.im.height - 1))
+    if blowing and view == "front":
+        # raised to his mouth, held in his hand at the beard's edge, with a blast of sound lines
+        # at his mouth, pointing at us (a round yellow end), hand under it, a blast of sound lines
+        nx0, ny0, nx1, ny1 = bbox(find(s, FNOSE))
+        wy = ny0 + 2
+        s.px(YEL, (nx0, wy), (nx0 + 1, wy), (nx0, wy + 1), (nx0 + 1, wy + 1)); s.px(OUT, (nx0 + 1, wy + 1))
+        s.px(SKIN, (nx0 - 1, wy + 2), (nx0, wy + 2), (nx0 + 1, wy + 2), (nx0 + 2, wy + 2))
+        bx = max(p[0] for p in find(s, BEARD)) + 2
+        for p in ((bx, wy - 3), (bx + 1, wy - 4), (bx + 1, wy), (bx + 2, wy), (bx + 3, wy), (bx, wy + 3), (bx + 1, wy + 4)):
+            s.px(YEL, p)
+    elif view == "front" and beard and pose != "hat_in_hands":
+        bx0, by0, bx1, by1 = bbox(beard)
+        tip = [p[0] for p in beard if p[1] == by1]
+        cx = (min(tip) + max(tip)) // 2
+        # hangs on its cord BELOW the beard, centred on the chest: cord V, barrel, ring
+        s.px(WOOD, (cx - 1, by1 + 1), (cx + 2, by1 + 1))
+        s.px(YEL, (cx, by1 + 2), (cx + 1, by1 + 2), (cx, by1 + 3)); s.px(OUT, (cx + 1, by1 + 3))
+    elif view == "side" and beard and not blowing:
+        bx0, by0, bx1, by1 = bbox(beard)
+        s.px(YEL, (bx1, by1 + 2), (bx1, by1 + 3))
+    # the clipboard: paper with two written lines and the cream clip
+    paper = find(s, PAPER)
+    if paper and pose != "hat_in_hands":
+        px0, py0, px1, py1 = bbox(paper)
+        s.r(px0 - 1, py0 - 1, px1 + 1, py1 + 1, WOOD); s.r(px0, py0, px1, py1, PAPER)
+        s.px(CREAM, ((px0 + px1) // 2, py0 - 1))
+        for y in range(py0 + 1, py1, 2):
+            s.px(WOOD, *[(x, y) for x in range(px0, px1)])
+    if pose == "hat_in_hands" and view == "front":
+        vest = find(s, VEST)
+        vx0, vy0, vx1, vy1 = bbox(vest)
+        s.cut(0, vy0 - 4, vx0 - 1, s.im.height - 1); s.cut(vx1 + 1, vy0 - 4, W - 1, s.im.height - 1)
+        cx = (vx0 + vx1) // 2
+        s.r(vx0 - 1, vy0 + 2, vx0, vy0 + 4, VEST); s.r(vx1, vy0 + 2, vx1 + 1, vy0 + 4, VEST)
+        s.e(cx - 4, vy0 + 1, cx + 4, vy0 + 7, OUT); s.e(cx - 3, vy0 + 2, cx + 3, vy0 + 6, HARD)
+        s.r(cx - 5, vy0 + 5, cx + 5, vy0 + 6, OUT); s.r(cx - 4, vy0 + 5, cx + 4, vy0 + 5, HARD)
+        s.px(SKIN, (cx - 5, vy0 + 4), (cx + 5, vy0 + 4))
     return fin(s)
 
 
@@ -173,74 +239,71 @@ def foreman(view="front", pose="idle", expr=None):
 HAIR, CSKIN, TUN, SPOT, ICE, CLOTH, STR = "#7A4A2A", "#D99A6C", "#D9A441", "#7C4E24", "#BFE6F5", "#F3EAD2", "#1E9AA0"
 
 
-def cave_face(s, ex):
-    for sx, d in ((16, 1), (24, -1)):
-        if ex in ("delighted", "hopeful"):
-            s.r(sx - 1, 12, sx + 1, 14, "#FFFFFF"); s.px(OUT, (sx, 13), (sx, 14)); s.px("#FFFFFF", (sx + d, 12) if False else (sx - 1, 12))
+def cave_face(s, ex, cx, fy):
+    """Face centred on column cx; fy = the eyes' top row. Eyes 2 x 2 at cx-3 and cx+2, brows above, mouth below."""
+    lx, rx, my = cx - 3, cx + 2, fy + 2
+    for x, d in ((lx, -1), (rx, 1)):                                   # d points away from the middle
+        xo = x + (1 if d == 1 else 0); xi = x + (0 if d == 1 else 1)  # outer / inner column
+        if ex == "delighted":
+            s.r(x, fy, x + 1, fy + 1, OUT); s.px(WHITE, (xo, fy))
+        elif ex == "hopeful":
+            s.r(x, fy, x + 1, fy + 1, OUT); s.px(WHITE, (xo, fy), (xi, fy))
         elif ex == "amazed":
-            s.r(sx - 1, 11, sx + 1, 14, "#FFFFFF"); s.px(OUT, (sx, 12), (sx, 13))
+            s.r(x, fy, x + 1, fy + 1, WHITE); s.px(OUT, (xi, fy + 1))
         elif ex == "baffled":
-            big = sx == 16
-            s.r(sx - 1, 12 if big else 13, sx + 1, 14, "#FFFFFF"); s.px(OUT, (sx, 13), (sx, 14))
+            if d == -1:
+                s.r(x, fy, x + 1, fy + 1, WHITE); s.px(OUT, (xi, fy + 1))
+            else:
+                s.px(OUT, (x, fy + 1), (x + 1, fy + 1))
         elif ex == "sorry":
-            s.px(OUT, (sx - 1, 13), (sx, 13), (sx + 1, 13), (sx, 14))
-    s.px(HAIR, *[(x, 10) for x in (14, 15, 16, 17, 23, 24, 25, 26)])
-    if ex in ("delighted", "amazed", "hopeful"):
-        s.px(HAIR, *[(x, 11) for x in (14, 15, 25, 26)])
-    if ex == "baffled":
-        s.px(HAIR, (14, 11), (15, 11), (16, 11), (25, 9), (24, 9), (23, 9), (26, 10), (25, 10), (24, 10), (23, 11))
-    if ex == "sorry":
-        s.px(HAIR, (14, 11), (15, 11), (16, 10), (17, 10), (26, 11), (25, 11), (24, 10), (23, 10))
-        s.px(BLUSH, (14, 15), (15, 15), (25, 15), (26, 15)); drop(s, 29, 9)
-    s.px("#C57F52", (20, 14), (20, 15))
+            s.px(OUT, (x, fy + 1), (x + 1, fy + 1))
+        by = fy - 1
+        if ex == "sorry":
+            s.px(HAIR, (xi, by - 1), (xo, by))
+        elif ex in ("amazed", "hopeful") or (ex == "baffled" and d == -1):
+            s.px(HAIR, (x, by - 1), (x + 1, by - 1))
+        else:
+            s.px(HAIR, (x, by), (x + 1, by))
+    m = {"delighted": [(cx - 1, my), (cx + 1, my)], "baffled": [(cx, my), (cx + 1, my)],
+         "sorry": [(cx - 1, my), (cx, my), (cx + 1, my)], "hopeful": [(cx, my)], "amazed": [(cx - 1, my), (cx, my)]}[ex]
+    s.px(OUT, *m)
     if ex == "delighted":
-        s.r(16, 17, 24, 19, OUT); s.r(17, 17, 23, 17, "#FFFDF4")
-    elif ex == "amazed":
-        s.r(18, 17, 22, 20, OUT)
-    elif ex == "baffled":
-        s.px(OUT, (21, 18), (22, 18), (23, 18), (20, 17), (19, 17))
-    elif ex == "sorry":
-        s.px(OUT, (18, 18), (19, 17), (20, 18), (21, 17), (22, 18))
-    elif ex == "hopeful":
-        s.px(OUT, (18, 17), (19, 18), (20, 18), (21, 18), (22, 17)); s.px("#FFD86B", (12, 9), (11, 9), (12, 8), (12, 10))
-    if ex in ("delighted",):
-        s.px(BLUSH, (14, 16), (15, 16), (25, 16), (26, 16))
+        s.px(WHITE, (cx, my))
+    if ex in ("delighted", "sorry"):
+        s.px(BLUSH, (lx - 1, fy + 2), (rx + 2, fy + 2))
+    if ex == "sorry":
+        drop(s, rx + 6, fy - 3)
+    if ex == "hopeful":
+        s.px("#FFD86B", (lx - 6, fy - 4), (lx - 7, fy - 4), (lx - 5, fy - 4), (lx - 6, fy - 5), (lx - 6, fy - 3))
 
 
 def caveman(view="front", pose="idle", expr="delighted"):
-    s = Spr(W, H)
-    s.e(5, 4, 35, 25, HAIR)
-    s.r(6, 22, 34, 28, CSKIN) if False else s.e(5, 21, 35, 30, CSKIN)
-    s.cut(0, 29, 39, 31)
-    s.p([(13, 22), (34, 22), (34, 28), (31, 27), (28, 28), (25, 27), (22, 28), (19, 27), (16, 28), (13, 27)], TUN)
-    s.px(SPOT, (24, 24), (30, 25), (19, 25), (16, 24), (28, 22), (33, 26))
-    s.e(7, 3, 33, 24, HAIR) if False else None
-    s.e(6, 4, 34, 24, HAIR)
-    s.r(8, 29, 17, 30, CSKIN); s.r(23, 29, 32, 30, CSKIN); s.r(13, 28, 16, 28, CSKIN); s.r(24, 28, 27, 28, CSKIN)
-    s.e(15, 3, 25, 9, HAIR)
-    s.r(17, 1, 23, 6, ICE); s.px("#FFFFFF", (18, 2), (19, 2), (18, 3))
-    if view != "back":
-        s.e(12, 8, 28, 20, CSKIN)
-        cave_face(s, expr) if view == "front" else None
-    if view == "side":
-        s.e(18, 8, 32, 20, CSKIN); s.px(OUT, (27, 13), (27, 14)); s.px(HAIR, (26, 10), (27, 10), (28, 10))
-        s.px(OUT, (28, 17), (29, 17), (30, 17))
-    if view == "front" and pose in ("idle", "polish", "wave"):
-        pass
-    if pose == "idle" or view != "front":
-        s.r(2, 22, 7, 27, CSKIN)
-        s.r(30, 20, 34, 25, CSKIN)
-        s.r(34, 9, 35, 21, WOOD); s.e(31, 3, 38, 12, CLOTH); s.r(31, 12, 38, 13, STR); s.px(CLOTH, (34, 14))
-    elif pose == "polish":
-        s.r(2, 22, 7, 27, CSKIN)
-        s.p([(15, 28), (17, 23), (23, 23), (25, 28), (20, 30)], "#4FD6E0")
-        s.r(18, 24, 19, 25, "#FFFFFF"); s.e(20, 19, 28, 26, CLOTH); s.r(26, 25, 33, 26, WOOD)
-        s.r(26, 19, 28, 22, STR); s.r(31, 24, 34, 28, CSKIN)
-        s.px("#FFD86B", (13, 22), (12, 22), (14, 22), (13, 21), (13, 23), (29, 28), (30, 28), (29, 27))
-    else:
-        s.r(2, 15, 7, 21, CLOTH) if False else None
-        s.r(31, 8, 35, 21, CSKIN); s.r(30, 4, 36, 9, CSKIN); s.px(OUT, (32, 4), (34, 4))
-        s.r(4, 22, 6, 27, CSKIN); s.r(4, 14, 5, 24, WOOD); s.e(2, 9, 8, 16, CLOTH); s.r(2, 16, 8, 16, STR)
+    """Front/side/back; poses idle (cloth club up in his hand), polish, wave. Traced at 32 px (1.21 m: true scale)."""
+    key = f"caveman_{pose}_front" if view == "front" and pose in ("polish", "wave") else f"caveman_{view}"
+    s = base(key, "caveman", flip=view == "side")
+    ice = find(s, ICE)
+    if ice:                                                            # hand: the ice cube's glint
+        ix0, iy0, ix1, iy1 = bbox(ice)
+        s.px(WHITE, (ix0 + 1, iy0 + 2), (ix0 + 2, iy0 + 1))
+    cloth = find(s, CLOTH)
+    if cloth:                                                          # hand: the teal string round the cloth
+        cx0, cy0, cx1, cy1 = bbox(cloth)
+        tie = cy1 if pose != "polish" else cy0
+        s.px(STR, *[p for p in cloth if p[1] == tie])
+    if view == "front":
+        hair = find(s, HAIR); hx0, hy0, hx1, hy1 = bbox(hair)
+        face = [p for p in find(s, CSKIN, (hx0, hy0, hx1, hy1)) + find(s, OUT, (hx0, hy0, hx1, hy1))
+                + find(s, WHITE, (hx0 + 2, hy0 + 4, hx1, hy1))
+                if p[1] < hy0 + (hy1 - hy0) * 0.6]
+        if face:
+            fx0, fy0, fx1, fy1 = bbox(face)
+            rows = {}
+            for x, y in face:
+                rows.setdefault(y, []).append(x)
+            wide = max(rows, key=lambda y: len(rows[y]))
+            s.px(CSKIN, *[p for p in face])                            # clear the traced eyes, redraw by hand
+            cx = (min(rows[wide]) + max(rows[wide]) + 1) // 2
+            cave_face(s, expr, cx, wide + 1)
     return fin(s)
 
 
@@ -330,8 +393,9 @@ def _dface(s, ex, cx, ey, dx=19):
         drop(s, cx + dx + 14, ey - 8); s.px(SWEAT, (cx + dx + 14, ey - 9), (cx + dx + 14, ey - 10))
 
 
-def dragon(pose="sit", expr="sleepy"):
-    if pose == "asleep":
+def dragon_asleep():
+    """Curled asleep: hand-drawn (the 3D master has no curled pose; its `sleep` is a sitting nap)."""
+    if True:
         s = Spr(160, 72)
         _tail(s, [(146, 52), (140, 62), (125, 64), (108, 64), (92, 62), (84, 58)], 7, LIL)
         s.e(14, 12, 150, 70, SHADE); s.e(12, 10, 146, 66, LIL)
@@ -351,37 +415,88 @@ def dragon(pose="sit", expr="sleepy"):
         _ring(s, 6, 1, 30, 15, 5, SMOKE); _ring(s, 34, 4, 48, 12, 3, SMOKE)
         im = s.done()
         out = Image.new("RGBA", (160, 72), (0, 0, 0, 0)); out.paste(im, (0, 0)); return out
-    s = Spr(128, 112)
-    ex = "yawn" if pose == "yawn" else expr
-    # tail curling round to the front
-    s.e(26, 44, 108, 110, SHADE)
-    s.e(20, 40, 102, 106, LIL)
-    for x, y in ((86, 30), (95, 44), (101, 58), (104, 72)):
-        s.e(x - 5, y - 5, x + 5, y + 5, PEACH)
-    s.e(18, 66, 38, 90, PEACH); s.e(94, 66, 112, 88, PEACH)
-    s.e(41, 62, 85, 108, DCREAM)
-    for y in (70, 80, 90, 98):
-        s.arc((46, y - 8, 80, y + 8), 20, 160, STRIPE)
-    s.e(18, 76, 40, 100, LIL); s.e(88, 76, 110, 100, LIL)
-    s.e(26, 94, 58, 110, LIL); s.e(70, 94, 102, 110, LIL)
-    for x in (34, 44):
-        s.e(x, 99, x + 7, 106, DCREAM)
-    _tail(s, [(108, 100), (116, 94), (118, 82), (112, 72), (100, 74)], 0, LIL)
-    s.e(86, 80, 120, 108, LIL); s.e(74, 98, 124, 110, LIL)
-    s.e(100, 56, 114, 70, PEACH)
-    s.e(22, 3, 106, 66, LIL)
-    s.e(28, 0, 42, 14, DCREAM); s.e(86, 0, 100, 14, DCREAM)
-    s.e(20, 2, 108, 66, LIL)
-    s.r(32, 3, 38, 8, DCREAM) if False else None
-    s.e(50, 34, 78, 60, "#B79BEA")
-    _dface(s, ex, 64, 30)
-    im = s.done()
-    out = Image.new("RGBA", (128, 112), (0, 0, 0, 0)); out.paste(im, (0, 0)); return out
+
+
+def _dragon_face(s, ex):
+    """Hand-clean the traced sleepy face into expression `ex` (eyes and mouth found in the base)."""
+    t = top_row(s); bb = s.im.getbbox(); cx = (bb[0] + bb[2]) // 2
+    lids = find(s, SHADE, (0, t, s.im.width - 1, t + 45))
+    if not lids:
+        return
+    ey0 = min(p[1] for p in lids)
+    eyes = [p for p in find(s, OUT, (0, ey0, s.im.width - 1, ey0 + 14)) + find(s, WHITE, (0, ey0, s.im.width - 1, ey0 + 14)) + lids]
+    ey1 = max(p[1] for p in eyes)
+    L = bbox([p for p in eyes if p[0] < cx]); R = bbox([p for p in eyes if p[0] >= cx])
+    below = sorted({p[1] for p in find(s, OUT, (cx - 9, ey1 + 1, cx + 9, ey1 + 22))})
+    groups = []
+    for y in below:
+        if groups and y == groups[-1][-1] + 1:
+            groups[-1].append(y)
+        else:
+            groups.append([y])
+    mouth = groups[1] if len(groups) > 1 else []
+    my = mouth[0] if mouth else ey1 + 12
+    s.px(LIL, *eyes)
+    if mouth:
+        s.px(LIL, *find(s, OUT, (cx - 9, mouth[0], cx + 9, mouth[-1])))
+    for (x0, y0, x1, y1), d in ((L, 1), (R, -1)):
+        ecx, ecy = (x0 + x1) // 2, (y0 + y1) // 2 + 2
+        if ex == "sleepy":                                             # the traced look, redrawn crisp
+            s.e(ecx - 7, ecy - 5, ecx + 7, ecy + 4, OUT); s.r(ecx - 8, ecy - 6, ecx + 8, ecy - 1, SHADE)
+            s.px(WHITE, (ecx - 3 * d, ecy + 1), (ecx - 2 * d, ecy + 1))
+        elif ex == "sorry":
+            s.e(ecx - 7, ecy - 5, ecx + 7, ecy + 4, OUT); s.r(ecx - 8, ecy - 6, ecx + 8, ecy - 1, SHADE)
+            s.px(WHITE, (ecx - 3 * d, ecy + 1))
+            for i in range(8):                                         # worried brows, up at the middle
+                s.px(SHADE, (ecx - 4 * d + i * d, ecy - 9 - i // 3), (ecx - 4 * d + i * d, ecy - 10 - i // 3))
+        elif ex == "hopeful":
+            s.e(ecx - 6, ecy - 6, ecx + 6, ecy + 6, OUT); s.r(ecx - 3, ecy - 4, ecx - 1, ecy - 2, WHITE); s.px(WHITE, (ecx + 2, ecy + 2))
+        elif ex == "happy":
+            for k in (0, 1):
+                s.arc((ecx - 7, ecy - 3 + k, ecx + 7, ecy + 9 + k), 200, 340, OUT)
+    if ex == "happy":
+        for k in (0, 1):
+            s.arc((cx - 9, my - 9 + k, cx + 9, my + 3 + k), 20, 160, OUT)
+    elif ex == "sorry":
+        for k in (0, 1):
+            s.arc((cx - 7, my + k, cx + 7, my + 8 + k), 200, 340, OUT)
+        drop(s, R[2] + 6, ey0 - 2); s.px(SWEAT, (R[2] + 6, ey0 - 3))
+    elif ex == "hopeful":
+        s.arc((cx - 6, my - 6, cx + 6, my + 2), 20, 160, OUT)
+    else:
+        s.arc((cx - 5, my - 5, cx + 5, my + 1), 20, 160, OUT)
+
+
+def dragon(pose="sit", expr="sleepy", view="front"):
+    """Poses sit (traced, 112 px = 3.5 players), yawn (traced from the 3D `yawn`), asleep (hand-drawn,
+    160 x 72). Views front/side/back for sit."""
+    if pose == "asleep":
+        return dragon_asleep()
+    yawn = pose == "yawn" or expr == "yawn"
+    key = "dragon_yawn_front" if yawn and view == "front" else f"dragon_{view}"
+    s = base(key, "dragon", flip=view == "side")
+    if view == "front" and not yawn:
+        _dragon_face(s, expr)
+    return fin(s, 128, 112)
 
 
 # ---------------------------------------------------------------- heads
-HEAD_BOX = {"mole": (9, 0, 31, 17), "foreman": (12, 0, 30, 23), "caveman": (5, 0, 31, 22),
-            "jeff": (8, 0, 32, 22), "chuck": (8, 0, 32, 22), "dragon": (14, 0, 114, 72)}
+def _head_box(name):
+    """Head crop for the bubbles and the expression rows, found from the traced front base."""
+    if name in ("jeff", "chuck"):
+        return (8, 0, 32, 22)
+    im = {"mole": lambda: mole(), "foreman": lambda: foreman(), "caveman": lambda: caveman(),
+          "dragon": lambda: dragon("sit", "sleepy")}[name]()
+    x0, y0, x1, y1 = im.getbbox()
+    if name == "dragon":
+        return (x0 + 4, y0, x1 - 4, y0 + 66)
+    h = {"mole": 10, "foreman": 23, "caveman": 21}[name]
+    cx = (x0 + x1) // 2 if name != "foreman" else (lambda b: (b[0] + b[2]) // 2)(im.crop((0, y0, im.width, y0 + 20)).getbbox())
+    half = {"mole": 7, "foreman": 9, "caveman": 13}[name]
+    return (max(0, cx - half), y0, min(im.width, cx + half + 1), y0 + h)
+
+
+HEAD_BOX = {n: _head_box(n) for n in ("mole", "foreman", "caveman", "jeff", "chuck", "dragon")}
 
 
 def head(name, expr=None):

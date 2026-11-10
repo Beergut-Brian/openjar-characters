@@ -27,11 +27,12 @@
   },
   "costume": [
     {"piece": "vest_stripes", "color": "#F4F1E6"},
-    {"piece": "gnome_beard", "color": "#EDE6D6"},
-    {"piece": "whistle", "color": "#FFD23F", "cord": "#B07A3C"},
+    {"piece": "gnome_beard", "color": "#EDE6D6", "length": 1.15},
+    {"piece": "whistle", "color": "#FFD23F", "cord": "#B07A3C", "size": 1.3},
     {"piece": "clipboard", "hand": "R", "color": "#B07A3C", "paper": "#FFFDF4", "clip": "#F4F1E6"}
   ],
   "posture": {"spine_lean": -4, "head_lean": 0, "arm_out": 4},
-  "actions": ["march", "write", "salute"],
+  "actions": ["march", "write", "salute", "whistle"],
+  "expression_poses": {"whistle": {"action": "whistle", "frame": 16}},
   "ref_action": {"action": "write", "frame": 9, "expression": "stern", "yaw": -28}
 }

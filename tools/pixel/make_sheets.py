@@ -81,7 +81,7 @@ def lines(d, x, y, t, size=44):
 
 
 def sheet(name):
-    im, d = canvas(); lines(d, 40, 14, TITLE[name] + " (proposed)", 48)
+    im, d = canvas(); lines(d, 40, 14, TITLE[name] + " (3D-first redraw, 2026-11-10: traced from the 3D master, hand-cleaned)", 40)
     sm = font(18)
     if name != "dragon":
         F = FACT[name]; views = [F(v, "idle", R.EXPRS[name][0]) for v in ("front", "side", "back")]
@@ -91,7 +91,7 @@ def sheet(name):
         d.text((1104, 98), "real size x1 / x2", fill="#6A5E6C", font=sm)
         for i, v in enumerate(views):
             paste(im, up(v, 2), 1104 + i * 100, 130); paste(im, v, 1104 + i * 100 + 20, 250)
-        poses = {"mole": ("idle", "bouquet", "popup"), "foreman": ("idle", "whistle", "hat_in_hands"),
+        poses = {"mole": ("idle", "dig", "popup"), "foreman": ("idle", "whistle", "hat_in_hands"),
                  "caveman": ("idle", "polish", "wave")}[name]
         for i, p in enumerate(poses):
             paste(im, up(F("front", p, R.EXPRS[name][0 if p != "whistle" else 4]), 8), 40 + i * 340, 400)
@@ -106,6 +106,10 @@ def sheet(name):
         paste(im, up(R.jeff(), 3), 410, sit_bottom - 96); d.text((410, sit_bottom + 4), "Jeff, 32 px", fill="#2A1E2C", font=sm)
         paste(im, up(R.dragon("yawn"), 3), 520, 70)
         paste(im, up(R.dragon("asleep"), 3), 910, sit_bottom - 216)
+        for i, v in enumerate(("side", "back")):
+            paste(im, R.dragon("sit", "sleepy", v), 1440 + i * 140, sit_bottom - 112)
+        d.text((1440, sit_bottom + 4), "side, back x1", fill="#2A1E2C", font=sm)
+        d.text((910, sit_bottom + 30), "asleep: hand-drawn (no curled pose in 3D)", fill="#6A5E6C", font=sm)
         for t, x in (("sit", 20), ("yawn", 520), ("asleep", 910)):
             d.text((x, 20), t, fill="#6A5E6C", font=sm) if False else d.text((x, sit_bottom + 4), t, fill="#2A1E2C", font=sm)
         heads_row(im, d, "dragon", 20, 450, 2, 220)
@@ -116,7 +120,7 @@ def sheet(name):
 
 
 def lineup():
-    im, d = canvas(); lines(d, 40, 14, "The Hill: residents lineup", 44)
+    im, d = canvas(); lines(d, 40, 14, "The Hill: residents lineup (3D-first redraw, 2026-11-10; one scale: 32 px = 1.2 m, Dragon 3.5 players)", 36)
     sp = [("Jeff", R.jeff()), ("Chuck", R.chuck()), ("Mole", R.mole()), ("Foreman", R.foreman()),
           ("Caveman", R.caveman()), ("Dragon", R.dragon("sit", "sleepy"))]
     ground, x, f = 690, 40, font(24)

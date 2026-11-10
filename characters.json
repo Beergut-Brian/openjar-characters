@@ -355,7 +355,8 @@
         "run",
         "cheer",
         "popup",
-        "bow"
+        "bow",
+        "dig"
       ],
       "loops": [
         "idle",
