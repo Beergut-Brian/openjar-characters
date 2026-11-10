@@ -1,0 +1,87 @@
+{
+ "id": "el_burrito",
+ "name": "El Burrito",
+ "notes": "From characters/el_burrito/look.md (Kaden's sheet 2026-11-10; proposed, playtest build).",
+ "head": {
+  "shape": "round",
+  "size": 1.0,
+  "ears": "none"
+ },
+ "skin": "#D99E6E",
+ "face": {
+  "eyes": "round",
+  "brows": "none",
+  "nose": "none",
+  "mouth": "grin_top",
+  "blush": 0,
+  "extras": [
+   {
+    "type": "mask",
+    "color": "#E0B12E",
+    "trim": "#6B2FA8"
+   }
+  ],
+  "expressions": {
+   "neutral": {
+    "mouth": "grin_top"
+   },
+   "happy": {
+    "mouth": "grin_top",
+    "eye_mode": "arc"
+   },
+   "surprised": {
+    "mouth": "o",
+    "eye_scale": 1.25
+   },
+   "determined": {
+    "mouth": "grit"
+   }
+  }
+ },
+ "hair": {
+  "style": "none"
+ },
+ "headwear": {
+  "type": "none"
+ },
+ "body": {
+  "build": "stocky",
+  "height": 0.85,
+  "leg_scale": 0.85,
+  "width": 1.3,
+  "belly": 0.35
+ },
+ "outfit": {
+  "top": {
+   "style": "tee",
+   "color": "#E0B12E",
+   "pattern": {
+    "type": "emblem",
+    "shape": "star",
+    "accent": "#6B2FA8"
+   }
+  },
+  "bottoms": {
+   "style": "shorts",
+   "color": "#6B2FA8"
+  },
+  "shoes": {
+   "style": "wrestling_boots",
+   "color": "#F5F5F2",
+   "lace": "#6B2FA8"
+  }
+ },
+ "costume": [
+  {
+   "piece": "cape",
+   "color": "#6B2FA8",
+   "trim": "#E0B12E"
+  }
+ ],
+ "ref_action": {
+  "action": "cheer",
+  "frame": 10,
+  "expression": "happy",
+  "yaw": -35
+ }
+}

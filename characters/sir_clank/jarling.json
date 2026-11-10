@@ -1,0 +1,82 @@
+{
+ "id": "sir_clank",
+ "name": "Sir Clank",
+ "notes": "From characters/sir_clank/look.md (Kaden's sheet 2026-11-10; proposed, playtest build).",
+ "head": {
+  "shape": "round",
+  "size": 1.0,
+  "ears": "round"
+ },
+ "skin": "#F7CFAE",
+ "face": {
+  "eyes": "round",
+  "brows": "thick",
+  "brow_color": "#4A2F23",
+  "brow_tilt": 0.25,
+  "mouth": "grin",
+  "eye_y": -0.09,
+  "expressions": {
+   "neutral": {
+    "mouth": "smile"
+   },
+   "happy": {
+    "mouth": "grin"
+   },
+   "surprised": {
+    "mouth": "smile",
+    "brow_raise": 0.08,
+    "brow_tilt": -0.2,
+    "eye_scale": 1.1
+   },
+   "determined": {
+    "mouth": "o",
+    "brow_tilt": 0.45,
+    "brow_raise": -0.04
+   }
+  }
+ },
+ "hair": {
+  "style": "short",
+  "color": "#4A2F23"
+ },
+ "headwear": {
+  "type": "pot_helmet",
+  "color": "#B8BEC6",
+  "handle_len": 0.9,
+  "handle": "#3A3D44"
+ },
+ "body": {
+  "build": "regular",
+  "height": 1.05
+ },
+ "outfit": {
+  "top": {
+   "style": "tee",
+   "color": "#8A8F98",
+   "pattern": {
+    "type": "emblem",
+    "shape": "shield",
+    "accent": "#F2C230"
+   }
+  },
+  "bottoms": {
+   "style": "pants",
+   "color": "#23305E"
+  },
+  "shoes": {
+   "style": "chunky_boots",
+   "color": "#7A4E2A"
+  }
+ },
+ "costume": [],
+ "posture": {
+  "spine_lean": -3,
+  "head_lean": -2
+ },
+ "ref_action": {
+  "action": "kick",
+  "frame": 17,
+  "expression": "determined",
+  "yaw": -28
+ }
+}
