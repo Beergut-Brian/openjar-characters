@@ -45,10 +45,36 @@ Built 2026-11-10 from `characters/granny_gravel/jarling.json` (standard humanoid
 - **ref action:** `cheer` frame 10
 
 ### 2D pixel (The Hill)
-32 px tall at Jeff's scale (stage 1), side-on like `characters/residents_lineup.png`; traced from the 3D side view once it exists. Bun is a 3x3 white blob on top of the head; goggles a 1-px dark band with two light-blue lens pixels. Skirt is a solid grey trapezoid to the ankles; yellow sneakers 2 px.
+See "Alt form: the-hill pixel" below (as built).
 
 ## Refs
 - `refs/jarling/granny_gravel.glb`: the 3D master
 - `refs/jarling/granny_gravel_turnaround.png`, `granny_gravel_expressions.png`, `granny_gravel_cheer.png`
 - `refs/jarling/granny_gravel_side.png`, `granny_gravel_side_sprite.png`: side view and its sprite-scale tracing base
 - `refs/pixel/granny_gravel_pixel.png`, `granny_gravel_frames.png` (+ `.json`), `granny_gravel_pixel_sheet.png`: The Hill pixel form
+
+## Alt form: the-hill pixel: proposed
+Sprite source: `tools/pixel/granny_gravel.py` (`granny_gravel()`)
+
+- **Height:** 30 px with the outline and the bun (traced from `granny_gravel_side_sprite.png`): bun 3 rows on a 1-row
+  pinned neck, hair dome 4 (goggles in its lower 3 rows), face 6 (two skin rows with the brows, dot eyes, cheeks/smile,
+  chin), cardigan 5, A-line skirt 7, sneakers 2.
+- **Palette:** hair `#F2F0EA` (+ `#CFCBC2`), goggles frame `#4A4F5A` with lenses `#9FD8F0` (+ glint `#D8F1FA`), skin `#F7CFAE`
+  (+ `#DDAE8C`), brows `#B9B4AE`, eyes `#2A1E2C`, cheeks `#F2A9A0`, smile `#6A2232`, cardigan `#B9A3D9` (+ `#9C84C4`),
+  button line `#F2F0EA`, skirt `#8C8F96` (+ `#74777E`), sneakers `#FFD93B` (sole `#D9B21E`), outline `#2A1E2C`.
+- **Frames:** front form (40 x 32) and the 128 x 224 player sheet: idle0-1, walk0-3, jump, fall, side0-2, down0-2, ride,
+  sleep0-1 (three-quarter view facing right, feet on row 30; hand at (22, 21) idle, The Hill's dig hand positions). The
+  skirt hides the legs: only the sneakers step (a lifted foot shows just its sole row under the hem) and the hem band
+  sways 1 px (walk0 +1, walk2 -1, side1 +1, down1 -1).
+- **Should read as:**
+  - a round white bun on the crown (not a hat tip): a 4 x 3 white blob with its top corners cut and a shaded right side,
+    pinned to the dome by a 2 px shaded neck row so the outline notches in on both sides
+  - safety goggles pushed up into the hair (not glasses over the eyes, not a hairband): a dark `#4A4F5A` strap row with two
+    4 x 3 dark frames each holding a 2 x 2 light-blue lens, on the hairline with white hair above and at the sides, two skin
+    rows (brows in the upper one) between them and the eyes; in the frames the strap runs back through the white hair
+  - a grandma's face: 1 px dot eyes, a light grey brow pixel raised one row above each, a rosy cheek pixel each side,
+    a tiny 3-4 px smile, nothing poking out of it
+  - lavender cardigan: long lavender sleeves with skin hands, a shaded V neck and a white centre button line
+  - long grey A-line skirt: waist to just above the shoes, 1 px wider each side for 2 rows then 2 px for the 3-row hem
+    band, dark fold pixels, a darker hem row
+  - loud yellow sneakers: 4 px yellow with a darker sole row, peeking out under the hem
