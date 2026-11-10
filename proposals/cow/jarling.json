@@ -1,7 +1,7 @@
 {
   "id": "cow",
   "name": "Patience",
-  "notes": "Proposal (not approved): Kaden approves name and look. Body type quadruped (avatar/kit/body_quadruped.py), its first character. Colours from proposals/cow/look.md 'Fixed colours'.",
+  "notes": "Proposal. Name approved (Patience, D53 a, 2026-11-10); look not yet approved. Body type quadruped (avatar/kit/body_quadruped.py), its first character. Colours from proposals/cow/look.md 'Fixed colours'.",
   "body": {"type": "quadruped", "height": 0.95, "length": 1.0, "girth": 0.27, "width": 0.98, "leg": 0.24, "head": 0.22},
   "skin": "#F4F1EA",
   "coat": {"pattern": "patches", "accent": "#2B2B33",

@@ -2,12 +2,14 @@
 
 **Kind:** universal. **Playable:** false (a library resident, like the Mole and the Dragon; D52 a, 2026-11-10). **Default for:** none. **Body:** quadruped. **First appears:** Junk Yard Zap (the cow in the yard: `b1_big_cow`, the cow-car, the raft).
 
-## Name (Kaden picks)
-Proposed, not approved. The folder id is `cow` whatever the name, because Junk Yard Zap's goal cards already say `cow`.
+## Name
+**Patience** (Kaden's pick, Docket D53 a, 2026-11-10). The folder id stays `cow`, because Junk Yard Zap's goal cards already say `cow`.
+
+The options he chose from, kept for the record:
 
 | Option | Why |
 | --- | --- |
-| **Patience** (pick) | It is the joke: she has endless patience for whatever the players do to her, and the one thing that runs it out (heights) is the punchline. Easy for a 5-year-old to say, and "Patience is on the roof again" is a sentence a family will repeat. |
+| **Patience** (chosen) | It is the joke: she has endless patience for whatever the players do to her, and the one thing that runs it out (heights) is the punchline. Easy for a 5-year-old to say, and "Patience is on the roof again" is a sentence a family will repeat. |
 | Clover | Soft, classic, farmy. Safe, but says nothing about her. |
 | Mabel | Warm and a bit old-fashioned, fits her calm. Less of a joke. |
 
@@ -50,4 +52,4 @@ Jeff thinks she is the best thing in the yard and keeps making her enormous. Chu
 She works with no lines and no story: grazing at the edge of a field (`graze`), sitting and watching the players (`sit`, smug), trotting out of a barn (`run`), one moo at the wrong moment. She is never the obstacle and never the goal-keeper; she is the scenery that reacts.
 
 ## Status
-Proposed 2026-11-10 by the Character lane (quadruped body type), from D52 a. Not yet approved: Kaden approves the name and the look (`look.md`, `refs/`). Voice not recorded (draft barks in `voice.md`).
+Proposed 2026-11-10 by the Character lane (quadruped body type), from D52 a. Name approved: Patience (D53 a, 2026-11-10). Still a proposal: the look (`look.md`, `refs/`) is not yet approved, and she stays in `proposals/` until it is. Voice not recorded (draft barks in `voice.md`).
