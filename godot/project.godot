@@ -1,0 +1,10 @@
+; Test + render project for the Jarling equipment runtime. Games do not need this file:
+; they use jarling_equipment.gd / jarling_gear.gd from the submodule directly.
+config_version=5
+
+[application]
+config/name="openjar-characters equipment tests"
+config/features=PackedStringArray("4.7", "Forward Plus")
+
+[rendering]
+anti_aliasing/quality/msaa_3d=2

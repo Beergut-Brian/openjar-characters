@@ -591,12 +591,22 @@ HEAD_SHAPES = {   # sx, sy, sz, jaw (positive widens the bottom)
     "soft_square": (1.02, 1.0, 0.98, 0.10), "pear": (1.0, 1.0, 1.0, 0.16), "egg": (0.97, 0.98, 1.04, -0.10),
 }
 
+# Equipment (docs/equipment.md). Slot name -> what it is for; markers are `slot_<name>` empties.
+SLOTS = ["head", "face", "back", "hand_l", "hand_r", "waist", "knee_l", "knee_r", "foot_l", "foot_r"]
+# Separable body parts: own mesh `<id>_part_<name>`, hidden by gear that `replaces_body_part` them.
+# (Chuck's separate hat also counts as `headwear`.)
+BODY_PARTS = ["foot_l", "foot_r", "hand_l", "hand_r", "headwear", "tail"]
+# The reference Jarling (regular build, round head, size 1, short hair): slot scale 1.0 means this.
+SLOT_REF = dict(head_crown=0.27, face_r=0.235, back_tw=0.152, waist_rx=0.155, waist_ry=0.127, knee_r=0.049)
+
 class Builder:
     def __init__(self, params, prefix=""):
         self.P = deep_merge(DEFAULTS, params)
         self.prefix = prefix or ""
         self.mats = Mats(f"{self.prefix}{self.P['id']}_")
         self.parts = []          # (bm, material, bone)
+        self.part_tags = []      # parallel to parts: None (main body) or a separable body part, see BODY_PARTS
+        self.cur_part = None
         self.extra_bones = []
         self.coll = bpy.context.scene.collection
 
@@ -605,6 +615,7 @@ class Builder:
         if uv_fn:
             uv_fn(bm, uv)
         self.parts.append((bm, mat, bone))
+        self.part_tags.append(self.cur_part)
 
     # --- layout
     def layout(self):
@@ -794,6 +805,7 @@ class Builder:
         pants = self.mats.flat("pants", bot["color"], rough=0.8, spec=0.2)
         self.pants = pants
         z_split = z0 + (z1 - z0) * 0.24
+        L["waist_z"] = z0 + (z1 - z0) * 0.245   # middle of the hem ring: where a belt sits
         if bot["style"] != "skirt":
             for i_, (tbm, tmat_, _) in enumerate(self.parts):
                 if tbm is torso_bm:
@@ -845,7 +857,9 @@ class Builder:
                     self.flare_hem = (ank, r1)
                 else:
                     self.add(capsule_bm(hip, ank, leg_r * 1.05, leg_r * 1.02), pants, bone)
+            self.cur_part = f"foot_{side.lower()}"   # shoes and bare feet, incl. boot shafts
             self.build_foot(s, side, ank, shoes)
+            self.cur_part = None
 
     def build_foot(self, s, side, ank, shoes):
         L = self.L; limb = L["limb"]
@@ -911,12 +925,15 @@ class Builder:
                 self.add(capsule_bm(sh, mid, ar * 1.2, ar * 1.16), sleeve, bone)
             # mitten hand: palm faces the body, thumb forward
             hc = wr + Vector((s * 0.004, -0.004, -0.036))
+            self.hand_c = getattr(self, "hand_c", {}); self.hand_c[side] = hc
+            self.cur_part = f"hand_{side.lower()}"
             hand_mat = self.skin
             if top.get("gloves"):
                 hand_mat = self.mats.flat("gloves", top["gloves"], rough=0.6)
             self.add(ellipsoid_bm(hc, (0.036 * limb, 0.047 * limb, 0.052 * limb), segs=22, rings=12), hand_mat, f"hand.{side}")
             self.add(ellipsoid_bm(hc + Vector((-s * 0.016, -0.034, 0.008)), (0.016, 0.02, 0.026), segs=14, rings=8),
                      hand_mat, f"hand.{side}")
+            self.cur_part = None
 
     # --- costume pieces and headwear
     def build_costume(self):
@@ -934,12 +951,14 @@ class Builder:
                         self.add(ellipsoid_bm(base + rot @ Vector((0, 0, -ln * 0.5)), (0.013, 0.03, ln * 0.62),
                                               rot=rot, segs=16, rings=10), mat, f"arm.{side}")
             elif kind == "tail_feathers":
+                self.cur_part = "tail"
                 mat = self.mats.flat("tail", piece.get("color", "#FFD84D"), rough=0.7)
                 for k, ang in enumerate((-0.45, 0.0, 0.45)):
                     rot = Euler((-0.9, 0, ang)).to_matrix()
                     base = Vector((0, L["tw"] * 0.75, L["hip_z"] + 0.03))
                     self.add(ellipsoid_bm(base + rot @ Vector((0, 0.0, 0.06)), (0.03, 0.022, 0.085), rot=rot, segs=16, rings=10),
                              mat, "spine")
+                self.cur_part = None
             elif kind == "jeans_stitch":
                 mat = self.mats.flat("stitch", piece["color"], rough=0.6)
                 if hasattr(self, "flare_hem"):
@@ -969,7 +988,9 @@ class Builder:
             return
         if t == "chicken_hood":
             self.build_hood(hw)
-        elif t in ("trucker", "cap"):
+            return
+        self.cur_part = "headwear"   # caps, beanies, headbands: an equipped hat hides them
+        if t in ("trucker", "cap"):
             self.build_cap(hw, trucker=(t == "trucker"))
         elif t == "beanie":
             mat = self.mats.flat("beanie", hw["color"], rough=0.85, spec=0.2)
@@ -985,6 +1006,7 @@ class Builder:
             self.add(ellipsoid_bm(c + Vector((0, 0.05 * R, R * L["hsz"] * 1.2)), (0.24 * R,) * 3, segs=20, rings=12), cuff, "head")
         elif t == "headband":
             self.add_headband(hw["color"])
+        self.cur_part = None
 
     def add_headband(self, color, el=0.50, s=1.0):
         mat = self.mats.flat("headband", color, rough=0.6)
@@ -1037,6 +1059,7 @@ class Builder:
         # comb: three bumps along the top, on its own floppy bone
         comb = self.mats.flat("comb", hw.get("comb", "#D63384"), rough=0.5, spec=0.4)
         self.extra_bones.append(("comb", self.head_point(math.radians(80), 0, HR), self.head_point(math.radians(80), 0, HR) + Vector((0, 0, 0.12))))
+        self.cur_part = "headwear"   # a hat from the equipment set hides the comb
         for elv, sz in ((70, 0.85), (88, 1.0), (106, 0.85)):
             e = math.radians(elv)
             p = c + Vector((0, -R * HR * math.cos(e) * L["hsy"], R * HR * math.sin(e) * L["hsz"]))
@@ -1044,6 +1067,7 @@ class Builder:
             rot = Vector((0, 0, 1)).rotation_difference(n_).to_matrix()
             self.add(ellipsoid_bm(p + n_ * 0.07 * R * sz, (0.085 * R * sz, 0.17 * R * sz, 0.22 * R * sz), rot=rot, segs=20, rings=12),
                      comb, "comb")
+        self.cur_part = None
         if hw.get("headband"):
             self.add_headband(hw["headband"], el=0.42, s=1.0)
 
@@ -1207,6 +1231,71 @@ class Builder:
         bpy.ops.object.mode_set(mode="OBJECT")
         return ob
 
+    # --- equipment slots (docs/equipment.md)
+    def _cos(self, bones, tags=(None,)):
+        for (bm, _m, bone), tag in zip(self.parts, self.part_tags):
+            if bone in bones and tag in tags:
+                for v in bm.verts:
+                    yield v.co
+
+    def measure_slots(self):
+        """Slot origin (armature space, Blender axes), bone and fit scale, measured from the real
+        geometry so gear made for the reference Jarling fits every build."""
+        L, P = self.L, self.P
+        c, R = L["head_c"], L["R"]
+        out = {}
+        crown = max(co.z for co in self._cos({"head"})) - c.z
+        out["head"] = ("head", c.copy(), (crown / SLOT_REF["head_crown"],) * 3)
+        fs = float(P["face"].get("scale", 1.3))
+        ez = EYE_Y * fs
+        fy = c.y - R * L["hsy"] * math.sqrt(1 - ez * ez)
+        s = R * L["hsx"] / SLOT_REF["face_r"]
+        out["face"] = ("head", Vector((0, fy, c.z + ez * R * L["hsz"])), (s, s, s))
+        zs = L["shoulder_z"]
+        back = max(co.y for co in self._cos({"spine"}) if abs(co.z - zs) < 0.03 and abs(co.x) < 0.04)
+        s = L["tw"] / SLOT_REF["back_tw"]
+        out["back"] = ("spine", Vector((0, back, zs)), (s, s, s))
+        zw = L["waist_z"]
+        band = [co for co in self._cos({"spine"}) if abs(co.z - zw) < 0.012]
+        rx = max(abs(co.x) for co in band)
+        y0, y1 = min(co.y for co in band), max(co.y for co in band)
+        out["waist"] = ("spine", Vector((0, (y0 + y1) / 2, zw)),
+                        (rx / SLOT_REF["waist_rx"], (y1 - y0) / 2 / SLOT_REF["waist_ry"], 1.0))
+        for side, sg in (("L", 1), ("R", -1)):
+            hip = Vector((sg * L["hip_x"], 0, L["hip_z"] + 0.02))
+            ank = Vector((sg * L["hip_x"] * 1.05, 0, L["ankle_z"]))
+            k = hip + (ank - hip) * 0.45
+            d = ank - hip; dl = d.length; d = d / dl
+            rk = 0.0   # leg radius around the knee: perpendicular distance from the hip-ankle axis
+            for co in self._cos({f"leg.{side}"}):
+                t = (co - hip).dot(d) / dl
+                if -0.02 < t < 0.5:
+                    rk = max(rk, ((co - hip) - d * (co - hip).dot(d)).length)
+            out[f"knee_{side.lower()}"] = (f"leg.{side}", k, (rk / SLOT_REF["knee_r"],) * 3)
+            lb = L["limb"]
+            out[f"foot_{side.lower()}"] = (f"foot.{side}", Vector((ank.x, 0, 0)), (lb, lb, lb))
+            out[f"hand_{side.lower()}"] = (f"hand.{side}", self.hand_c[side].copy(), (lb, lb, lb))
+        return out
+
+    def add_slots(self, rig, fit):
+        bpy.context.view_layer.update()
+        obs = {}
+        for name in SLOTS:
+            bone, pos, scale = fit[name]
+            e = bpy.data.objects.new(f"{self.prefix}slot_{name}", None)
+            e.empty_display_type = "ARROWS"; e.empty_display_size = 0.05
+            self.coll.objects.link(e)
+            e.parent = rig; e.parent_type = "BONE"; e.parent_bone = bone
+            b = rig.data.bones[bone]
+            e.matrix_parent_inverse = (rig.matrix_world @ b.matrix_local @ Matrix.Translation((0, b.length, 0))).inverted()
+            e.matrix_basis = Matrix.LocRotScale(pos, None, Vector(scale))
+            e["jarling_slot"] = name
+            e["jarling_build"] = self.P["body"]["build"]
+            e["jarling_id"] = self.P["id"]
+            obs[name] = e
+        bpy.context.view_layer.update()
+        return obs
+
     def build(self):
         self.layout()
         self.build_head()
@@ -1217,9 +1306,22 @@ class Builder:
         self.build_headwear()
         pid = self.P["id"]
         rig = self.build_armature()
-        body = self.make_mesh(f"{self.prefix}{pid}_body", self.parts)
+        slot_fit = self.measure_slots()
+        main = [p for p, t in zip(self.parts, self.part_tags) if t is None]
+        body = self.make_mesh(f"{self.prefix}{pid}_body", main)
         body.parent = rig
         mod = body.modifiers.new("Armature", "ARMATURE"); mod.object = rig
+        # separable body parts: their own skinned meshes on the same rig, so gear can hide them
+        self.part_obs = {}
+        for tag in BODY_PARTS:
+            pp = [p for p, t in zip(self.parts, self.part_tags) if t == tag]
+            if not pp:
+                continue
+            ob = self.make_mesh(f"{self.prefix}{pid}_part_{tag}", pp)
+            ob.parent = rig
+            m = ob.modifiers.new("Armature", "ARMATURE"); m.object = rig
+            ob["jarling_part"] = tag
+            self.part_obs[tag] = ob
         body["jarling_expressions"] = {k: list(v) for k, v in EXPR_UV_OFFSET.items()}
         rig["jarling"] = 1
         rig["jarling_loops"] = ["idle", "run", "cheer"]
@@ -1231,7 +1333,9 @@ class Builder:
             hat.parent = rig; hat.parent_type = "BONE"; hat.parent_bone = "head"
             hat.matrix_parent_inverse = (rig.matrix_world @ b.matrix_local @ Matrix.Translation((0, b.length, 0))).inverted()
             hat["jarling_detachable"] = True
+            hat["jarling_part"] = "headwear"
             self.hat = hat
+        self.slots = self.add_slots(rig, slot_fit)
         build_actions(rig, self.P.get("posture", {}), self.prefix)
         return self
 
