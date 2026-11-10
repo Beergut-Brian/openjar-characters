@@ -43,10 +43,29 @@ Built 2026-11-10 from `characters/big_tiny/jarling.json` (standard humanoid body
 - Same skeleton, slots and gameplay collision as everyone; the size is visual only
 
 ### 2D pixel (The Hill)
-32 px tall at Jeff's scale (stage 1), side-on like `characters/residents_lineup.png`; traced from the 3D side view once it exists. Fills the full 32 px frame and is the widest sprite; the beanie is a 2x2 navy dot on top. Sneakers 4 px long each, white.
+See "Alt form: the-hill pixel" below (as built).
 
 ## Refs
 - `refs/jarling/big_tiny.glb`: the 3D master
 - `refs/jarling/big_tiny_turnaround.png`, `big_tiny_expressions.png`, `big_tiny_cheer.png`
 - `refs/jarling/big_tiny_side.png`, `big_tiny_side_sprite.png`: side view and its sprite-scale tracing base
 - `refs/pixel/big_tiny_pixel.png`, `big_tiny_frames.png` (+ `.json`), `big_tiny_pixel_sheet.png`: The Hill pixel form
+
+## Alt form: the-hill pixel: proposed
+Sprite source: `tools/pixel/big_tiny.py` (`big_tiny()`)
+
+- **Height:** 32 px with the outline, the full frame (1.3 m body): beanie 2 rows above the head (its cuff row sits on the
+  crown), head 11, belly 10, pants 4, sneakers 3. The widest Jarling: belly 24 px across in the front form (30 px with the arms
+  and outline), 21 px in the frames, against a 12 px head.
+- **Palette:** beanie `#2E3A66` with pom and cuff `#46558C`, buzz hair `#4A2F23`, skin `#D99E6E` (+ `#B97F55`), closed eyes
+  `#2A1E2C`, mouth `#6A2232`, tee `#7EC8F2` (shade `#5FA9D6` under the belly curve and on the back sleeve), pants `#80848C`
+  (shade `#6A6E76`), sneakers `#F7F7F5` (sole `#B9BDC4`), outline `#2A1E2C`.
+- **Frames:** front form (40 x 32) and the 128 x 224 player sheet: idle0-1, walk0-3, jump, fall, side0-2, down0-2, ride,
+  sleep0-1 (three-quarter view facing right, feet on row 30; hand at (22, 21) idle, The Hill's dig hand positions, the front arm
+  resting on the belly; he fills the frame, so the jump tucks the feet up 2 px instead of lifting the body).
+- **Should read as:**
+  - a too-small beanie (not a hair tuft, not a button): 4 px wide, 3 rows: a 2 px light pom on top, a navy row, a light cuff
+    row, perched on the crown with brown buzz hair showing 2 px either side of the cuff
+  - gentle giant: a round sky-blue belly much wider than the head, shaded underneath, short grey legs
+  - happy closed eyes: two `^` arcs (3 px each) in every frame, a small 4 px smile
+  - enormous sneakers: white, 7 px long each with a grey sole row and a grey heel pixel
