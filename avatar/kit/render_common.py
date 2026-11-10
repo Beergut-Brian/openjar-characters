@@ -13,7 +13,7 @@ def setup_render(w, h, samples=48):
     sc.cycles.use_denoising = True
     sc.cycles.denoiser = "OPENIMAGEDENOISE"
     sc.cycles.max_bounces = 4; sc.cycles.diffuse_bounces = 2; sc.cycles.glossy_bounces = 2
-    sc.cycles.transmission_bounces = 0; sc.cycles.transparent_max_bounces = 8   # glass helmets: front and back of the bowl, lenses
+    sc.cycles.transmission_bounces = 4; sc.cycles.transparent_max_bounces = 8   # glass helmets: front and back of the bowl, lenses
     sc.render.resolution_x, sc.render.resolution_y = w, h
     sc.render.resolution_percentage = 100
     sc.render.film_transparent = False

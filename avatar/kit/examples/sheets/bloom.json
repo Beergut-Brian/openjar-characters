@@ -1,0 +1,58 @@
+{
+ "id": "bloom",
+ "name": "Bloom",
+ "notes": "Kit v2 example for the sheet, not an approved look.",
+ "head": {
+  "shape": "round",
+  "size": 1.0,
+  "ears": "round"
+ },
+ "skin": "#BF8150",
+ "face": {
+  "eyes": "lash",
+  "brows": "soft",
+  "brow_color": "#3A2418",
+  "mouth": "smile",
+  "blush": 0.9,
+  "eye_y": -0.09
+ },
+ "hair": {
+  "style": "bob",
+  "color": "#3A2418"
+ },
+ "headwear": {
+  "type": "sun_hat",
+  "color": "#E3C27A",
+  "band": "#F7A8CB",
+  "flower": "#F7A8CB"
+ },
+ "body": {
+  "build": "puffy",
+  "height": 0.85,
+  "leg_scale": 0.85,
+  "width": 1.1,
+  "belly": 0.2
+ },
+ "outfit": {
+  "top": {
+   "style": "tee",
+   "color": "#F7A8CB"
+  },
+  "bottoms": {
+   "style": "shorts",
+   "color": "#5B7FB8"
+  },
+  "shoes": {
+   "style": "clogs",
+   "color": "#8A4FC4"
+  }
+ },
+ "costume": [
+  {
+   "piece": "long_skirt",
+   "color": "#5B7FB8",
+   "length": 0.35,
+   "mud": "#6B4A2E"
+  }
+ ]
+}

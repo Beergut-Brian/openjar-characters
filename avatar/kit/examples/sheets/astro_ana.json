@@ -1,0 +1,55 @@
+{
+ "id": "astro_ana",
+ "name": "Astro Ana",
+ "notes": "Kit v2 example for the sheet, not an approved look.",
+ "head": {
+  "shape": "round",
+  "size": 1.0,
+  "ears": "round"
+ },
+ "skin": "#BF8150",
+ "face": {
+  "eyes": "lash",
+  "brows": "arched",
+  "brow_color": "#2A1A14",
+  "mouth": "grin_top",
+  "blush": 0.4,
+  "lid": 0.12,
+  "lid_tilt": 0.2,
+  "brow_tilt": 0.2
+ },
+ "hair": {
+  "style": "puffs",
+  "color": "#3B2A20"
+ },
+ "headwear": {
+  "type": "fishbowl",
+  "collar": "#F2F4F6"
+ },
+ "body": {
+  "build": "regular",
+  "height": 1.0
+ },
+ "outfit": {
+  "top": {
+   "style": "long",
+   "color": "#F2F4F6",
+   "pattern": {
+    "type": "hstripe",
+    "accent": "#F7941D",
+    "v": 0.62,
+    "width": 0.1
+   }
+  },
+  "bottoms": {
+   "style": "pants",
+   "color": "#F2F4F6"
+  },
+  "shoes": {
+   "style": "moon_boots",
+   "color": "#F7941D",
+   "sole": "#F2F4F6"
+  }
+ },
+ "costume": []
+}

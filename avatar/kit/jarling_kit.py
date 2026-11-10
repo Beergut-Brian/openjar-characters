@@ -483,7 +483,11 @@ class Mats:
     def glass(self, key, hexcol, alpha=0.22, rough=0.08):
         """See-through material (fishbowl helmet, lenses): exports as glTF alpha blend."""
         m = self.flat(key, hexcol, rough=rough, spec=0.25)
-        m.node_tree.nodes.get("Principled BSDF").inputs["Alpha"].default_value = alpha
+        p = m.node_tree.nodes.get("Principled BSDF")
+        p.inputs["Alpha"].default_value = alpha
+        # transmissive, so the glass does not lay a milky diffuse veil over dark hair behind it
+        p.inputs["Transmission Weight"].default_value = 1.0
+        p.inputs["IOR"].default_value = 1.05
         m.diffuse_color = (*srgb_to_lin(hex_rgb(hexcol)), alpha)
         if hasattr(m, "surface_render_method"):
             m.surface_render_method = "BLENDED"

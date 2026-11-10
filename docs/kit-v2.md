@@ -186,7 +186,7 @@ Headwear (`headwear.type`; hair mode in HEADWEAR_OPTS):
 | Name | Params (defaults) |
 | --- | --- |
 | `animal_hood` | color="#2BB3A3", inner=<color darker>, opening_deg=52, eyes=None {"color": "#FFFFFF", "pupil": "#1B1B20", "size": 1.0, "el": 50, "apart": 34}, teeth=None (colour), teeth_n=6, teeth_span=110, spikes=None (colour), spike_n=6, ears=None (colour); hair hide |
-| `fishbowl` | tint="#CFE8FF", alpha=0.12, scale=1.0, collar="#F4F4F0", highlight=True; hair free |
+| `fishbowl` | tint="#CFE8FF", alpha=0.07, scale=1.0, collar="#F4F4F0", highlight=True; hair free |
 | `hard_hat` | color="#FFC93C", fit=0.30, tilt_deg=6, separate=False; hair tuck |
 | `top_hat` | color="#2A2A33", band="#7E57C2", height=1.6 (R), scale=1.0, tilt_deg=0, separate=False; hair tuck |
 | `miner_helmet` | color="#F4F4F0", lamp="#3A3A46", light="#FFF2C0", glow=6.0, lamp_size=1.0, watts=30, spot_deg=55, fit=0.28, tilt_deg=0, separate=False; hair tuck |

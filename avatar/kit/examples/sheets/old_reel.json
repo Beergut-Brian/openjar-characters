@@ -1,0 +1,54 @@
+{
+ "id": "old_reel",
+ "name": "Old Reel",
+ "notes": "Kit v2 example for the sheet, not an approved look.",
+ "head": {
+  "shape": "round",
+  "size": 1.0,
+  "ears": "round"
+ },
+ "skin": "#EFBB90",
+ "face": {
+  "eyes": "drop",
+  "brows": "bushy",
+  "brow_color": "#F1EEE8",
+  "mouth": "smile",
+  "lid": 0.45,
+  "eye_y": -0.08
+ },
+ "hair": {
+  "style": "buzz",
+  "color": "#E8E4DC"
+ },
+ "headwear": {
+  "type": "bucket_hat",
+  "color": "#C8A97A",
+  "lure": "#F28C28"
+ },
+ "body": {
+  "build": "round",
+  "height": 1.2,
+  "leg_scale": 1.05,
+  "width": 1.1,
+  "belly": 0.7
+ },
+ "outfit": {
+  "top": {
+   "style": "long",
+   "color": "#F1E7CF",
+   "pattern": {
+    "type": "vest",
+    "accent": "#A89B6E"
+   }
+  },
+  "bottoms": {
+   "style": "pants",
+   "color": "#6E4B30"
+  },
+  "shoes": {
+   "style": "rain_boots",
+   "color": "#F6C833"
+  }
+ },
+ "costume": []
+}

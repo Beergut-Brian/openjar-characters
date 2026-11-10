@@ -1,0 +1,66 @@
+{
+ "id": "captain_crumbs",
+ "name": "Captain Crumbs",
+ "notes": "Kit v2 example for the sheet, not an approved look.",
+ "head": {
+  "shape": "round",
+  "size": 1.0,
+  "ears": "round"
+ },
+ "skin": "#D99E6E",
+ "face": {
+  "eyes": "round",
+  "brows": "thick",
+  "brow_color": "#4A3324",
+  "mouth": "grin_top"
+ },
+ "hair": {
+  "style": "short",
+  "color": "#4A3324"
+ },
+ "headwear": {
+  "type": "chef_hat",
+  "color": "#F7F7F2",
+  "badge": "#1F2D55"
+ },
+ "body": {
+  "build": "round",
+  "height": 1.2,
+  "width": 1.15,
+  "belly": 0.6
+ },
+ "outfit": {
+  "top": {
+   "style": "long",
+   "color": "#F7F7F2",
+   "pattern": {
+    "type": "buttons",
+    "accent": "#1F2D55",
+    "rows": 2
+   }
+  },
+  "bottoms": {
+   "style": "pants",
+   "color": "#1F2D55",
+   "pattern": {
+    "type": "vstripes",
+    "accent": "#F7F7F2"
+   }
+  },
+  "shoes": {
+   "style": "chunky_boots",
+   "color": "#18181C"
+  }
+ },
+ "costume": [
+  {
+   "piece": "eyepatch",
+   "side": "L"
+  },
+  {
+   "piece": "moustache",
+   "style": "curly",
+   "color": "#4A3324"
+  }
+ ]
+}
