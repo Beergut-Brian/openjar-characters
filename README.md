@@ -40,12 +40,16 @@ Rules for every playable character (checked by `godot/run_tests.sh`):
 
 1. **Player colours belong to the player slot, never to a character.** P1 green `#3cc24a` and P2
    red `#e4393c` are for rings, arrows, glows and HUD around whoever you play. No playable character
-   uses either as a main colour (skin, hair, headwear, top, bottoms, shoes in `jarling.json`), and
+   uses either as a main colour (skin, hair, headwear, top, bottoms, shoes in `jarling.json`): each
+   main colour must be at least CIE ΔE2000 20 from both (`tools/check_colours.py`), so a green
+   alien uses a clearly different green such as lime `#D4F25A`, mint `#A8F0D0` or olive `#7C8A2E`. And
    new playable characters use neither anywhere. Jeff's green accents and Chuck's red accents are
    from their approved looks and stay until Kaden says otherwise (a look change needs him).
 2. **Standard humanoid Jarling body.** A playable character is built on `avatar/kit` and changes
    only `body.build` (`slim`, `regular`, `stocky`, `round`, `boxy`, `puffy`), `body.height`
-   (**0.8 to 1.3**) and `body.leg_scale` (**0.8 to 1.2**). Same skeleton, actions (`idle`, `run`,
+   (**0.8 to 1.3**), `body.leg_scale` (**0.8 to 1.2**), `body.width` (**0.75 to 1.5**, skinny to
+   very round) and `body.belly` (**0 to 1**); species features such as antennae, horns and pointy
+   ears are `head.features`, not hats ([`docs/kit-v2.md`](docs/kit-v2.md)). Same skeleton, actions (`idle`, `run`,
    `kick`, `cheer`, ...) and ten equipment slots, so every game's animations, gear and chooser work
    with no per-game work. Non-standard body types (`**Body:** <other>`) are for non-playable
    residents only. The limits are also in `characters.json` under `body_types.standard`.

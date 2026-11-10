@@ -141,7 +141,8 @@ Every key is optional: missing keys fall back to `DEFAULTS` in `jarling_kit.py`.
   "hair": {"style": "short|swoop|bob|bun|ponytail|long|spiky|curly|afro|buzz|none", "color": "#5A3A26"},
   "headwear": {"type": "none|cap|trucker|beanie|headband|chicken_hood", "color": "...",
                "separate": true},                     // separate=true exports it as its own object
-  "body": {"build": "slim|regular|stocky|round|boxy|puffy", "height": 1.0, "leg_scale": 1.0},
+  "body": {"build": "slim|regular|stocky|round|boxy|puffy", "height": 1.0, "leg_scale": 1.0,
+           "width": 1.0, "belly": 0.0},          // kit v2: fat/skinny, see docs/kit-v2.md
   "outfit": {
     "top": {"style": "tee|long|stripe|tiedye|costume", "color": "...", "accent": "..."},
     "bottoms": {"style": "pants|flared|shorts|skirt", "color": "..."},
@@ -217,6 +218,15 @@ were not tuned per character.
    soft shadows plus a sky-coloured ambient. The `.glb` materials hold colours only.
 6. **Squash and stretch.** The animations already scale `root`, `spine`, `leg.L` and `foot.L`.
    Game-side juice can scale those bones further. Rigid skinning keeps that clean.
+
+## Kit v2 (2026-11-10)
+
+Fat/skinny (`body.width` 0.75-1.5, `body.belly` 0-1), any skin colour with skin-derived face
+colours, `head.features` (antennae, horns, pointy ears, fins: body parts on their own bones, hats
+go on top), data-driven hair (`hair.pieces`, presets), shirt and trouser patterns, more shoes,
+headwear, costume pieces and face extras for the 19 sheets. Full reference:
+[`docs/kit-v2.md`](../docs/kit-v2.md); sheet-by-sheet params: [`docs/sheets-coverage.md`](../docs/sheets-coverage.md);
+the range on one skeleton: `kit/renders/kit_v2_range.png`.
 
 ## Equipment (gear that goes *on* the Jarling)
 
