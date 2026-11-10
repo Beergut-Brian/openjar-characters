@@ -152,25 +152,21 @@ def whistle(B, piece):
 
 # ------------------------------------------------------------------------------- the caveman
 def mane_beard(B, piece):
-    """The beard half of the caveman's hair mass: shaggy lumps along the jaw from ear to ear and a
-    big hanging mass under the chin, joining the `mane` hair at the sides."""
+    """The beard half of the caveman's hair mass: one smooth shaggy shell round the jaw, wide enough
+    to run into the `mane` at the sides, ending in ragged tufts at the top of the chest."""
     L = B.L; R, c = L["R"], L["head_c"]
     mat = B.mats.flat("hair", piece["color"], rough=0.5, spec=0.4)
-    rnd = random.Random(7)
-    n = 11
-    for k in range(n):
-        phi = -1.5 + 3.0 * k / (n - 1)
-        a = abs(phi) / 1.5
-        el = -1.12 + 0.62 * a ** 1.6
-        p = B.head_point(el, phi, 1.0 + 0.20 * a)
-        r = R * (0.42 - 0.04 * a) * rnd.uniform(0.92, 1.08)
-        B.add(ellipsoid_bm(p + Vector((0, 0.06 * R, -0.04 * R)), (r * 1.15, r * 0.9, r), segs=24, rings=14), mat, "head")
-    # under the chin, hanging over the chest, shaggy bottom
+    rz = 0.62 * R
+    tufts = piece.get("tufts", 9)
     def shag(co):
+        a = math.atan2(co.y, co.x)
+        co.x *= 1 + 0.03 * math.sin(a * 11 + co.z * 40)
         if co.z < 0:
-            co.z *= 1 + 0.22 * max(0.0, math.cos(math.atan2(co.y, co.x) * 7)) ** 2
+            t = -co.z / rz
+            co.x *= 1 - 0.30 * t ** 2
+            co.z *= 1 + 0.30 * t ** 3 * max(0.0, math.cos(a * tufts)) ** 2
         return co
-    B.add(ellipsoid_bm(c + Vector((0, -0.26 * R, -1.22 * R)), (1.05 * R, 0.52 * R, 0.52 * R), segs=36, rings=18, deform=shag),
+    B.add(ellipsoid_bm(c + Vector((0, -0.12 * R, -0.92 * R)), (1.22 * R * L["hsx"], 0.86 * R, rz), segs=64, rings=32, deform=shag),
           mat, "head")
 
 def ice_cube(B, hw):
@@ -235,10 +231,10 @@ def cloth_club(B, piece):
     string = B.mats.flat("club_string", piece.get("string", "#1E9AA0"), rough=0.6, spec=0.3)
     bone = f"hand.{side}"
     B.cur_part = "prop"
-    p0 = hc + Vector((-s * 0.025, -0.012, -0.075))
-    p1 = hc + Vector((s * 0.11, -0.06, 0.33))
+    p0 = hc + Vector((-s * 0.03, -0.012, -0.075))
+    p1 = hc + Vector((s * 0.22, -0.05, 0.27))
     B.add(capsule_bm(p0, p1, 0.014, 0.013, segs=14, hem=3), wood, bone)
-    bc = p1 + Vector((s * 0.025, -0.008, 0.075))
+    bc = p1 + Vector((s * 0.05, -0.008, 0.07))
     def puff(co):
         co.x *= 1 + 0.06 * math.sin(co.z * 120); return co
     B.add(ellipsoid_bm(bc, (0.085, 0.08, 0.1), segs=28, rings=16, deform=puff), cloth, bone)
@@ -299,13 +295,13 @@ def act_salute(B):
             (30, _base(B, {"arm.L": {"swing": 20, "out": 40}, "root": {"scale": (1.03, 1.03, 0.97)}})), (37, _base(B))]
 
 def act_polish(B):
-    lean = {"spine": {"lean": 20}, "head": {"lean": 6}, "root": {"loc": (0, 0, -0.01)}, "arm.L": {"swing": 40, "out": -6},
+    lean = {"spine": {"lean": 24}, "head": {"lean": 6}, "root": {"loc": (0, 0, -0.01)}, "arm.L": {"swing": 40, "out": -6},
             "hand.L": {"swing": 15}}
     def rub(sw, out, tw, sc):
-        return _base(B, {**lean, "arm.R": {"swing": sw, "out": out}, "hand.R": {"twist": tw, "swing": 20},
-                         "spine": {"lean": 20, "twist": tw * 0.3}, "root": {"loc": (0, 0, -0.01), "scale": sc}})
-    return [(1, rub(62, -18, -12, (1.0, 1.0, 1.0))), (7, rub(74, -30, 0, (1.02, 1.02, 0.97))),
-            (13, rub(62, -42, 12, (1.0, 1.0, 1.0))), (19, rub(52, -30, 0, (1.02, 1.02, 0.97))), (25, rub(62, -18, -12, (1.0, 1.0, 1.0)))]
+        return _base(B, {**lean, "arm.R": {"swing": sw, "out": out}, "hand.R": {"twist": tw, "swing": -95},
+                         "spine": {"lean": 24, "twist": tw * 0.3}, "root": {"loc": (0, 0, -0.01), "scale": sc}})
+    return [(1, rub(44, -6, -12, (1.0, 1.0, 1.0))), (7, rub(54, -16, 0, (1.02, 1.02, 0.97))),
+            (13, rub(44, -26, 12, (1.0, 1.0, 1.0))), (19, rub(36, -16, 0, (1.02, 1.02, 0.97))), (25, rub(44, -6, -12, (1.0, 1.0, 1.0)))]
 
 def act_point(B):
     pt = {"arm.L": {"swing": 88, "out": 14}, "hand.L": {"swing": 6}, "spine": {"lean": 6, "twist": -12}, "head": {"lean": -4, "twist": -6},
@@ -318,5 +314,25 @@ def act_wave(B):
         return _base(B, {"arm.L": {"out": 150, "swing": 10}, "hand.L": {"out": h}, "head": {"tilt": -6}, "spine": {"tilt": 4}})
     return [(1, _base(B)), (6, up(0)), (10, up(28)), (14, up(-24)), (18, up(28)), (22, up(-24)), (26, up(0)), (35, _base(B))]
 
-kit.ACTIONS.update({"march": (act_march, True), "write": (act_write, True), "salute": (act_salute, False),
-                    "polish": (act_polish, True), "point": (act_point, False), "wave": (act_wave, False)})
+def _prop_side(B, piece, default):
+    for pc in B.P.get("costume", []):
+        if pc.get("piece") == piece:
+            return pc.get("hand", default)
+    return default
+
+def _for_prop(fn, piece, designed):
+    """Wrap an action designed with `piece` in the `designed` hand: mirror it when the character
+    holds the prop in the other hand, so the prop hand always does the work."""
+    def f(B):
+        keys = fn(B)
+        if _prop_side(B, piece, designed) != designed:
+            keys = [(fr, kit.mirror(pose)) for fr, pose in keys]
+        return keys
+    return f
+
+kit.ACTIONS.update({"march": (_for_prop(act_march, "clipboard", "L"), True),
+                    "write": (_for_prop(act_write, "clipboard", "L"), True),
+                    "salute": (_for_prop(act_salute, "clipboard", "L"), False),
+                    "polish": (_for_prop(act_polish, "cloth_club", "R"), True),
+                    "point": (_for_prop(act_point, "cloth_club", "R"), False),
+                    "wave": (_for_prop(act_wave, "cloth_club", "R"), False)})

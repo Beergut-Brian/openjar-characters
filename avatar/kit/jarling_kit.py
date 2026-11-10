@@ -670,6 +670,7 @@ class Builder:
         L["head_c"] = Vector((0, 0, L["torso_z1"] + 0.015 + R * 0.93 * sz))
         L["tw"] = 0.152 * b["w"]
         L["hip_x"] = 0.072 * max(1.0, b["w"] * 0.95)
+        L["ank_x"] = L["hip_x"] * 1.05 + float(P.get("posture", {}).get("stance", 0.0))   # stance: feet wider apart
         L["limb"] = b["limb"]
         self.L = L
         return L
@@ -879,7 +880,7 @@ class Builder:
         flare = bot["style"] == "flared"
         for s, side in ((1, "L"), (-1, "R")):
             hip = Vector((s * L["hip_x"], 0, L["hip_z"] + 0.02))
-            ank = Vector((s * L["hip_x"] * 1.05, 0, L["ankle_z"]))
+            ank = Vector((s * L["ank_x"], 0, L["ankle_z"]))
             bone = f"leg.{side}"
             bow = float(P.get("posture", {}).get("leg_bow", 0.0))
             if bot["style"] in ("shorts", "skirt", "none") and bow > 0:   # bowed legs: knees out
@@ -922,6 +923,7 @@ class Builder:
         x = ank.x
         st = shoes["style"]
         if st == "barefoot":
+            n0 = len(self.parts)
             sc = 1.25 * float(shoes.get("foot_size", 1.0))
             self.add(ellipsoid_bm((x, -0.035, 0.042), (0.064 * sc, 0.105 * sc, 0.046 * sc), floor=0.004, segs=28),
                      self.skin, bone)
@@ -931,6 +933,11 @@ class Builder:
                 ty = -0.035 - 0.118 * sc + abs(tx) * 0.35
                 self.add(ellipsoid_bm((x + tx, ty, 0.026), (tr, tr * 1.05, tr * 0.95), segs=14, rings=8, floor=0.004),
                          self.skin, bone)
+            toe_in = math.radians(float(self.P.get("posture", {}).get("toe_in", 0.0)))   # pigeon-toed bare feet
+            if toe_in:
+                M = Matrix.Translation((x, 0, 0)) @ Matrix.Rotation(-s * toe_in, 4, "Z") @ Matrix.Translation((-x, 0, 0))
+                for pbm, _m, _b in self.parts[n0:]:
+                    bmesh.ops.transform(pbm, matrix=M, verts=pbm.verts)
             return
         col = self.mats.flat(f"shoe_{st}", shoes["color"], rough=0.55, spec=0.4)
         if st == "boots":
@@ -1025,7 +1032,7 @@ class Builder:
                 if hasattr(self, "flare_hem"):
                     for s, side in ((1, "L"), (-1, "R")):
                         hip = Vector((s * L["hip_x"], 0, L["hip_z"] + 0.02))
-                        ank = Vector((s * L["hip_x"] * 1.05, 0, L["ankle_z"]))
+                        ank = Vector((s * L["ank_x"], 0, L["ankle_z"]))
                         r1 = self.flare_hem[1]
                         zz = ank.z + 0.022
                         pts = [(ank.x + (r1 + 0.001) * math.cos(a), (r1 + 0.001) * math.sin(a), zz)
@@ -1286,7 +1293,7 @@ class Builder:
             bone(f"arm.{side}", sh, wr, "spine")
             bone(f"hand.{side}", wr, wr + Vector((0, 0, -0.075)), f"arm.{side}")
             hip = (s * L["hip_x"], 0, L["hip_z"])
-            ank = (s * L["hip_x"] * 1.05, 0, L["ankle_z"])
+            ank = (s * L["ank_x"], 0, L["ankle_z"])
             bone(f"leg.{side}", hip, ank, "root")
             bone(f"foot.{side}", ank, (ank[0], -0.11, 0.03), f"leg.{side}")
         for name, h, t in self.extra_bones:
@@ -1326,7 +1333,7 @@ class Builder:
                         (rx / SLOT_REF["waist_rx"], (y1 - y0) / 2 / SLOT_REF["waist_ry"], 1.0))
         for side, sg in (("L", 1), ("R", -1)):
             hip = Vector((sg * L["hip_x"], 0, L["hip_z"] + 0.02))
-            ank = Vector((sg * L["hip_x"] * 1.05, 0, L["ankle_z"]))
+            ank = Vector((sg * L["ank_x"], 0, L["ankle_z"]))
             k = hip + (ank - hip) * 0.45
             d = ank - hip; dl = d.length; d = d / dl
             rk = 0.0   # leg radius around the knee: perpendicular distance from the hip-ankle axis

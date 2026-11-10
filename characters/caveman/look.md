@@ -26,7 +26,7 @@ The cloth club, used only for polishing. The ice cube counts as headwear.
 
 ## Jarling 3D
 Status of the 3D form: **proposed** (Character lane 2026-11-10, awaiting Kaden). The 2D look above is approved (D46 a). Since Kaden's 3D-first direction (2026-11-10) this model is meant to become the master for silhouette, proportions and colours, and the 2D sprites get redrawn from `refs/jarling/caveman_side.png` / `caveman_side_sprite.png`.
-- **Body type: `standard`.** `build` boxy, `height` 0.95, `leg_scale` 0.75, head `wide`, bowed legs (`posture.leg_bow`), big bare feet (`shoes.foot_size`). About 1.2 m tall including the ice cube.
+- **Body type: `standard`.** `build` boxy, `height` 0.8, `leg_scale` 0.75, head `wide`, bowed legs (`posture.leg_bow`), big bare feet (`shoes.foot_size`). About 1.2 m tall including the ice cube.
 - New kit pieces (`avatar/kit/pieces_hill.py`): hair `mane` plus `mane_beard` (one wild chestnut mass round the whole face); `ice_cube` headwear (part `headwear`); `fur_tunic` (one shoulder, spots, zigzag hem) over top `bare` and bottoms `none`; `cloth_club` in his left hand (part `prop`).
 - Face (atlas, five cells): `delighted` (resting), `baffled`, `sorry`, `hopeful`, `amazed`. Eyes `wide`, brows `bushy`.
 - Actions: the standard `idle`, `run`, `kick`, `cheer`, plus `polish` (loop, the signature rub), `point` (whole arm) and `wave`.

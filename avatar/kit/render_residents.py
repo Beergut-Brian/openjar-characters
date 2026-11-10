@@ -52,9 +52,8 @@ if "lineup" in only:
         x += (hi.x - lo.x) + gap
     total = x - gap
     W, H = 2400, 1200
-    ortho = total * 1.06
     top = max(h for _, h in sizes)
-    assert top * 1.12 < ortho * H / W, "lineup taller than the frame"
+    ortho = max(total * 1.06, top * 1.16 * W / H)
     cz = ortho * H / W / 2 - 0.06 * ortho * H / W
     rc.setup_render(W, H, a.samples)
     rc.camera((total / 2, -60, cz), (total / 2, 0, cz), ortho=ortho)

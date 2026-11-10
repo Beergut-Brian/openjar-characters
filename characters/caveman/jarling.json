@@ -19,7 +19,7 @@
   },
   "hair": {"style": "mane", "color": "#7A4A2A"},
   "headwear": {"type": "ice_cube", "color": "#BFE6F5", "size": 0.082, "tilt_x": 8, "tilt_y": -12, "turn": 22},
-  "body": {"build": "boxy", "height": 0.95, "leg_scale": 0.75},
+  "body": {"build": "boxy", "height": 0.8, "leg_scale": 0.75},
   "outfit": {
     "top": {"style": "bare", "color": "#D99A6C"},
     "bottoms": {"style": "none", "color": "#D99A6C"},
@@ -28,9 +28,9 @@
   "costume": [
     {"piece": "mane_beard", "color": "#7A4A2A"},
     {"piece": "fur_tunic", "color": "#D9A441", "spots": "#7C4E24"},
-    {"piece": "cloth_club", "hand": "R", "color": "#F3EAD2", "string": "#1E9AA0", "stick": "#B07A3C"}
+    {"piece": "cloth_club", "hand": "L", "color": "#F3EAD2", "string": "#1E9AA0", "stick": "#B07A3C"}
   ],
-  "posture": {"spine_lean": 3, "head_lean": -2, "arm_out": 18, "leg_bow": 0.03},
+  "posture": {"spine_lean": 3, "head_lean": -2, "arm_out": 18, "leg_bow": 0.05, "stance": 0.03, "toe_in": 16},
   "actions": ["polish", "point", "wave"],
   "ref_action": {"action": "polish", "frame": 7, "expression": "delighted", "yaw": -28}
 }

@@ -39,7 +39,7 @@ func find_extras(n: Node, key: String) -> Variant:
 	while not stack.is_empty():
 		var c: Node = stack.pop_back()
 		stack.append_array(c.get_children())
-		var ex = c.get_meta("extras", null)
+		var ex = c.get_meta("extras") if c.has_meta("extras") else null
 		if ex is Dictionary and ex.has(key):
 			return ex[key]
 	return null

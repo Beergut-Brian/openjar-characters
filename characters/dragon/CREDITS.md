@@ -10,3 +10,5 @@
 | refs/jarling/dragon_yawn.png | Blender 5.2.3 Cycles, `avatar/kit/render_refs.py` | ref action: yawn at its peak, expression yawn | Original work, Open Jar Games |
 | refs/jarling/dragon_side.png | Blender 5.2.3 Cycles, `avatar/kit/render_refs.py` | orthographic side view, 512 px per 1.2 m, tracing base for 2D | Original work, Open Jar Games |
 | refs/jarling/dragon_side_sprite.png | Python 3 + Pillow, `avatar/kit/sprite_side.py` | side view at The Hill's sprite scale (tracing base, not the sprite) | Original work, Open Jar Games |
+| `characters/residents_3d_lineup.png` | Blender 5.2.3 Cycles (CPU) via `avatar/kit/render_residents.py --only lineup` (procedural Jarling kit, no external assets, no AI image model) | Jeff, Chuck and the four Hill residents in 3D at true relative scale on one ground line (3D forms proposed 2026-11-10) | Original work, Open Jar Games |
+| `characters/residents_3d_compare.png` | `avatar/kit/render_residents.py --only fronts` + Pillow `avatar/kit/compare_sheet.py` | each resident's 3D master (front, idle) beside its approved 2D sprite from `tools/pixel/residents.py` | Original work, Open Jar Games |
