@@ -61,6 +61,8 @@ func standard(id: String, j: Node3D, eq: JarlingEquipment) -> void:
 
 func gear_round_trip(id: String, j: Node3D, eq: JarlingEquipment) -> void:
 	for g: JarlingGear in all_gear():
+		if not g.slots.all(func(s): return Equipment.SLOTS.has(s)):
+			continue    # a body-type item (the quadruped's pail on `mouth`): test_quadruped.gd covers it
 		var ok := eq.equip(g)
 		var hid: bool = g.replaces_body_part.all(func(p): return not eq.body_parts().has(p) or eq.is_part_hidden(p))
 		check(ok and g.slots.all(func(s): return eq.equipped(s) == g) and hid, "[%s] %s goes on (%s)" % [id, g.id, ", ".join(g.slots)])

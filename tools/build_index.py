@@ -102,7 +102,14 @@ out["body_types"] = {
         "rig": "avatar/kit/body_giant.py (huge sitting creature)",
         "bones": BONES + ["tail.1", "tail.2", "tail.3", "wing.L", "wing.R"],
         "actions": ["idle", "run", "cheer", "yawn", "wave", "flap", "sleep"],
-        "loops": ["idle", "run", "cheer", "flap", "sleep"], "slots": NO_KNEES, "playable": False}}
+        "loops": ["idle", "run", "cheer", "flap", "sleep"], "slots": NO_KNEES, "playable": False},
+    "quadruped": {
+        "rig": "avatar/kit/body_quadruped.py (four-legged farm animal or pet; arm/hand = front legs and hooves, leg/foot = hind)",
+        "params": ["height", "length", "girth", "width", "leg", "head"],
+        "bones": BONES + ["tail.1", "tail.2"],
+        "actions": ["idle", "run", "cheer", "tipped", "stiff", "graze", "sit"],
+        "loops": ["idle", "run", "cheer", "tipped", "stiff", "graze", "sit"],
+        "slots": ["head", "face", "back", "waist", "mouth"], "hold_styles": ["in_mouth"], "playable": False}}
 out["proposed"] = scan("proposals", {"status": "proposed"})
 (root / "characters.json").write_text(json.dumps(out, indent=2) + "\n")
 print(f"wrote characters.json with {len(out['characters'])} characters "

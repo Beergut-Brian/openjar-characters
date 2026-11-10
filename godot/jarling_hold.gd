@@ -26,6 +26,15 @@ static func item_transform(hold: Dictionary) -> Transform3D:
 	return Transform3D(b, -(b * vec(hold.get("grip_r", [0, 0, 0]))))
 
 
+## Item space -> mouth slot space (quadruped, hold style `in_mouth`): turns the item's `axis` across
+## the mouth (slot +X) and puts grip_r at the bite point. No fist, no limb pose (avatar/kit/hold.py).
+static func mouth_transform(hold: Dictionary) -> Transform3D:
+	var b := Basis.IDENTITY
+	if hold.has("axis"):
+		b = Basis(Quaternion(vec(hold["axis"]).normalized(), Vector3(1, 0, 0)))
+	return Transform3D(b, -(b * vec(hold.get("grip_r", [0, 0, 0]))))
+
+
 func has_hold(slot: StringName) -> bool:
 	return _holds.has(slot)
 

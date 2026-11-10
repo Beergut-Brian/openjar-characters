@@ -2,8 +2,8 @@
 
 Design: the character chooser plan (Kaden, 2026-11-10). Every game's start menu (the template's
 Showtime lobby) and the launcher's join/ready step let each player pick a character. Only
-**playable** characters can be picked; world residents (Mole, Gnome Foreman, Caveman, Dragon) never
-appear. Rules every playable character follows: README "Playable characters".
+**playable** characters can be picked; world residents (Mole, Gnome Foreman, Caveman, Dragon; the proposed
+cow, body `quadruped`) never appear. Rules every playable character follows: README "Playable characters".
 
 ## 1. Reading the roster
 

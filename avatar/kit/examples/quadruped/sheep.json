@@ -1,0 +1,13 @@
+{
+  "id": "sheep_proof", "name": "Sheep (kit proof, not a character)",
+  "notes": "Proof that the quadruped body is reusable: same body, a wool coat, dark face and legs. Proposal art only, no character folder.",
+  "body": {"type": "quadruped", "height": 0.85, "length": 0.95, "girth": 0.29, "width": 1.0, "leg": 0.22, "head": 0.21},
+  "skin": "#4E4650",
+  "coat": {"style": "wool", "color": "#F3EFE4"},
+  "snout": {"style": "muzzle", "color": "#6A6070", "nostril": "#2A1E2C"},
+  "ears": {"style": "side", "inner": "#8A7080"},
+  "horns": {"style": "none"},
+  "hooves": {"style": "hooves", "color": "#2E2A30"},
+  "tail": {"style": "nub", "color": "#F3EFE4"},
+  "face": {"eye_color": "#2A1E2C", "lashes": false, "expression_list": ["neutral", "happy", "wide_eyed", "dizzy", "smug", "panicked"]}
+}
