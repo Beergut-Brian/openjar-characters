@@ -1,6 +1,6 @@
 # The Gnome Foreman
 
-**Kind:** universal. **First appears:** The Hill (the foreman).
+**Kind:** universal. **Playable:** false. **Default for:** none. **Body:** standard. **First appears:** The Hill (the foreman).
 
 ## Who they are
 The Foreman is tiny, very serious, and treats a five-year-old's instructions as binding contracts. Everything is "noted" on the clipboard. He wears a tiny white hard hat on the tip of his very tall hat, because regulations.

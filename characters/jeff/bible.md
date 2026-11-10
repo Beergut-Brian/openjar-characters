@@ -1,6 +1,6 @@
 # Jeff
 
-**Kind:** player-locked, Player 1 (green). **First appears:** Spaceballs (kicker).
+**Kind:** universal. **Playable:** true. **Default for:** 1 (P1 starts as Jeff). **Body:** standard. **First appears:** Spaceballs (kicker).
 
 ## Who he is
 A fun-loving hippy who happens to be wearing a chicken costume. He is not in character as a chicken;
@@ -30,3 +30,4 @@ Best friends with Chuck. They disagree about everything and it never matters.
 
 ## Status
 Approved by Kaden 2026-11-09 (look and core personality). Voice: to be drafted.
+Kind changed from player-locked to universal, playable, P1 default: Kaden 2026-11-10 (character chooser message, his written OK). The player colour now belongs to the player slot, not to the character.
