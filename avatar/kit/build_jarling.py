@@ -31,7 +31,7 @@ bpy.ops.export_scene.gltf(
     filepath=a.out, export_format="GLB", use_selection=True, export_apply=True,
     export_animations=True, export_animation_mode="ACTIONS", export_skins=True,
     export_extras=True, export_yup=True, export_force_sampling=True, export_frame_range=False,
-    export_reset_pose_bones=True, export_image_format="AUTO")
+    export_reset_pose_bones=True, export_image_format="AUTO", export_lights=bool(getattr(j, "lamp_obs", None)))
 if a.blend:
     bpy.ops.wm.save_as_mainfile(filepath=os.path.abspath(a.blend), compress=True)
 print("JARLING_OK", a.out)
