@@ -67,11 +67,17 @@
       "look": "characters/bloom/look.md",
       "refs": "characters/bloom/refs/",
       "voice": "characters/bloom/voice/",
-      "model_3d": null,
-      "jarling_params": null,
-      "pixel": null,
+      "model_3d": "characters/bloom/refs/jarling/bloom.glb",
+      "jarling_params": "characters/bloom/jarling.json",
+      "pixel": {
+        "alt_form": "the-hill pixel",
+        "source": "tools/pixel/bloom.py",
+        "function": "bloom"
+      },
       "barks": [],
-      "alt_forms": []
+      "alt_forms": [
+        "the-hill pixel: proposed"
+      ]
     },
     {
       "id": "caveman",
@@ -349,11 +355,17 @@
       "look": "characters/old_reel/look.md",
       "refs": "characters/old_reel/refs/",
       "voice": "characters/old_reel/voice/",
-      "model_3d": null,
-      "jarling_params": null,
-      "pixel": null,
+      "model_3d": "characters/old_reel/refs/jarling/old_reel.glb",
+      "jarling_params": "characters/old_reel/jarling.json",
+      "pixel": {
+        "alt_form": "the-hill pixel",
+        "source": "tools/pixel/old_reel.py",
+        "function": "old_reel"
+      },
       "barks": [],
-      "alt_forms": []
+      "alt_forms": [
+        "the-hill pixel: proposed"
+      ]
     },
     {
       "id": "professor_fizz",

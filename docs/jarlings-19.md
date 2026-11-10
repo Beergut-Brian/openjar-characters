@@ -6,6 +6,7 @@ Jarlings (`coach_whistle`, `zorp`, `ribbit`, `astro_ana`) are built and live in 
 Status: **proposed**. Text drafts in `proposals/<id>/` (README "Proposals"). Batch 2 (2026-11-10): the three Junk Yard Zap
 Jarlings (`professor_fizz`, `scrap`, `big_tiny`) and the four Hill ones (`foreman_dot`, `granny_gravel`, `mayor_pip`, `lampy`) are
 built and live in `characters/<id>/` as a playtest build (`Playable: true`, Status still proposed).
+Batch 4 (2026-11-10): the two Life of a Worm Jarlings (`old_reel`, `bloom`) are built the same way.
 Kaden's Look, Personality, Voice and sample lines are kept verbatim in each `look.md`, `bible.md`,
 `voice.md`. All are `kind: universal`, `Body: standard`, planned playable (header says
 `Playable: false` until each is complete and Kaden approves, per `docs/roster.md` step 5).

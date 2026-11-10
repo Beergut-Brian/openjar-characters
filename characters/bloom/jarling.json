@@ -19,7 +19,8 @@
   "expression_list": [
    "neutral",
    "encouraging",
-   "humming"
+   "humming",
+   "surprised"
   ],
   "expressions": {
    "neutral": {
@@ -32,10 +33,15 @@
     "blush_add": 0.1
    },
    "humming": {
-    "eye_mode": "shut",
+    "eye_mode": "arc",
     "mouth": "o",
     "eye_scale": 0.9,
     "brow_raise": 0.02
+   },
+   "surprised": {
+    "mouth": "o",
+    "eye_scale": 1.25,
+    "brow_raise": 0.12
    }
   }
  },

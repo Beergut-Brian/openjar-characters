@@ -41,7 +41,7 @@ Built 2026-11-10 from `characters/bloom/jarling.json` (standard humanoid body, k
 - **headwear:** `sun_hat` straw `#E3C27A`, pink band `#F7A8CB`, brim 1.3, raised (`fit` 0.55) so the brim clears the eyes; one flower on
   the band at the front right: periwinkle petals `#8E9BF0`, yellow centre `#FFD23F`
 - **face:** round eyes, soft brows, `smile`; rosy cheeks `#F4A3B4` (`blush_color`, blush 0.9). Expressions: neutral = gentle smile,
-  encouraging = eye arcs and an open smile, humming = eyes closed, small `o`
+  encouraging = eye arcs and an open smile, humming = closed arc eyes (the kit's calm closed eye; `shut` read as a wince), small `o`, surprised = wide eyes, small `o` (4th cell, the roster test asks for 4)
 - **top:** `tee` `#F7A8CB`; **bottoms:** `shorts` `#5B7FB8` under the skirt; **skirt:** costume piece `long_skirt` `#5B7FB8`, length 0.22,
   with mud `#6B4A33` on the knees below the hem (the kit's mud is a decal pair on the legs); **shoes:** `clogs` `#8A4FC4`
 - **gear:** `watering_can` in `hand_r` (`one_hand_low`) for the ref pose; `ref_action` is idle frame 1 holding it
