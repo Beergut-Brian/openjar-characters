@@ -4,7 +4,7 @@
 | --- | --- | --- | --- |
 | refs/look_sheet.png | Python 3 + Pillow, `tools/pixel/make_sheets.py` (drawn in code, no external assets, no AI image model) | look sheet (approved by Kaden 2026-11-09, D46 a): turnaround, key poses, expressions, arc pictograms | Original work, Open Jar Games |
 | `characters/residents_lineup.png` | Python 3 + Pillow, `tools/pixel/make_sheets.py` (drawn in code, no external assets, no AI image model) | lineup for scale: Jeff and Chuck pixel forms plus the four Hill residents | Original work, Open Jar Games |
-| refs/jarling/dragon.glb | Blender 5.2.3, `avatar/kit/build_jarling.py` with the `giant` body type (`avatar/kit/body_giant.py`), procedural, no external assets, no AI image model | 3D master from `jarling.json`: ~6.6 m sitting giant, rig, 7 actions, 8 slots, 6-expression face atlas | Original work, Open Jar Games |
+| refs/jarling/dragon.glb | Blender 5.2.3, `avatar/kit/build_jarling.py` with the `giant` body type (`avatar/kit/body_giant.py`), procedural, no external assets, no AI image model | 3D master from `jarling.json`: ~3.85 m sitting giant (3.5 Jarlings), rig, 7 actions, 8 slots, 6-expression face atlas | Original work, Open Jar Games |
 | refs/jarling/dragon_turnaround.png | Blender 5.2.3 Cycles, `avatar/kit/render_refs.py` + `label_sheet.py` | turnaround of the 3D master: front, 3/4, side, back | Original work, Open Jar Games |
 | refs/jarling/dragon_expressions.png | Blender 5.2.3 Cycles, `avatar/kit/render_refs.py` + `label_sheet.py` | sleepy, yawn, happy, sorry, hopeful, asleep | Original work, Open Jar Games |
 | refs/jarling/dragon_yawn.png | Blender 5.2.3 Cycles, `avatar/kit/render_refs.py` | ref action: yawn at its peak, expression yawn | Original work, Open Jar Games |
