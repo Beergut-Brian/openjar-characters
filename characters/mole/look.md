@@ -26,7 +26,7 @@ Squint (neutral), happy, sorry, hopeful, startled. The nose tip is a darker pink
 The shovel (wood handle, steel blade). It is the only prop. At rest his claws are out at his sides and empty; the shovel is in his claws only in dig poses, held in both (Kaden, D49 a, 2026-11-10; before that it was always carried upright).
 
 ## Jarling 3D
-Status of the 3D form: **approved (Kaden 2026-11-10, D49 a)**: claws out at his sides at rest, shovel only in dig poses. The 3D master is the source of truth for silhouette, proportions and colours; the pixel form is traced from it (3D-first).
+Status of the 3D form: **approved (Kaden 2026-11-10, D49 a with the Gnome whistle fix)**: claws out at his sides at rest, shovel only in dig poses. The 3D master is the source of truth for silhouette, proportions and colours; the pixel form is traced from it (3D-first).
 - **Body type: `critter`** (`avatar/kit/body_critter.py`), not the standard body: a pear with no neck and no visible legs cannot be made from a head-on-torso-on-legs humanoid, and the type is reusable for other small round animals. `jarling.json`: `body.type` critter, `body.height` 0.82 (about 0.9 m to the top of the head; Jeff is 1.2 m with his comb).
 - Shape: two overlapping rigid blobs (head on `head`, body on `spine`) that read as one pear, widest low down. Slate fur, lighter belly oval, chunky pink snout with the darker nose tip, huge pink three-lobed digging claws on short arms, small pink feet peeking out in front, a pink tail nub. No ears.
 - Face (atlas, five cells): `squint` (resting: two dashes), `happy`, `sorry`, `hopeful`, `startled` (two tiny dots).
