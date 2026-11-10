@@ -155,6 +155,28 @@ func _initialize() -> void:
 		check(r[1].features() == ["horns", "pointy_ears"], "skinniest test body has horns and pointy ears (%s)" % [r[1].features()])
 		r[0].queue_free()
 
+	print("[kit v2] the 19 sheet examples build as standard Jarlings")
+	var sheets := []
+	for f in DirAccess.get_files_at("res://_lib/kit_v2"):
+		if f.begins_with("sheet_") and f.ends_with(".glb"):
+			sheets.append(f.get_basename())
+	sheets.sort()
+	check(sheets.size() == 19, "19 sheet examples were built (%d)" % sheets.size())
+	for id in sheets:
+		var sr := make(id)
+		if sr.is_empty():
+			continue
+		standard(id, sr[0], sr[1])
+		var sneakers: JarlingGear = Gear.load_json("res://_lib/gear/sneakers.json")
+		var hat: JarlingGear = Gear.load_json("res://_lib/gear/hat.json")
+		check(sr[1].equip(sneakers) and sr[1].equip(hat) and sr[1].is_part_hidden(&"foot_l"), "[%s] sneakers and hat go on, own shoes hidden" % id)
+		if id == "sheet_lampy":
+			check(not sr[0].find_children("*", "Light3D", true, false).is_empty(), "[sheet_lampy] the headlamp imports as a real light")
+		if id == "sheet_zorp":
+			check(sr[1].features() == ["antennae"], "[sheet_zorp] antennae are a feature")
+		sr[0].queue_free()
+		await process_frame
+
 	print("[kit v2] index")
 	var idx: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://_lib/characters.json"))
 	var std: Dictionary = idx.body_types.standard

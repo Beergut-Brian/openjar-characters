@@ -46,6 +46,10 @@ if command -v blender >/dev/null; then
   for p in tests/kit_v2/v2_*.json; do
     blender -b --factory-startup -P ../avatar/kit/build_jarling.py -- --params "$p" --out "$PWD/_lib/kit_v2/$(basename "$p" .json).glb" >/dev/null 2>&1
   done
+  for p in ../avatar/kit/examples/sheets/*.json; do   # the 19 sheet examples: each must build and be a standard Jarling
+    blender -b --factory-startup -P ../avatar/kit/build_jarling.py -- --params "$p" --out "$PWD/_lib/kit_v2/sheet_$(basename "$p" .json).glb" >/dev/null 2>&1
+    (cd .. && python3 tools/check_colours.py "avatar/kit/examples/sheets/$(basename "$p")") || status=1
+  done
 else
   echo "  FAIL blender not found: kit v2 checks need it"; status=1
 fi
