@@ -42,3 +42,26 @@ Checked against the player colours with CIEDE2000 (`avatar/kit/colour_rule.py`, 
 
 ## Signature props
 - The cowboy hat. Also available as head-slot gear `avatar/gear/cowboy_hat` for any Jarling.
+
+## Alt form: the-hill pixel: proposed
+Sprite source: `tools/pixel/yoji.py` (`yoji()`)
+
+- **Height:** 32 px with the outline (1.0 m body plus the tall cowboy hat, traced from `refs/jarling/yoji_side_sprite.png`,
+  capped at the frame): hat 5 rows (pinched crown 3 rows + band row, 1 brim row with the tips curled up 1-2 px), head 8-9
+  rows, jersey 7-8 rows (shoulder pads on the top rows, gold hem), navy-gold waistband + 2 rows of boxers, 2 rows of bare
+  legs, high-tops 4 rows (blue collar, 2 black rows, white sole).
+- **Palette:** hat `#C8955A` (+ `#A6763F`), band `#5A3A22`, hair and brows `#6B4A2E`, skin `#E8B48A` (+ `#C8936B`), jersey
+  `#1F3A6B` (+ `#162B52`), trim `#F2B632`, number and boxers `#F7F7F5` (+ `#D6D8DE`), stars `#1F3A6B`, shoes `#1A1A1E`
+  with `#2A6FD6`, soles `#F7F7F5`, mouth `#6A2232`, outline `#2A1E2C`. Every pixel colour is at least ΔE00 24 from P1
+  `#3cc24a` and P2 `#e4393c`.
+- **Frames:** front form (40 x 32) and the 128 x 224 player sheet: idle0-1, walk0-3, jump, fall, side0-2, down0-2, ride, sleep0-1
+  (three-quarter view facing right, feet on row 30, hand at (22, 21) idle).
+- **Should read as:**
+  - a tan cowboy hat (not a bucket hat, not a sombrero, not a helmet): a brim row much wider than the head on both sides
+    with the tips curled up, and a pinched crown, two lobes with a dip in the top middle that survives at 16 px; short
+    brown hair under it at the back and as a fringe
+  - a navy football jersey 55: broad shoulder pads (the widest part of the body), gold sleeve stripes and hem, a white
+    3 x 5 "55" on the front form (a white "5" on the side of the jersey in the frames)
+  - boxer shorts: white with navy star pixels and a navy-and-gold waistband, then bare skin legs
+  - high-tops: black with a blue collar above the ankle, a blue stripe, white soles
+  - a big grin with a white row of teeth, thick brown brows, round dark eyes
