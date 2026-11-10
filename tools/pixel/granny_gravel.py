@@ -5,7 +5,7 @@ frame(name, eyes_shut=False)  unoutlined 32 x 32 three-quarter frame facing righ
 sheet()                       the 128 x 224 player sheet
 
 30 px tall with the outline and the bun (traced from refs/jarling/granny_gravel_side_sprite.png):
-bun 3 rows (its base sits in the hair dome), hair 4 with the safety goggles pushed up into it, face 6 (two skin rows
+a round bun 3 rows sitting right on the hair dome, hair 4 with the safety goggles pushed up into it, face 6 (two skin rows
 between the goggles and the dot eyes), cardigan 6, A-line skirt 7, sneakers 2. The skirt hides the legs: in the walk
 and dig frames only the sneakers step and the hem sways 1 px.
 """
@@ -87,7 +87,7 @@ def frame(name, eyes_shut=False):
     oy = drop - lift
     (bx, by_), (fx, fy_) = FEET[feet]
     # back arm: shaded lavender sleeve, skin hand
-    pts = _line(9, 18 + oy, 8 + bax, 21 + oy + bay)
+    pts = _line(9, 17 + oy, 8 + bax, 21 + oy + bay)
     for x, y in pts:
         s.r(x, y, x + 1, y + 1, CARD_D)
     s.r(pts[-1][0], pts[-1][1] + 2, pts[-1][0] + 1, pts[-1][1] + 2, SKIN_D)
@@ -96,23 +96,23 @@ def frame(name, eyes_shut=False):
     _shoe(s, fx, fy_ - lift)
     _skirt(s, 10, 21, 22 + oy, 28 - lift, sway, folds=(15,))
     # cardigan
-    y0, y1 = 17 + oy, 21 + oy
+    y0, y1 = 16 + oy, 21 + oy
     s.r(10, y0, 21, y1, CARD); s.r(9, y0 + 1, 22, y1, CARD)
     s.r(9, y0 + 1, 10, y1, CARD_D)
     s.px(CARD_D, (16, y0), (18, y0), (17, y0 + 1))                     # V neck
     s.px(BUTTON, (17, y0 + 2), (17, y0 + 4))                           # centre button line
-    s.px(CARD_D, (17, y0 + 3))
-    # head (three-quarter, face to the right): bun rows 3-5 on a 2 px neck (row 6), dome from row 7
-    hx, hy = hdx, oy
+    s.px(CARD_D, (17, y0 + 3)); s.px(BUTTON, (17, y0 + 5))
+    # head (three-quarter, face to the right): a round bun (rows 3-5, one px back from centre) sitting right on the
+    # hair dome (from row 6); the coordinates below are one row lower than drawn (hy = oy - 1)
+    hx, hy = hdx, oy - 1
     s.r(10 + hx, 8 + hy, 21 + hx, 15 + hy, SKIN)
     s.r(11 + hx, 16 + hy, 20 + hx, 16 + hy, SKIN); s.px(SKIN_D, (11 + hx, 16 + hy), (20 + hx, 16 + hy))
-    s.r(11 + hx, 7 + hy, 20 + hx, 7 + hy, HAIR)
+    s.r(10 + hx, 7 + hy, 21 + hx, 7 + hy, HAIR); s.cut(21 + hx, 7 + hy, 21 + hx, 7 + hy)
     s.r(10 + hx, 8 + hy, 21 + hx, 10 + hy, HAIR)
     s.r(9 + hx, 8 + hy, 13 + hx, 14 + hy, HAIR)
-    s.px(HAIR_D, (9 + hx, 12 + hy), (9 + hx, 13 + hy), (9 + hx, 14 + hy), (10 + hx, 14 + hy), (11 + hx, 7 + hy), (20 + hx, 7 + hy))
-    s.r(13 + hx, 3 + hy, 16 + hx, 5 + hy, HAIR); s.cut(13 + hx, 3 + hy, 13 + hx, 3 + hy); s.cut(16 + hx, 3 + hy, 16 + hx, 3 + hy)
-    s.px(HAIR_D, (16 + hx, 4 + hy), (16 + hx, 5 + hy), (15 + hx, 5 + hy))     # bun shade
-    s.r(14 + hx, 6 + hy, 15 + hx, 6 + hy, HAIR_D)                               # where the bun is pinned on
+    s.px(HAIR_D, (9 + hx, 12 + hy), (9 + hx, 13 + hy), (9 + hx, 14 + hy), (10 + hx, 14 + hy), (10 + hx, 7 + hy))
+    s.r(12 + hx, 4 + hy, 15 + hx, 6 + hy, HAIR); s.cut(15 + hx, 4 + hy, 15 + hx, 4 + hy)
+    s.px(HAIR_D, (15 + hx, 6 + hy))                                             # bun shade, low on one side
     s.px(SKIN_D, (12 + hx, 12 + hy), (12 + hx, 13 + hy), (13 + hx, 13 + hy))     # ear
     s.px(HAIR, (12 + hx, 11 + hy))
     # safety goggles pushed up into the hair: strap row 9 back through the hair, two lenses on the hairline
@@ -131,7 +131,7 @@ def frame(name, eyes_shut=False):
     s.px(CHEEK, (20 + hx, 14 + hy), (14 + hx, 14 + hy))
     s.px(MOUTH, (17 + hx, 14 + hy), (18 + hx, 15 + hy), (19 + hx, 15 + hy))
     # front arm: lavender sleeve to a skin hand
-    pts = _line(21, 18 + oy, hand[0], hand[1])
+    pts = _line(21, 17 + oy, hand[0], hand[1])
     for x, y in pts:
         s.r(x, y, x + 1, y + 1, CARD)
     s.r(hand[0], hand[1], hand[0] + 1, hand[1] + 1, SKIN)
@@ -143,24 +143,25 @@ def granny_gravel(view="front"):
     s = Spr(jf.W, jf.H)
     # arms: lavender sleeves, skin hands
     for x in (11, 27):
-        s.r(x, 18, x + 1, 21, CARD); s.px(CARD_D, (x if x < 20 else x + 1, 19), (x if x < 20 else x + 1, 21))
+        s.r(x, 17, x + 1, 21, CARD); s.px(CARD_D, (x if x < 20 else x + 1, 18), (x if x < 20 else x + 1, 20))
         s.r(x, 22, x + 1, 23, SKIN); s.px(SKIN_D, (x, 23), (x + 1, 23))
     # sneakers under the skirt hem
     _shoe(s, 15, 30); _shoe(s, 21, 30)
     _skirt(s, 14, 25, 22, 28, 0, folds=(18, 21))
     # cardigan
-    s.r(14, 17, 25, 21, CARD); s.r(13, 18, 26, 21, CARD)
-    s.r(13, 18, 13, 21, CARD_D); s.r(26, 18, 26, 21, CARD_D)
-    s.px(CARD_D, (18, 17), (21, 17), (19, 18), (20, 18))                          # V neck
-    s.r(19, 17, 20, 17, SKIN)
+    s.r(14, 16, 25, 21, CARD); s.r(13, 17, 26, 21, CARD)
+    s.r(13, 17, 13, 21, CARD_D); s.r(26, 17, 26, 21, CARD_D)
+    s.px(CARD_D, (18, 16), (21, 16), (19, 17), (20, 17))                          # V neck
+    s.r(19, 16, 20, 16, SKIN)
     s.px(BUTTON, (19, 19), (20, 19), (19, 21), (20, 21)); s.px(CARD_D, (19, 20), (20, 20))   # centre button line
-    # head: bun rows 3-5 on a 2 px neck (row 6), dome from row 7
+    # head, drawn one row low on its own layer and lifted 1 px: a round bun (rows 3-5) sitting right on the dome
+    body, s = s, Spr(jf.W, jf.H + 1)
     s.r(14, 8, 25, 15, SKIN); s.r(15, 16, 24, 16, SKIN); s.px(SKIN_D, (15, 16), (24, 16))
     s.px(SKIN_D, (13, 12), (13, 13), (26, 12), (26, 13))                          # ears
-    s.r(15, 7, 24, 7, HAIR); s.r(14, 8, 25, 10, HAIR); s.r(13, 8, 14, 11, HAIR); s.r(25, 8, 26, 11, HAIR)
-    s.px(HAIR_D, (13, 10), (13, 11), (26, 10), (26, 11), (15, 7), (24, 7))
-    s.r(18, 3, 21, 5, HAIR); s.cut(18, 3, 18, 3); s.cut(21, 3, 21, 3)
-    s.px(HAIR_D, (21, 4), (21, 5), (20, 5)); s.r(19, 6, 20, 6, HAIR_D)
+    s.r(14, 7, 25, 7, HAIR); s.r(14, 8, 25, 10, HAIR); s.r(13, 8, 14, 11, HAIR); s.r(25, 8, 26, 11, HAIR)
+    s.px(HAIR_D, (13, 10), (13, 11), (26, 10), (26, 11), (14, 7), (25, 7))
+    s.r(18, 4, 21, 6, HAIR); s.cut(21, 4, 21, 4)
+    s.px(HAIR_D, (21, 6))                                                         # bun shade, low on one side
     # safety goggles up in the hair: strap row, two framed lenses on the hairline
     s.r(13, 9, 26, 9, GOG)
     for lx in (16, 22):
@@ -172,7 +173,8 @@ def granny_gravel(view="front"):
     s.px(CHEEK, (15, 14), (24, 14))
     s.px(SKIN_D, (19, 13), (20, 13))
     s.px(MOUTH, (18, 14), (19, 15), (20, 15), (21, 14))
-    return jf.fin(s)
+    body.im.alpha_composite(s.im.crop((0, 1, jf.W, jf.H + 1)), (0, 0))
+    return jf.fin(body)
 
 
 def sheet():

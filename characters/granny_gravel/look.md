@@ -56,9 +56,9 @@ See "Alt form: the-hill pixel" below (as built).
 ## Alt form: the-hill pixel: proposed
 Sprite source: `tools/pixel/granny_gravel.py` (`granny_gravel()`)
 
-- **Height:** 30 px with the outline and the bun (traced from `granny_gravel_side_sprite.png`): bun 3 rows on a 1-row
-  pinned neck, hair dome 4 (goggles in its lower 3 rows), face 6 (two skin rows with the brows, dot eyes, cheeks/smile,
-  chin), cardigan 5, A-line skirt 7, sneakers 2.
+- **Height:** 30 px with the outline and the bun (traced from `granny_gravel_side_sprite.png`): bun 3 rows sitting right
+  on the hair, hair dome 4 (goggles in its lower 3 rows), face 6 (two skin rows with the brows, dot eyes, cheeks/smile,
+  chin), cardigan 6, A-line skirt 7, sneakers 2.
 - **Palette:** hair `#F2F0EA` (+ `#CFCBC2`), goggles frame `#4A4F5A` with lenses `#9FD8F0` (+ glint `#D8F1FA`), skin `#F7CFAE`
   (+ `#DDAE8C`), brows `#B9B4AE`, eyes `#2A1E2C`, cheeks `#F2A9A0`, smile `#6A2232`, cardigan `#B9A3D9` (+ `#9C84C4`),
   button line `#F2F0EA`, skirt `#8C8F96` (+ `#74777E`), sneakers `#FFD93B` (sole `#D9B21E`), outline `#2A1E2C`.
@@ -67,8 +67,9 @@ Sprite source: `tools/pixel/granny_gravel.py` (`granny_gravel()`)
   skirt hides the legs: only the sneakers step (a lifted foot shows just its sole row under the hem) and the hem band
   sways 1 px (walk0 +1, walk2 -1, side1 +1, down1 -1).
 - **Should read as:**
-  - a round white bun on the crown (not a hat tip): a 4 x 3 white blob with its top corners cut and a shaded right side,
-    pinned to the dome by a 2 px shaded neck row so the outline notches in on both sides
+  - a round white bun on the crown (not a hat tip, not a spire): rows of 3, 4, 4 px (flat-ish top, one top corner cut),
+    sitting directly on a flat-topped hair dome, one `#CFCBC2` shade pixel low on one side; one px back from centre in
+    the frames
   - safety goggles pushed up into the hair (not glasses over the eyes, not a hairband): a dark `#4A4F5A` strap row with two
     4 x 3 dark frames each holding a 2 x 2 light-blue lens, on the hairline with white hair above and at the sides, two skin
     rows (brows in the upper one) between them and the eyes; in the frames the strap runs back through the white hair
