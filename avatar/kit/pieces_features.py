@@ -3,7 +3,8 @@
 Head features (`head.features`: list of dicts; body features of the species, NOT hats, so any hat
 or helmet still goes on top; each is the part `<id>_part_feature_<type>` on its own bones under `head`):
   antennae     count 2 (1..4), color (default: darker skin), tip (default: color), length 0.75 (x R),
-               spread 30 (deg from straight up), ball 0.15 (x R), thickness 0.035 (x R)
+               spread 30 (deg from straight up), ball 0.15 (x R), thickness 0.035 (x R),
+               back 0 (deg the stalks lean toward the back of the head)
   horns        style "nub"|"curved", count 2 (1 = one centre horn), color "#F1E7CF", size 1.0
   pointy_ears  color (default: skin), length 0.55 (x R), up 0.5 (how much they point up); replace the round ears
   fins         count 1|3 (centre crest, plus one each side), color (default: darker skin), size 1.0
@@ -61,6 +62,8 @@ def antennae(B, f):
     spread = float(f.get("spread", 30))
     ball = float(f.get("ball", 0.15)) * R
     th = float(f.get("thickness", 0.035)) * R
+    back = float(f.get("back", 0.0))
+    bd = _at(B, 0, 180) - L["head_c"]; back_dir = Vector((bd.x, bd.y, 0)).normalized()
     if n == 1:
         azs = [(0.0, 0.0)]
     else:   # spread across the top of the head, left to right
@@ -69,6 +72,8 @@ def antennae(B, f):
         base = _at(B, 90 - off, az, 0.96)
         out = _normal(B, base)
         d = (out * 0.55 + UP * 0.85).normalized()
+        if back:     # lean the stalk toward the back of the head (deg); 0 keeps the old shape
+            d = (d + back_dir * math.tan(math.radians(back))).normalized()
         end = base + d * ln
         mid = base + d * ln * 0.5 + Vector((out.x, out.y, 0)) * ln * 0.10
         pts = [tuple(base.lerp(mid, t).lerp(mid.lerp(end, t), t)) for t in np.linspace(0, 1, 9)]
