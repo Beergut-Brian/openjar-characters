@@ -1,0 +1,96 @@
+{
+ "id": "professor_fizz",
+ "name": "Professor Fizz",
+ "notes": "From characters/professor_fizz/look.md (Kaden's sheet 2026-11-10; proposed, playtest build). Lab coat is the white long top with collar and buttons (painted, no hem). Skin is not fixed by the sheet.",
+ "head": {
+  "shape": "round",
+  "size": 1.0,
+  "ears": "round"
+ },
+ "skin": "#F7CFAE",
+ "face": {
+  "eyes": "wide",
+  "brows": "arched",
+  "brow_color": "#8A8F99",
+  "brow_skip": "L",
+  "mouth": "grin",
+  "extras": [
+   {
+    "type": "scorch_brow",
+    "side": "L",
+    "color": "#3A2E2A"
+   }
+  ],
+  "expressions": {
+   "happy": {
+    "mouth": "grin",
+    "eye_mode": "arc"
+   },
+   "surprised": {
+    "mouth": "o",
+    "brow_raise": 0.1,
+    "eye_scale": 1.15
+   },
+   "determined": {
+    "mouth": "flat",
+    "brow_raise": 0.06
+   }
+  }
+ },
+ "hair": {
+  "style": "upright",
+  "color": "#F7F7F2"
+ },
+ "headwear": {
+  "type": "none"
+ },
+ "body": {
+  "build": "regular",
+  "height": 1.0
+ },
+ "outfit": {
+  "top": {
+   "style": "long",
+   "color": "#F4F5F2",
+   "pattern": [
+    {
+     "type": "collar",
+     "accent": "#7B3FB5"
+    },
+    {
+     "type": "buttons",
+     "accent": "#7B3FB5"
+    }
+   ]
+  },
+  "bottoms": {
+   "style": "pants",
+   "color": "#5E2F94"
+  },
+  "shoes": {
+   "style": "dress",
+   "color": "#1B1B20",
+   "socks": {
+    "color_l": "#FFB627",
+    "color_r": "#3FA7D6",
+    "height": 0.3
+   }
+  }
+ },
+ "costume": [
+  {
+   "piece": "goggles",
+   "pos": "forehead",
+   "style": "round",
+   "color": "#B8862E",
+   "lens": "#9FD3E6",
+   "height": 0.52
+  }
+ ],
+ "ref_action": {
+  "action": "cheer",
+  "frame": 10,
+  "expression": "happy",
+  "yaw": -28
+ }
+}

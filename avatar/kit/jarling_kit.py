@@ -1136,6 +1136,7 @@ class Builder:
             for k in ("color", "sole", "style"):          # mismatched shoes: color_l / color_r ...
                 if f"{k}_{side.lower()}" in shoes:
                     sh[k] = shoes[f"{k}_{side.lower()}"]
+                    sh["_side"] = f"_{side.lower()}"         # its own material (materials are cached by name)
             n_foot0 = len(self.parts)
             socks = shoes.get("socks")
             if socks:                                      # {"color", "color_l", "color_r", "height" 0..1 of the leg, "cuff"}
@@ -1183,7 +1184,7 @@ class Builder:
                 for pbm, _m, _b in self.parts[n0:]:
                     bmesh.ops.transform(pbm, matrix=M, verts=pbm.verts)
             return
-        col = self.mats.flat(f"shoe_{st}", shoes["color"], rough=0.55, spec=0.4)
+        col = self.mats.flat(f"shoe_{st}" + shoes.get("_side", ""), shoes["color"], rough=0.55, spec=0.4)
         if st == "boots":
             sole = self.mats.flat("boot_heel", shoes.get("sole", shade(shoes["color"], 0.62)), rough=0.6)
             def pointy(co):
@@ -1208,7 +1209,7 @@ class Builder:
                 self.add(tube_bm(pts, 0.0065, cyclic=True), stitch, f"leg.{side}")
             return
         # sneaker
-        solec = self.mats.flat("shoe_sole", shoes.get("sole", "#F4F4F0"), rough=0.6)
+        solec = self.mats.flat("shoe_sole" + shoes.get("_side", ""), shoes.get("sole", "#F4F4F0"), rough=0.6)
         self.add(ellipsoid_bm((x, -0.03, 0.055), (0.066 * limb, 0.108, 0.054), floor=0.014, segs=28), col, bone)
         self.add(ellipsoid_bm((x, -0.032, 0.022), (0.071 * limb, 0.114, 0.022), floor=0.0, segs=28), solec, bone)
 

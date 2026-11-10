@@ -1,0 +1,73 @@
+{
+ "id": "mayor_pip",
+ "name": "Mayor Pip",
+ "notes": "From characters/mayor_pip/look.md (Kaden's sheet 2026-11-10; proposed, playtest build). The bottom of the playable range (height 0.8, leg_scale 0.8); the top hat rises 0.53 m above his head (38% of his 1.41 m silhouette) and its crown stays under the tallest playable bare head (1.43 m). Skin and hair are not fixed by the sheet.",
+ "head": {
+  "shape": "round",
+  "size": 1.0,
+  "ears": "round"
+ },
+ "skin": "#EFBB90",
+ "face": {
+  "eyes": "button",
+  "brows": "arched",
+  "brow_color": "#4A2F23",
+  "brow_raise": 0.04,
+  "mouth": "set",
+  "lid": 0.2,
+  "expressions": {
+   "happy": {
+    "mouth": "smile",
+    "lid": 0.2
+   },
+   "surprised": {
+    "mouth": "o",
+    "brow_raise": 0.12,
+    "lid": 0.0
+   },
+   "determined": {
+    "mouth": "set",
+    "brow_tilt": 0.3,
+    "lid": 0.25
+   }
+  }
+ },
+ "hair": {
+  "style": "short",
+  "color": "#4A2F23"
+ },
+ "headwear": {
+  "type": "top_hat",
+  "color": "#1C1C22",
+  "band": "#D9B23A",
+  "height": 1.85,
+  "scale": 1.12
+ },
+ "body": {
+  "build": "slim",
+  "height": 0.8,
+  "leg_scale": 0.8,
+  "width": 0.9
+ },
+ "outfit": {
+  "top": {
+   "style": "long",
+   "color": "#A8CFF0"
+  },
+  "bottoms": {
+   "style": "pants",
+   "color": "#7D8088"
+  },
+  "shoes": {
+   "style": "dress",
+   "color": "#15151A"
+  }
+ },
+ "costume": [
+  {
+   "piece": "sash",
+   "color": "#D9B23A",
+   "side": "R"
+  }
+ ]
+}

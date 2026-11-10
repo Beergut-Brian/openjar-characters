@@ -1,0 +1,72 @@
+{
+ "id": "big_tiny",
+ "name": "Big Tiny",
+ "notes": "From characters/big_tiny/look.md (Kaden's sheet 2026-11-10; proposed, playtest build). The top of the playable range on every body param: height 1.3, width 1.5, belly 1.0. Skin and hair are not fixed by the sheet.",
+ "head": {
+  "shape": "round",
+  "size": 1.0,
+  "ears": "round"
+ },
+ "skin": "#D99E6E",
+ "face": {
+  "eyes": "drop",
+  "brows": "soft",
+  "mouth": "smile",
+  "expressions": {
+   "neutral": {
+    "eye_mode": "arc"
+   },
+   "happy": {
+    "eye_mode": "arc",
+    "mouth": "grin_top"
+   },
+   "surprised": {
+    "mouth": "o",
+    "brow_raise": 0.08
+   },
+   "determined": {
+    "eye_mode": "arc",
+    "mouth": "set"
+   }
+  },
+  "blush": 0.35
+ },
+ "hair": {
+  "style": "buzz",
+  "color": "#4A2F23"
+ },
+ "headwear": {
+  "type": "beanie",
+  "color": "#2E3A66",
+  "scale": 0.45,
+  "hair": "free"
+ },
+ "body": {
+  "build": "round",
+  "height": 1.3,
+  "width": 1.5,
+  "belly": 1.0
+ },
+ "outfit": {
+  "top": {
+   "style": "tee",
+   "color": "#7EC8F2"
+  },
+  "bottoms": {
+   "style": "pants",
+   "color": "#80848C"
+  },
+  "shoes": {
+   "style": "sneaker",
+   "color": "#F7F7F5",
+   "size": 1.35
+  }
+ },
+ "costume": [],
+ "ref_action": {
+  "action": "cheer",
+  "frame": 10,
+  "expression": "happy",
+  "yaw": -28
+ }
+}
