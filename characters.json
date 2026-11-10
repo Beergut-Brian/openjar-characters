@@ -22,7 +22,16 @@
         "source": "tools/pixel/astro_ana.py",
         "function": "astro_ana"
       },
-      "barks": [],
+      "barks": [
+        "cheer",
+        "join",
+        "lose",
+        "oops",
+        "ready",
+        "swap_in",
+        "wait",
+        "win"
+      ],
       "alt_forms": [
         "the-hill pixel: proposed"
       ]
@@ -48,7 +57,16 @@
         "source": "tools/pixel/big_tiny.py",
         "function": "big_tiny"
       },
-      "barks": [],
+      "barks": [
+        "cheer",
+        "join",
+        "lose",
+        "oops",
+        "ready",
+        "swap_in",
+        "wait",
+        "win"
+      ],
       "alt_forms": [
         "the-hill pixel: proposed"
       ]
@@ -100,7 +118,16 @@
         "source": "tools/pixel/boxbot.py",
         "function": "boxbot"
       },
-      "barks": [],
+      "barks": [
+        "cheer",
+        "join",
+        "lose",
+        "oops",
+        "ready",
+        "swap_in",
+        "wait",
+        "win"
+      ],
       "alt_forms": [
         "the-hill pixel: proposed"
       ]
@@ -126,7 +153,16 @@
         "source": "tools/pixel/captain_crumbs.py",
         "function": "captain_crumbs"
       },
-      "barks": [],
+      "barks": [
+        "cheer",
+        "join",
+        "lose",
+        "oops",
+        "ready",
+        "swap_in",
+        "wait",
+        "win"
+      ],
       "alt_forms": [
         "the-hill pixel: proposed"
       ]
@@ -198,7 +234,16 @@
         "source": "tools/pixel/coach_whistle.py",
         "function": "coach_whistle"
       },
-      "barks": [],
+      "barks": [
+        "cheer",
+        "join",
+        "lose",
+        "oops",
+        "ready",
+        "swap_in",
+        "wait",
+        "win"
+      ],
       "alt_forms": [
         "the-hill pixel: proposed"
       ]
@@ -244,7 +289,16 @@
         "source": "tools/pixel/el_burrito.py",
         "function": "el_burrito"
       },
-      "barks": [],
+      "barks": [
+        "cheer",
+        "join",
+        "lose",
+        "oops",
+        "ready",
+        "swap_in",
+        "wait",
+        "win"
+      ],
       "alt_forms": [
         "the-hill pixel: proposed"
       ]
@@ -270,7 +324,16 @@
         "source": "tools/pixel/foreman_dot.py",
         "function": "foreman_dot"
       },
-      "barks": [],
+      "barks": [
+        "cheer",
+        "join",
+        "lose",
+        "oops",
+        "ready",
+        "swap_in",
+        "wait",
+        "win"
+      ],
       "alt_forms": [
         "the-hill pixel: proposed"
       ]
@@ -316,7 +379,16 @@
         "source": "tools/pixel/granny_gravel.py",
         "function": "granny_gravel"
       },
-      "barks": [],
+      "barks": [
+        "cheer",
+        "join",
+        "lose",
+        "oops",
+        "ready",
+        "swap_in",
+        "wait",
+        "win"
+      ],
       "alt_forms": [
         "the-hill pixel: proposed"
       ]
@@ -368,7 +440,16 @@
         "source": "tools/pixel/lampy.py",
         "function": "lampy"
       },
-      "barks": [],
+      "barks": [
+        "cheer",
+        "join",
+        "lose",
+        "oops",
+        "ready",
+        "swap_in",
+        "wait",
+        "win"
+      ],
       "alt_forms": [
         "the-hill pixel: proposed"
       ]
@@ -394,7 +475,16 @@
         "source": "tools/pixel/mayor_pip.py",
         "function": "mayor_pip"
       },
-      "barks": [],
+      "barks": [
+        "cheer",
+        "join",
+        "lose",
+        "oops",
+        "ready",
+        "swap_in",
+        "wait",
+        "win"
+      ],
       "alt_forms": [
         "the-hill pixel: proposed"
       ]
@@ -466,7 +556,16 @@
         "source": "tools/pixel/professor_fizz.py",
         "function": "professor_fizz"
       },
-      "barks": [],
+      "barks": [
+        "cheer",
+        "join",
+        "lose",
+        "oops",
+        "ready",
+        "swap_in",
+        "wait",
+        "win"
+      ],
       "alt_forms": [
         "the-hill pixel: proposed"
       ]
@@ -492,7 +591,16 @@
         "source": "tools/pixel/rexy.py",
         "function": "rexy"
       },
-      "barks": [],
+      "barks": [
+        "cheer",
+        "join",
+        "lose",
+        "oops",
+        "ready",
+        "swap_in",
+        "wait",
+        "win"
+      ],
       "alt_forms": [
         "the-hill pixel: proposed"
       ]
@@ -518,7 +626,16 @@
         "source": "tools/pixel/ribbit.py",
         "function": "ribbit"
       },
-      "barks": [],
+      "barks": [
+        "cheer",
+        "join",
+        "lose",
+        "oops",
+        "ready",
+        "swap_in",
+        "wait",
+        "win"
+      ],
       "alt_forms": [
         "the-hill pixel: proposed"
       ]
@@ -544,7 +661,16 @@
         "source": "tools/pixel/scrap.py",
         "function": "scrap"
       },
-      "barks": [],
+      "barks": [
+        "cheer",
+        "join",
+        "lose",
+        "oops",
+        "ready",
+        "swap_in",
+        "wait",
+        "win"
+      ],
       "alt_forms": [
         "the-hill pixel: proposed"
       ]
@@ -570,7 +696,16 @@
         "source": "tools/pixel/sir_clank.py",
         "function": "sir_clank"
       },
-      "barks": [],
+      "barks": [
+        "cheer",
+        "join",
+        "lose",
+        "oops",
+        "ready",
+        "swap_in",
+        "wait",
+        "win"
+      ],
       "alt_forms": [
         "the-hill pixel: proposed"
       ]
@@ -596,7 +731,16 @@
         "source": "tools/pixel/snooze.py",
         "function": "snooze"
       },
-      "barks": [],
+      "barks": [
+        "cheer",
+        "join",
+        "lose",
+        "oops",
+        "ready",
+        "swap_in",
+        "wait",
+        "win"
+      ],
       "alt_forms": [
         "the-hill pixel: proposed"
       ]
@@ -648,7 +792,16 @@
         "source": "tools/pixel/zorp.py",
         "function": "zorp"
       },
-      "barks": [],
+      "barks": [
+        "cheer",
+        "join",
+        "lose",
+        "oops",
+        "ready",
+        "swap_in",
+        "wait",
+        "win"
+      ],
       "alt_forms": [
         "the-hill pixel: proposed"
       ]
