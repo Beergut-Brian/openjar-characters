@@ -25,8 +25,12 @@ Face extras (`face.extras`: list of names or dicts, drawn into the face atlas):
   scorch_brow  side "L"|"R", color "#2A2420": that eyebrow is a sooty scorch mark
   mask         color, trim, full-head wrestling mask: whole head in `color`, skin shows in eye and
                mouth openings edged in `trim` (use head.ears "none")
-  freckles_big color (default darker skin): bolder freckles across the nose
-Mouths (`face.mouth`): grin_gap (grin with a tooth gap), yell (wide open happy shout), wide (wide flat pleased smile).
+  freckles_big  color (default darker skin): bolder freckles across the cheeks and nose
+
+Mouths (`face.mouth`, besides the core's smile, grin, grin_top, grin_two, o, smirk, set, grit, flat, frown, none):
+  grin_gap     open grin with a gap between the front teeth
+  yell         wide open happy shout
+  wide         wide, flat, pleased smile
 """
 import math
 import numpy as np
