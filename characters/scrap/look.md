@@ -46,10 +46,34 @@ Built 2026-11-10 from `characters/scrap/jarling.json` (standard humanoid body, k
 - **ref action:** `kick` frame 17, determined face
 
 ### 2D pixel (The Hill)
-32 px tall at Jeff's scale (stage 1), side-on like `characters/residents_lineup.png`; traced from the 3D side view once it exists. Colander a silver dome with two darker hole pixels and one handle pixel each side. Shoes: one orange pixel pair, one purple pixel pair. About 26 px tall in the 32 px frame (kid).
+See "Alt form: the-hill pixel" below (as built).
 
 ## Refs
 - `refs/jarling/scrap.glb`: the 3D master
 - `refs/jarling/scrap_turnaround.png`, `scrap_expressions.png`, `scrap_kick.png`
 - `refs/jarling/scrap_side.png`, `scrap_side_sprite.png`: side view and its sprite-scale tracing base
 - `refs/pixel/scrap_pixel.png`, `scrap_frames.png` (+ `.json`), `scrap_pixel_sheet.png`: The Hill pixel form
+
+## Alt form: the-hill pixel: proposed
+Sprite source: `tools/pixel/scrap.py` (`scrap()`)
+
+- **Height:** 29 px with the outline (a small kid with a big head, traced from `scrap_side_sprite.png`): colander feet 1 row,
+  bowl 4, rim 1, head 8, tee 6, shorts 2, bare legs 3, shoes 2. The head (13-14 px) is wider than the 10 px tee.
+- **Palette:** colander `#B9BEC4` (+ light `#DDE1E5`, shade `#8E949B`), holes `#3A3F48`, hair `#B5651D`, skin `#F0BE94`
+  (+ `#D29D74`), freckles `#C98A5E`, eyes `#2A1E2C` with a `#FFFFFF` catch-light, mouth `#6A2232` with teeth `#FFFFFF`,
+  tee `#F2C230` (+ `#D4A51E`), patches `#E8873D` / `#5B8FD6`, shorts `#3E6DB5` (+ `#325A96`), shoes `#F28C28` (his left) /
+  `#8A4FC4` (his right), outline `#2A1E2C`.
+- **Frames:** front form (40 x 32) and the 128 x 224 player sheet: idle0-1, walk0-3, jump, fall, side0-2, down0-2, ride,
+  sleep0-1 (three-quarter view facing right, feet on row 30; hand at (22, 21) idle, The Hill's dig hand positions; kid legs
+  2 px wide).
+- **Should read as:**
+  - a kitchen colander worn as a helmet (not a hard hat, not a polka-dot cap): an upturned grey bowl with a flat-ish top
+    (narrowing 2 px per side over 3 rows), two 1 px shaded feet on the top, staggered dark hole dots on two rows (3 over 4),
+    a light rim row 1 px wider than the head each side and a flat 2 px darker handle nub past each rim end (only the back
+    one in the frames)
+  - auburn hair under the rim: at both sides and a short fringe (front), the back of the head and a fringe (frames)
+  - gap-toothed grin: a dark mouth with a white tooth row broken by one dark gap pixel, a dark row below, nothing poking out
+  - freckles: two `#C98A5E` pixels on each cheek
+  - patched yellow tee: a 2 x 2 orange patch and a 2 px blue patch on the tee, short yellow sleeves, skin arms
+  - odd shoes: orange on his left foot (image right in the front form), purple on his right; in every frame the near foot
+    is orange and the far foot purple
