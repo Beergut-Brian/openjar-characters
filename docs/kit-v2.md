@@ -288,3 +288,12 @@ Actions:  `march`, `write`, `salute` (gnome); `polish`, `point`, `wave` (caveman
 
 
 <!-- PIECES:END -->
+
+## Gait
+
+`"gait"` (top level, optional) swaps a standard Jarling's `run` and `idle` for a cosmetic variant, registered
+in `kit.GAITS` by `avatar/kit/pieces_gait.py`. `"hop"` (Ribbit): `run` is a two-footed hop (crouch, push off,
+tucked in the air with the root rising, land with a squash) and `idle` settles and gives a small bounce now and
+then. Same action names, frame ranges and loop flags as the standard set (`run` 1-17, `idle` 1-49), the root
+only moves vertically (the game moves the character), `kick` and `cheer` are unchanged, and the rig gets the
+extra `jarling_gait`. Gameplay and collision never change. Without `"gait"` every action is exactly as before.
