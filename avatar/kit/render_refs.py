@@ -106,7 +106,10 @@ if "action" in only:
         import render_scenes_ball as rb
         rb.make_ball("ball", Vector((-0.35, -0.95, 0.62)), 0.11, kit.Mats("refs_"))
     rc.place(j, (0, 0, 0), float(ra.get("yaw", -28)))
-    rc.camera((-4.4 * k, -1.6 * k, 1.5 * k), (0, -0.35 * k * (1 if ra["action"] == "kick" else 0.3), 0.55 * k), lens=45)
+    if ra["action"] == "kick":                       # room for the ball's flight
+        rc.camera((-4.4 * k, -1.6 * k, 1.5 * k), (0, -0.35 * k, 0.55 * k), lens=45)
+    else:                                            # the character fills about 60% of the frame height
+        rc.camera((-2.6 * k, -3.0 * k, 1.25 * k), (0, 0, 0.5 * k), lens=50)
     rc.render(os.path.join(OUT, f"{pid}_{ra['action']}.png"))
 
 if "side" in only:
