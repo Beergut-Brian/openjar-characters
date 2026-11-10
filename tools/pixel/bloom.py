@@ -5,7 +5,7 @@ frame(name, eyes_shut=False) unoutlined 32 x 32 three-quarter frame facing right
 sheet()                      the 128 x 224 player sheet
 
 30 px tall with the outline (the 3D is 1.11 m with the hat, 29.5 px at true scale), traced from refs/jarling/bloom_side_sprite.png:
-hat crown 3 rows (the last is the pink band), brim 2 rows (14 px wide: 2 px past the 10 px body each side, straw colour),
+hat crown 3 rows (the last is the pink band), brim 2 rows (frames 20 px, front 18 px: 3-4 px past the widest body pixel each side, 1 px droop at the tips),
 face 8 rows under the brim, tee 5, skirt 5, bare knees and shins 4 (one mud pixel on each knee), clogs 3.
 The flower is a 2 x 2 patch on the band at the front of the brim: three periwinkle pixels and one yellow centre.
 No watering can in the pixel frames.
@@ -111,8 +111,9 @@ def frame(name, eyes_shut=False):
     s.r(14 + hx, 1 + hy, 18 + hx, 1 + hy, STRAW)
     s.r(12 + hx, 2 + hy, 20 + hx, 2 + hy, STRAW)
     s.r(12 + hx, 3 + hy, 20 + hx, 3 + hy, BAND)
-    s.r(9 + hx, 4 + hy, 22 + hx, 4 + hy, STRAW)
-    s.r(9 + hx, 5 + hy, 22 + hx, 5 + hy, STRAW_D)
+    s.r(6 + hx, 4 + hy, 25 + hx, 4 + hy, STRAW)                                  # brim 20 px, 4 px past the skirt each side
+    s.r(8 + hx, 5 + hy, 23 + hx, 5 + hy, STRAW_D)
+    s.px(STRAW, (6 + hx, 5 + hy), (7 + hx, 5 + hy), (24 + hx, 5 + hy), (25 + hx, 5 + hy))   # downturned droop at the tips
     s.px(STRAW_D, (12 + hx, 2 + hy))
     s.px(PETAL, (19 + hx, 3 + hy), (20 + hx, 4 + hy), (19 + hx, 4 + hy)); s.px(CENTRE, (20 + hx, 3 + hy))
     # face
@@ -151,7 +152,8 @@ def bloom(view="front"):
     s.r(14, 5, 14, 10, HAIR); s.r(25, 5, 25, 10, HAIR); s.r(15, 6, 24, 6, HAIR)
     # hat
     s.r(17, 1, 22, 1, STRAW); s.r(15, 2, 24, 2, STRAW); s.r(15, 3, 24, 3, BAND)
-    s.r(13, 4, 26, 4, STRAW); s.r(13, 5, 26, 5, STRAW_D)
+    s.r(11, 4, 28, 4, STRAW); s.r(13, 5, 26, 5, STRAW_D)
+    s.px(STRAW, (11, 5), (12, 5), (27, 5), (28, 5))                              # downturned droop at the tips
     s.px(PETAL, (23, 3), (24, 4), (23, 4)); s.px(CENTRE, (24, 3))
     # face
     s.r(17, 8, 18, 9, OUT); s.r(21, 8, 22, 9, OUT); s.px(EYE_HI, (18, 8), (22, 8))

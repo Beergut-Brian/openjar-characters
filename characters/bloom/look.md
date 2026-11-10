@@ -59,7 +59,7 @@ See "Alt form: the-hill pixel" below (as built).
 ## Alt form: the-hill pixel: proposed
 Sprite source: `tools/pixel/bloom.py` (`bloom()`)
 
-- **Height:** 30 px with the outline (the 3D is about 29.5 px at true scale): hat crown 3 rows (the last is the pink band), brim 2,
+- **Height:** 30 px with the outline (the 3D is about 29.5 px at true scale): hat crown 3 rows (the last is the pink band), brim 2 (18 px in the front form, 20 px in the frames, with a 1 px droop at the tips),
   face 8 (with the chin row), tee 5, skirt 5, bare legs 4, clogs 3. Body 10 px wide, skirt 12.
 - **Palette:** straw `#E3C27A` (shade `#C2A15C`), band and tee `#F7A8CB` (shade `#D98BAE`), petals `#8E9BF0`, flower centre `#FFD23F`,
   skin `#BF8150` (+ `#9E6538`), hair `#3A2418`, cheeks `#F4A3B4`, eyes `#2A1E2C` with a `#FFFFFF` highlight, mouth `#6A2232`,
@@ -67,7 +67,7 @@ Sprite source: `tools/pixel/bloom.py` (`bloom()`)
 - **Frames:** front form (40 x 32) and the 128 x 224 player sheet: idle0-1, walk0-3, jump, fall, side0-2, down0-2, ride, sleep0-1
   (three-quarter view facing right, feet on row 30, hand at (22, 21) idle; the hem sways 1 px in the walk). No watering can.
 - **Should read as:**
-  - huge floppy straw sun hat: a 14 px brim, 2 px wider than the 10 px body on each side, over a 3-row crown with a pink band
+  - huge floppy straw sun hat: a brim 18-20 px wide, 3-4 px past the widest body pixel on each side and drooping 1 px at the tips, over a 3-row crown with a pink band
   - one flower on the brim: a 2 x 2 patch of three periwinkle pixels and one yellow centre pixel, on the band at the front
   - pink shirt over a denim-blue skirt; two brown mud pixels, one on each bare knee below the hem
   - purple garden clogs: 4 px wide, 2 rows plus a darker sole
