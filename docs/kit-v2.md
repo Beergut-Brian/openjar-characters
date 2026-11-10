@@ -126,7 +126,7 @@ or helmet still goes on top; each is the part `<id>_part_feature_<type>` on its 
 
 | Name | Params (defaults) |
 | --- | --- |
-| `antennae` | count 2 (1..4), color (default: darker skin), tip (default: color), length 0.75 (x R), spread 30 (deg from straight up), ball 0.15 (x R), thickness 0.035 (x R) |
+| `antennae` | count 2 (1..4), color (default: darker skin), tip (default: color), length 0.75 (x R), spread 30 (deg from straight up), ball 0.15 (x R), thickness 0.035 (x R), back 0 (deg the stalks lean toward the back of the head) |
 | `horns` | style "nub"/"curved", count 2 (1 = one centre horn), color "#F1E7CF", size 1.0 |
 | `pointy_ears` | color (default: skin), length 0.55 (x R), up 0.5 (how much they point up); replace the round ears |
 | `fins` | count 1/3 (centre crest, plus one each side), color (default: darker skin), size 1.0 |
@@ -193,7 +193,7 @@ Headwear (`headwear.type`; hair mode in HEADWEAR_OPTS):
 | Name | Params (defaults) |
 | --- | --- |
 | `animal_hood` | color="#2BB3A3", inner=<color darker>, opening_deg=52, eyes=None {"color": "#FFFFFF", "pupil": "#1B1B20", "size": 1.0, "el": 50, "apart": 34}, teeth=None (colour), teeth_n=6, teeth_span=110, spikes=None (colour), spike_n=6, ears=None (colour); hair hide |
-| `fishbowl` | tint="#CFE8FF", alpha=0.07, scale=1.0, collar="#F4F4F0", collar_size=1.0 (chunky lip torus, 0.16 R), collar_accent=None (colour: thin band round the lip), rim="#8FC7E8" (None: off; Blender-render-only edge via Layer Weight on a Cycles output, the glTF stays a plain BLEND tint with alpha), rim_alpha=0.55, rim_power=0.35, highlight=True, highlight_alpha=0.7, highlight_size=1.0; hair free |
+| `fishbowl` | tint="#CFE8FF", alpha=0.07, scale=1.0, collar="#F4F4F0", collar_size=1.0, collar_accent=None (colour), rim="#8FC7E8" (None: off), rim_alpha=0.55, rim_power=0.35, highlight=True, highlight_alpha=0.7, highlight_size=1.0; hair free |
 | `hard_hat` | color="#FFC93C", fit=0.30, tilt_deg=6, separate=False; hair tuck |
 | `top_hat` | color="#2A2A33", band="#7E57C2", height=1.6 (R), scale=1.0, tilt_deg=0, separate=False; hair tuck |
 | `miner_helmet` | color="#F4F4F0", lamp="#3A3A46", light="#FFF2C0", glow=6.0, lamp_size=1.0, watts=30, spot_deg=55, fit=0.28, tilt_deg=0, separate=False; hair tuck |
@@ -257,7 +257,7 @@ Costume (`costume: [{"piece": name, ...}]`):
 
 | Name | Params (defaults) |
 | --- | --- |
-| `whistle_cord` | color "#FFD23F" (whistle), cord "#2A6FD6", t 0.56 (height on the torso), x 0.0 (turn off centre, radians) |
+| `whistle_cord` | color "#FFD23F" (whistle), cord "#2A6FD6", t 0.56 (height on the torso), x 0.0 (turn off centre, radians), size 1.0 (whistle scale; Coach Whistle uses 1.5) |
 | `sash` | color "#C8A2F0", side "L" (the shoulder it goes over), width 0.17 (in torso height) |
 | `cape` | (part "cape") color "#7A2E8C", trim "#F2D16B", length 1.0 (1 = knee height), flare 0.3 |
 | `back_spikes` | color "#2FA88A", count 5, size 1.0 |

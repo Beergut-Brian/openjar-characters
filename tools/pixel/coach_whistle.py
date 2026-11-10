@@ -79,9 +79,11 @@ def _leg(s, hx, fx, fy, top, back=False):
 
 
 def _whistle(s, x, y):
-    """2 x 2 silver whistle at (x, y) on a dark patch, its mouthpiece pixel darker."""
-    s.r(x - 1, y, x + 2, y + 2, BLK)
+    """Referee's whistle at (x, y) on a dark patch: a 2 x 2 silver barrel with a dark air hole and a
+    1 px mouthpiece sticking out to the left of its top row, so it reads as a whistle and not a round medal."""
+    s.r(x - 2, y, x + 2, y + 2, BLK)
     s.r(x, y, x + 1, y + 1, WHISTLE)
+    s.px(WHISTLE, (x - 1, y))
     s.px(WHISTLE_D, (x + 1, y + 1))
 
 

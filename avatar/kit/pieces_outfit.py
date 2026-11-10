@@ -25,7 +25,7 @@ Shoes (`outfit.shoes.style`; `color` is per side, `size`/`socks` are the core's)
   wrestling_boots  color "#2A3A8C", lace "#F7F7F5", sole null, height 0.235
   chunky_boots     color "#8B5A2B", sole "#3A3330", cap null (toe cap, default darker color)
 Costume (`costume: [{"piece": name, ...}]`):
-  whistle_cord  color "#FFD23F" (whistle), cord "#2A6FD6", t 0.56 (height on the torso), x 0.0 (turn off centre, radians)
+  whistle_cord  color "#FFD23F" (whistle), cord "#2A6FD6", t 0.56 (height on the torso), x 0.0 (turn off centre, radians), size 1.0 (whistle scale; Coach Whistle uses 1.5)
   sash          color "#C8A2F0", side "L" (the shoulder it goes over), width 0.17 (in torso height)
   cape          (part "cape") color "#7A2E8C", trim "#F2D16B", length 1.0 (1 = knee height), flare 0.3
   back_spikes   color "#2FA88A", count 5, size 1.0

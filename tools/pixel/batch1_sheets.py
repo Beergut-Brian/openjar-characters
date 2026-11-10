@@ -39,7 +39,7 @@ def sil16(im):
 
 def lineup():
     sp = [("Jeff", R.jeff()), ("Chuck", R.chuck())] + [(n, front(c)) for c, n in BATCH]
-    im = Image.new("RGBA", (1920, 760), rgba(BG)); d = ImageDraw.Draw(im)
+    im = Image.new("RGBA", (1920, 900), rgba(BG)); d = ImageDraw.Draw(im)
     d.text((40, 14), "Batch 1 pixel forms (The Hill scale: 32 px = 1.2 m), with Jeff and Chuck", fill=INK, font=font(36))
     ground, x = 440, 60
     d.line((20, ground, 1900, ground), fill="#B9AD96", width=3)
@@ -52,9 +52,9 @@ def lineup():
         for n, s in sp:
             b = up(s, k); im.alpha_composite(b, (x, 720 - b.height)); x += b.width + 4
         x += 40
-    d.text((1300, 520), "silhouettes, 16 px tall, x4", fill=SOFT, font=font(18)); x = 1300
+    d.text((40, 760), "silhouettes, 16 px tall, x4", fill=SOFT, font=font(18)); x = 40
     for n, s in sp:
-        b = up(sil16(s), 4); im.alpha_composite(b, (x, 720 - b.height)); x += b.width + 24
+        b = up(sil16(s), 4); im.alpha_composite(b, (x, 870 - b.height)); x += b.width + 40
     im.convert("RGB").save("characters/batch1_pixel_lineup.png")
 
 

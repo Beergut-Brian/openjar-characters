@@ -15,11 +15,17 @@
       "look": "characters/astro_ana/look.md",
       "refs": "characters/astro_ana/refs/",
       "voice": "characters/astro_ana/voice/",
-      "model_3d": null,
-      "jarling_params": null,
-      "pixel": null,
+      "model_3d": "characters/astro_ana/refs/jarling/astro_ana.glb",
+      "jarling_params": "characters/astro_ana/jarling.json",
+      "pixel": {
+        "alt_form": "the-hill pixel",
+        "source": "tools/pixel/astro_ana.py",
+        "function": "astro_ana"
+      },
       "barks": [],
-      "alt_forms": []
+      "alt_forms": [
+        "the-hill pixel: proposed"
+      ]
     },
     {
       "id": "caveman",
@@ -81,11 +87,17 @@
       "look": "characters/coach_whistle/look.md",
       "refs": "characters/coach_whistle/refs/",
       "voice": "characters/coach_whistle/voice/",
-      "model_3d": null,
-      "jarling_params": null,
-      "pixel": null,
+      "model_3d": "characters/coach_whistle/refs/jarling/coach_whistle.glb",
+      "jarling_params": "characters/coach_whistle/jarling.json",
+      "pixel": {
+        "alt_form": "the-hill pixel",
+        "source": "tools/pixel/coach_whistle.py",
+        "function": "coach_whistle"
+      },
       "barks": [],
-      "alt_forms": []
+      "alt_forms": [
+        "the-hill pixel: proposed"
+      ]
     },
     {
       "id": "dragon",
@@ -187,11 +199,17 @@
       "look": "characters/ribbit/look.md",
       "refs": "characters/ribbit/refs/",
       "voice": "characters/ribbit/voice/",
-      "model_3d": null,
-      "jarling_params": null,
-      "pixel": null,
+      "model_3d": "characters/ribbit/refs/jarling/ribbit.glb",
+      "jarling_params": "characters/ribbit/jarling.json",
+      "pixel": {
+        "alt_form": "the-hill pixel",
+        "source": "tools/pixel/ribbit.py",
+        "function": "ribbit"
+      },
       "barks": [],
-      "alt_forms": []
+      "alt_forms": [
+        "the-hill pixel: proposed"
+      ]
     },
     {
       "id": "zorp",
@@ -207,11 +225,17 @@
       "look": "characters/zorp/look.md",
       "refs": "characters/zorp/refs/",
       "voice": "characters/zorp/voice/",
-      "model_3d": null,
-      "jarling_params": null,
-      "pixel": null,
+      "model_3d": "characters/zorp/refs/jarling/zorp.glb",
+      "jarling_params": "characters/zorp/jarling.json",
+      "pixel": {
+        "alt_form": "the-hill pixel",
+        "source": "tools/pixel/zorp.py",
+        "function": "zorp"
+      },
       "barks": [],
-      "alt_forms": []
+      "alt_forms": [
+        "the-hill pixel: proposed"
+      ]
     }
   ],
   "roster": [
