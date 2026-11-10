@@ -11,6 +11,8 @@ def entry(d, base, extra=None):
     first = re.search(r"\*\*First appears:\*\*\s*([^\n]+)", bible)
     status = bible.split("## Status")[-1].strip().splitlines()[0] if "## Status" in bible else ""
     barks = sorted(p.stem for p in (d / "voice").glob("*.ogg"))
+    look = (d / "look.md").read_text() if (d / "look.md").exists() else ""
+    alt_forms = re.findall(r"^## Alt form:\s*([^(\n]+?)\s*(?:\(|$)", look, re.M)
     e = {
         "id": d.name, "name": bible.splitlines()[0].lstrip("# ").strip(),
         "kind": kind, "player": player,
@@ -19,6 +21,7 @@ def entry(d, base, extra=None):
         "bible": f"{base}/{d.name}/bible.md", "look": f"{base}/{d.name}/look.md",
         "refs": f"{base}/{d.name}/refs/", "voice": f"{base}/{d.name}/voice/",
         "barks": barks,
+        "alt_forms": alt_forms,
     }
     if extra:
         e.update(extra)
