@@ -155,7 +155,7 @@ BROWS = {  # inner width, outer width, half length, arch
     "none":   None,
 }
 NOSES = ["button", "dot", "curve", "bump", "none"]   # "bump" is a small 3D nose, not drawn
-MOUTHS = ["smile", "grin", "grin_two", "grin_top", "o", "smirk", "set", "grit", "flat"]
+MOUTHS = ["smile", "grin", "grin_two", "grin_top", "o", "smirk", "set", "grit", "flat", "frown", "none"]   # "none": hidden (e.g. by a beard)
 
 EXPRESSIONS = ["neutral", "happy", "surprised", "determined"]
 EXPR_DEFAULTS = {
@@ -205,6 +205,11 @@ def draw_eye(cv, cx, cy, kind, spec, col):
     s = spec["eye_scale"]
     rx, ry, rot = e["rx"] * s, e["ry"] * s, e.get("rot", 0.0) * (1 if cx > 0 else -1)
     side = 1 if cx > 0 else -1
+    if spec["eye_mode"] == "shut":    # squeezed shut: a sideways chevron pointing at the nose
+        pts = [(cx + side * rx * 1.1, cy + ry * 0.55), (cx - side * rx * 0.9, cy), (cx + side * rx * 1.1, cy - ry * 0.55)]
+        sl, X, Y = cv.grid(cx - rx * 1.6, cy - ry * 1.2, cx + rx * 1.6, cy + ry * 1.2)
+        cv.paint(sl, sd_stroke(X, Y, pts, 0.05, 0.05), col)
+        return
     if spec["eye_mode"] == "arc":     # closed happy eye: an upward arch
         pts = bez((cx - rx * 1.15, cy - ry * 0.25), (cx, cy + ry * 1.25), (cx + rx * 1.15, cy - ry * 0.25))
         sl, X, Y = cv.grid(cx - rx * 1.5, cy - ry, cx + rx * 1.5, cy + ry * 1.2)
@@ -308,6 +313,8 @@ def draw_mouth(cv, kind, line, wscale=1.0):
         cv.paint(sl, sd_stroke(X, Y, bez((-w * 0.7, y - 0.01), (0, y + 0.02), (w * 0.7, y - 0.01)), 0.038), line)
     elif kind == "flat":
         cv.paint(sl, sd_stroke(X, Y, [(-w * 0.6, y), (w * 0.6, y)], 0.036), line)
+    elif kind == "frown":
+        cv.paint(sl, sd_stroke(X, Y, bez((-w * 0.6, y - 0.04), (0, y + 0.045), (w * 0.6, y - 0.04)), 0.034), line)
     elif kind == "grit":
         M = sd_rrect(X, Y, 0, y, w * 0.95, 0.055, 0.05)
         cv.paint(sl, M, TEETH)
@@ -333,9 +340,12 @@ def draw_face_cell(face, expr, skin):
     if hex_rgb(skin)[0] < 0.5:   # deep skin: darker lines so the mouth still reads
         line = shade(line, 0.7)
     ex = face["eye_spacing"]
+    ey = float(face.get("eye_y", EYE_Y))   # lower eyes (and brows) for a face under a low hat brim
     for sx in (-1, 1):
-        draw_eye(cv, sx * ex, EYE_Y, face["eyes"], spec, face["eye_color"])
-        bry = EYE_Y + EYES[face["eyes"]]["ry"] * spec["eye_scale"] + 0.11 + spec["brow_raise"]
+        draw_eye(cv, sx * ex, ey, face["eyes"], spec, face["eye_color"])
+        bry = ey + EYES[face["eyes"]]["ry"] * spec["eye_scale"] + 0.11 + spec["brow_raise"]
+        if sx > 0:   # one brow up (baffled): the character's left brow
+            bry += spec.get("brow_raise_left", 0.0)
         draw_brow(cv, sx * (ex + 0.01), bry, face["brows"], spec, face["brow_color"])
     draw_nose(cv, face["nose"], skin)
     draw_mouth(cv, spec["mouth"], line)
@@ -704,9 +714,11 @@ class Builder:
                 self.add(e, skin, "head")
         if face["nose"] == "bump":
             nz = NOSE_Y * float(face.get("scale", 1.3))
-            n = ellipsoid_bm(c + Vector((0, -R * L["hsy"] * math.sqrt(1 - nz * nz) * 0.99, nz * R * L["hsz"])),
-                             (0.1 * R, 0.08 * R, 0.085 * R), segs=20, rings=12)
-            self.add(n, skin, "head")
+            ns = float(face.get("nose_size", 1.0))   # >1: a big round nose, pushed out so it sits on the face
+            n = ellipsoid_bm(c + Vector((0, -R * L["hsy"] * math.sqrt(1 - nz * nz) * 0.99 - 0.05 * R * (ns - 1), nz * R * L["hsz"])),
+                             (0.1 * R * ns, 0.08 * R * ns, 0.085 * R * ns), segs=20 if ns <= 1 else 28, rings=12 if ns <= 1 else 16)
+            nmat = self.mats.flat("nose", face["nose_color"], rough=0.5, spec=0.3) if face.get("nose_color") else skin
+            self.add(n, nmat, "head")
         # neck
         self.add(capsule_bm((0, 0, L["torso_z1"] - 0.05), (0, 0, c.z - R * 0.6), 0.045, 0.045, segs=16, hem=3),
                  skin, "head")
@@ -766,15 +778,21 @@ class Builder:
         elif style == "curly":
             thr = tufts(blend(0.46, -0.5, side=0.2), 8, 0.08)
             sc = lambda el, phi: 1.15 + 0.06 * math.sin(phi * 9) * math.sin(el * 7) + 0.1 * max(0, math.sin(el))
+        elif style == "mane":   # a huge wild mass framing the face, down past the jaw at the sides
+            def thr(phi):
+                a = abs(phi) if phi <= math.pi else 2 * math.pi - phi
+                return 0.46 - 1.75 * (1 / (1 + math.exp(-(a - 1.12) * 9)))
+            sc = lambda el, phi: (1.30 + 0.07 * math.sin(phi * 13) * math.cos(el * 7) + 0.05 * math.sin(phi * 5 + el * 3)
+                                  + 0.12 * max(0, math.sin(el)) ** 1.5 + 0.18 * max(0.0, -math.cos(phi)) * max(0.0, math.cos(el)))
         elif style == "afro":
             thr = blend(0.42, -0.3, side=0.15)
             sc = lambda el, phi: 1.22 + 0.04 * math.sin(phi * 11) * math.cos(el * 9) + 0.26 * max(0, math.sin(el)) ** 1.5
         else:
             raise ValueError(f"unknown hair style {style}")
-        if P["headwear"]["type"] != "none":   # keep hair inside hats
+        if P["headwear"]["type"] != "none" and style != "mane":   # keep hair inside hats (a mane wears its hat on top)
             sc0 = sc
             sc = lambda el, phi: min(sc0(el, phi), 1.05)
-        taper = None if style in ("afro",) else 0.12
+        taper = None if style in ("afro",) else (0.0 if style == "mane" else 0.12)
         bm = solidify_bm(cap_shell_bm(c, radii, thr, sc, taper=taper), th * R)
         self.add(bm, mat, "head")
         if style == "bun":
@@ -821,7 +839,7 @@ class Builder:
                         lp[uv].uv = (u, (lp.vert.co.z - z0) / (z1 - z0))
             self.add(torso_bm, tmat, "spine", cyl_uv)
         else:
-            tmat = self.mats.flat("shirt", top["color"], rough=0.75, spec=0.25)
+            tmat = self.skin if top["style"] == "bare" else self.mats.flat("shirt", top["color"], rough=0.75, spec=0.25)
             sleeve_mat = tmat
             self.add(torso_bm, tmat, "spine")
             if top["style"] == "stripe":
@@ -833,7 +851,7 @@ class Builder:
                 self.add(lathe(rings, 40, b["power"]), acc, "spine")
         self.torso_widths = widths
         # bottoms: the lower part of the torso takes the trouser material, a hem ring covers the join
-        pants = self.mats.flat("pants", bot["color"], rough=0.8, spec=0.2)
+        pants = self.skin if bot["style"] == "none" else self.mats.flat("pants", bot["color"], rough=0.8, spec=0.2)
         self.pants = pants
         z_split = z0 + (z1 - z0) * 0.24
         L["waist_z"] = z0 + (z1 - z0) * 0.245   # middle of the hem ring: where a belt sits
@@ -862,7 +880,12 @@ class Builder:
             hip = Vector((s * L["hip_x"], 0, L["hip_z"] + 0.02))
             ank = Vector((s * L["hip_x"] * 1.05, 0, L["ankle_z"]))
             bone = f"leg.{side}"
-            if bot["style"] in ("shorts", "skirt"):
+            bow = float(P.get("posture", {}).get("leg_bow", 0.0))
+            if bot["style"] in ("shorts", "skirt", "none") and bow > 0:   # bowed legs: knees out
+                knee = hip + (ank - hip) * 0.5 + Vector((s * bow, 0, 0))
+                self.add(capsule_bm(hip, knee, leg_r * 0.95, leg_r * 0.92), self.skin, bone)
+                self.add(capsule_bm(knee, ank, leg_r * 0.92, leg_r * 0.85), self.skin, bone)
+            elif bot["style"] in ("shorts", "skirt", "none"):
                 self.add(capsule_bm(hip, ank, leg_r * 0.92, leg_r * 0.85), self.skin, bone)
                 if bot["style"] == "shorts":
                     mid = hip + (ank - hip) * 0.42
@@ -898,11 +921,12 @@ class Builder:
         x = ank.x
         st = shoes["style"]
         if st == "barefoot":
-            sc = 1.25
+            sc = 1.25 * float(shoes.get("foot_size", 1.0))
             self.add(ellipsoid_bm((x, -0.035, 0.042), (0.064 * sc, 0.105 * sc, 0.046 * sc), floor=0.004, segs=28),
                      self.skin, bone)
+            fs = float(shoes.get("foot_size", 1.0))
             for k, (tx, tr) in enumerate(((-0.040, 0.026), (-0.012, 0.023), (0.014, 0.021), (0.036, 0.019))):
-                tx = tx * s * -1   # big toe on the inner side
+                tx, tr = tx * s * -1 * fs, tr * fs   # big toe on the inner side
                 ty = -0.035 - 0.118 * sc + abs(tx) * 0.35
                 self.add(ellipsoid_bm((x + tx, ty, 0.026), (tr, tr * 1.05, tr * 0.95), segs=14, rings=8, floor=0.004),
                          self.skin, bone)
@@ -950,6 +974,8 @@ class Builder:
             bone = f"arm.{side}"
             if top["style"] in ("long", "costume"):
                 self.add(capsule_bm(sh, wr, ar * 1.08, ar * 1.0), sleeve, bone)
+            elif top["style"] == "bare":
+                self.add(capsule_bm(sh, wr, ar * 1.0, ar * 0.92), self.skin, bone)
             else:
                 self.add(capsule_bm(sh, wr, ar * 0.92, ar * 0.88), self.skin, bone)
                 mid = sh + (wr - sh) * 0.42
