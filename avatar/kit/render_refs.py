@@ -11,6 +11,8 @@ are traced from; `sprite_side.py` makes the sprite-scale sheet from it).
 
 Framing follows the character's real size, so it works for a 0.6 m gnome and a 6 m dragon.
 `ref_action` in the params: {"action": "yawn", "frame": 20, "expression": "yawn", "yaw": -28}.
+`expression_poses` in the params poses single cells of the expression sheet (default: idle frame 1):
+{"whistle": {"action": "whistle", "frame": 12}}.
 """
 import sys, os, json, argparse, math
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -87,7 +89,10 @@ if "expressions" in only:
     for i, ex in enumerate(NAMES):
         j = kit.build_jarling(P, prefix=f"e{i}_")
         rc.place(j, ((i - (n - 1) / 2) * 0.72 * k, 0, 0), 0)
-        kit.pose_at(j, "idle", 1)
+        ep = P.get("expression_poses", {}).get(ex, {})
+        kit.pose_at(j, ep.get("action", "idle"), int(ep.get("frame", 1)))
+        if ep:                                       # freeze it: the scene frame is shared by every cell
+            j.rig.animation_data.action = None
         kit.set_expression(j, ex)
     hz = j.L["head_c"].z
     rc.camera((0, -12 * k, hz + 2.4 * k), (0, 0, hz - 0.02 * k), ortho=0.725 * n * k)
