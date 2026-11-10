@@ -1,0 +1,93 @@
+{
+  "id": "ribbit",
+  "name": "Ribbit",
+  "notes": "From characters/ribbit/look.md (Kaden's sheet 2026-11-10).",
+  "head": {
+    "shape": "round",
+    "size": 1.05,
+    "ears": "none"
+  },
+  "skin": "#F0BE94",
+  "face": {
+    "eyes": "drop",
+    "brows": "soft",
+    "nose": "dot",
+    "mouth": "wide",
+    "brow_color": "#9A6A42",
+    "lid": 0.45,
+    "lid_low": 0.12,
+    "lid_tilt": -0.1,
+    "blush": 0.5,
+    "expressions": {
+      "happy": {
+        "eye_mode": "arc",
+        "mouth": "wide",
+        "brow_raise": 0.02,
+        "blush_add": 0.25
+      },
+      "surprised": {
+        "eye_scale": 1.25,
+        "lid": 0.0,
+        "lid_low": 0.0,
+        "lid_tilt": 0.0,
+        "brow_raise": 0.08,
+        "mouth": "o"
+      },
+      "determined": {
+        "lid": 0.45,
+        "lid_low": 0.12,
+        "lid_tilt": -0.1,
+        "brow_tilt": 0.25,
+        "brow_raise": -0.03,
+        "mouth": "wide"
+      }
+    }
+  },
+  "hair": {
+    "style": "none"
+  },
+  "headwear": {
+    "type": "animal_hood",
+    "color": "#2A9DB0",
+    "eyes": {
+      "color": "#F5F5F2",
+      "pupil": "#15151A",
+      "size": 1.25,
+      "el": 60,
+      "apart": 30
+    }
+  },
+  "body": {
+    "build": "round",
+    "height": 0.85,
+    "leg_scale": 0.85,
+    "width": 1.1,
+    "belly": 0.4
+  },
+  "gait": "hop",
+  "outfit": {
+    "top": {
+      "style": "long",
+      "color": "#2A9DB0",
+      "pattern": {
+        "type": "belly_panel",
+        "accent": "#F6D44A"
+      }
+    },
+    "bottoms": {
+      "style": "shorts",
+      "color": "#22336B"
+    },
+    "shoes": {
+      "style": "footies",
+      "color": "#F6D44A"
+    }
+  },
+  "costume": [],
+  "ref_action": {
+    "action": "run",
+    "frame": 8,
+    "expression": "neutral",
+    "yaw": -28
+  }
+}

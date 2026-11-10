@@ -695,6 +695,7 @@ SLOT_REF = dict(head_crown=0.27, face_r=0.235, back_tw=0.152, waist_rx=0.155, wa
 HEADWEAR = {}     # headwear type -> fn(builder, headwear_dict)   (builder.cur_part is "headwear")
 COSTUME = {}      # costume piece -> fn(builder, piece_dict)
 ACTIONS = {}      # extra action  -> (fn(builder) -> [(frame, pose), ...], loops: bool); listed in params "actions"
+GAITS = {}        # params "gait" -> fn(builder) -> {action: keys} replacing standard run/idle (pieces_gait.py)
 BODY_TYPES = {}   # body.type     -> class with the Builder interface (see avatar/README.md "Body types")
 # Kit v2 registries (docs/kit-v2.md):
 HEADWEAR_OPTS = {}  # headwear type -> {"hair": "tuck" (default: hair clamped under the hat) | "free" | "hide"}
@@ -1653,6 +1654,8 @@ class Builder:
             extra[name] = fn(self)
             if loop:
                 loops.append(name)
+        if self.P.get("gait"):                       # cosmetic run/idle replacement (pieces_gait.py)
+            extra.update(GAITS[self.P["gait"]](self)); rig["jarling_gait"] = self.P["gait"]
         rig["jarling_loops"] = loops
         self.rig, self.body, self.hat = rig, body, None
         if self.hat_parts:

@@ -1,0 +1,95 @@
+{
+  "id": "zorp",
+  "name": "Zorp",
+  "notes": "From characters/zorp/look.md (Kaden's sheet 2026-11-10).",
+  "head": {
+    "shape": "tall",
+    "size": 1.05,
+    "ears": "none",
+    "features": [
+      {
+        "type": "antennae",
+        "count": 2,
+        "color": "#7FB9D6",
+        "tip": "#FFD23F",
+        "ball": 0.2,
+        "length": 0.8,
+        "spread": 28,
+        "back": 15
+      }
+    ]
+  },
+  "skin": "#9FD6F0",
+  "face": {
+    "eyes": "round",
+    "brows": "thin",
+    "nose": "none",
+    "mouth": "o",
+    "blush": 0.5,
+    "expressions": {
+      "neutral": {
+        "eye_scale": 1.15,
+        "lid": 0.0,
+        "mouth": "o"
+      },
+      "happy": {
+        "eye_mode": "arc",
+        "mouth": "smile",
+        "blush_add": 0.25
+      },
+      "surprised": {
+        "eye_scale": 1.35,
+        "mouth": "o",
+        "brow_raise": 0.03
+      },
+      "determined": {
+        "eye_scale": 1.1,
+        "lid": 0.0,
+        "lid_tilt": 0.0,
+        "brow_tilt": 0.0,
+        "brow_raise": 0.0,
+        "brow_raise_left": 0.06,
+        "mouth": "flat"
+      }
+    }
+  },
+  "hair": {
+    "style": "none"
+  },
+  "headwear": {
+    "type": "headband",
+    "color": "#C9CED4"
+  },
+  "body": {
+    "build": "slim",
+    "height": 1.05,
+    "width": 0.85
+  },
+  "outfit": {
+    "top": {
+      "style": "tee",
+      "color": "#FFD23F",
+      "pattern": {
+        "type": "vacation",
+        "accent": "#FF7EB9",
+        "accent2": "#FFA9D0",
+        "center": "#FFD23F"
+      }
+    },
+    "bottoms": {
+      "style": "shorts",
+      "color": "#F5F5F2"
+    },
+    "shoes": {
+      "style": "sandals",
+      "color": "#C89A63"
+    }
+  },
+  "costume": [],
+  "ref_action": {
+    "action": "cheer",
+    "frame": 7,
+    "expression": "happy",
+    "yaw": -20
+  }
+}

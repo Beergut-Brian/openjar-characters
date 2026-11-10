@@ -7,7 +7,7 @@ and `fit` (height of the hat base above the head centre, in R: lower sits lower 
 
 Headwear (`headwear.type`; hair mode in HEADWEAR_OPTS):
   animal_hood   color="#2BB3A3", inner=<color darker>, opening_deg=52, eyes=None {"color": "#FFFFFF", "pupil": "#1B1B20", "size": 1.0, "el": 50, "apart": 34}, teeth=None (colour), teeth_n=6, teeth_span=110, spikes=None (colour), spike_n=6, ears=None (colour); hair hide
-  fishbowl      tint="#CFE8FF", alpha=0.07, scale=1.0, collar="#F4F4F0", highlight=True; hair free
+  fishbowl      tint="#CFE8FF", alpha=0.07, scale=1.0, collar="#F4F4F0", collar_size=1.0, collar_accent=None (colour), rim="#8FC7E8" (None: off), rim_alpha=0.55, rim_power=0.35, highlight=True, highlight_alpha=0.7, highlight_size=1.0; hair free
   hard_hat      color="#FFC93C", fit=0.30, tilt_deg=6, separate=False; hair tuck
   top_hat       color="#2A2A33", band="#7E57C2", height=1.6 (R), scale=1.0, tilt_deg=0, separate=False; hair tuck
   miner_helmet  color="#F4F4F0", lamp="#3A3A46", light="#FFF2C0", glow=6.0, lamp_size=1.0, watts=30, spot_deg=55, fit=0.28, tilt_deg=0, separate=False; hair tuck
@@ -160,13 +160,19 @@ def animal_hood(B, hw):
 # ------------------------------------------------------------------------------------ fishbowl
 def fishbowl(B, hw):
     """A clear round space helmet over the whole head (room for side hair puffs), on an opaque
-    collar ring at the neck."""
+    collar ring at the neck. `rim` (colour) adds a view-dependent edge to the glass in Blender
+    renders (Layer Weight facing, on a Cycles-only output: the exported glTF material stays the
+    plain alpha-blended tint); `collar_size` scales the chunky lip torus; `collar_accent` adds a
+    thin band of that colour round the lip."""
     L = B.L; R, c = L["R"], L["head_c"]
     k = float(hw.get("scale", 1.0))
     rb = 1.42 * R * k * max(L["hsx"], L["hsz"])
     ctr = c + Vector((0, 0, 0.15 * R))
     zcut = c.z - 0.98 * R   # the bowl ends at the neck ring
-    gm = glass(B, "fishbowl", hw.get("tint", "#CFE8FF"), float(hw.get("alpha", 0.07)))
+    gm = B.mats.glass("fishbowl", hw.get("tint", "#CFE8FF"), alpha=float(hw.get("alpha", 0.07)), rough=0.03)
+    rim = hw.get("rim", "#8FC7E8")
+    if rim and gm.get("fishbowl_rim") is None:
+        _fishbowl_rim(gm, rim, float(hw.get("rim_alpha", 0.55)), float(hw.get("rim_power", 0.35)))
     bm = bmesh.new()
     bmesh.ops.create_uvsphere(bm, u_segments=64, v_segments=40, radius=1.0)
     hz = (zcut - ctr.z) / rb
@@ -180,15 +186,46 @@ def fishbowl(B, hw):
     B.add(lathe([(zcut - 0.16 * R, 0, 0, 0, 0), (zcut - 0.16 * R, rr * 0.92, rr * 0.92, 0, 0), (zcut - 0.10 * R, rr * 1.03, rr * 1.03, 0, 0),
                  (zcut + 0.04 * R, rr * 1.03, rr * 1.03, 0, 0), (zcut + 0.06 * R, rr * 0.9, rr * 0.9, 0, 0),
                  (zcut + 0.06 * R, rr * 0.75, rr * 0.75, 0, 0), (zcut - 0.02 * R, 0, 0, 0, 0)], 56), cm, "head")
-    B.add(tube_bm([(rr * 1.03 * math.cos(a), rr * 1.03 * math.sin(a), zcut - 0.04 * R) for a in np.linspace(0, 2 * math.pi, 56, endpoint=False)],
-                  0.06 * R, cyclic=True), cm, "head")
-    if hw.get("highlight", True):   # a soft glint strip on the upper left of the glass
-        hm = glass(B, "fishbowl_glint", "#FFFFFF", 0.55)
-        pts = []
-        for t in np.linspace(0, 1, 12):
-            el = math.radians(28 + 42 * t); ph = math.radians(-38 + 8 * t)
-            pts.append(tuple(ctr + Vector((rb * 1.012 * math.sin(ph) * math.cos(el), -rb * 1.012 * math.cos(ph) * math.cos(el), rb * 1.012 * math.sin(el)))))
-        B.add(tube_bm(pts, 0.035 * R, radii=[math.sin(math.pi * (0.08 + 0.84 * i / 11)) for i in range(12)]), hm, "head")
+    cs = float(hw.get("collar_size", 1.0))   # the chunky lip torus (1.0 = 0.16 R thick)
+    ring = lambda rad, z: [(rad * math.cos(a), rad * math.sin(a), z) for a in np.linspace(0, 2 * math.pi, 56, endpoint=False)]
+    B.add(tube_bm(ring(rr * 1.03, zcut - 0.01 * R), 0.16 * R * cs, cyclic=True), cm, "head")
+    if hw.get("collar_accent"):
+        am = B.mats.flat("fishbowl_collar_accent", hw["collar_accent"], rough=0.45, spec=0.4)
+        B.add(tube_bm(ring(rr * 1.03 + 0.135 * R * cs, zcut - 0.01 * R), 0.045 * R * cs, cyclic=True), am, "head")
+    if hw.get("highlight", True):   # a soft glint streak high on the upper left of the glass, above the hair (+ a small dot)
+        hm = glass(B, "fishbowl_glint", "#FFFFFF", float(hw.get("highlight_alpha", 0.7)))
+        hs = float(hw.get("highlight_size", 1.0))
+        def streak(el0, el1, ph0, ph1, w, n=14):
+            pts = []
+            for t in np.linspace(0, 1, n):
+                el = math.radians(el0 + (el1 - el0) * t); ph = math.radians(ph0 + (ph1 - ph0) * t)
+                pts.append(tuple(ctr + Vector((rb * 1.012 * math.sin(ph) * math.cos(el), -rb * 1.012 * math.cos(ph) * math.cos(el), rb * 1.012 * math.sin(el)))))
+            B.add(tube_bm(pts, w * R * hs, radii=[math.sin(math.pi * (0.08 + 0.84 * i / (n - 1))) for i in range(n)]), hm, "head")
+        streak(50, 80, -58, -22, 0.08)
+        streak(56, 64, -76, -70, 0.045, n=6)
+
+def _fishbowl_rim(m, rim_hex, rim_alpha, power):
+    """Cycles-only rim: Mix(glass, rim tint) by Layer Weight facing on a second output that targets
+    CYCLES. The active (ALL) output still takes the plain Principled glass, which is what the glTF
+    exporter reads (alphaMode BLEND, baseColorFactor alpha = headwear.alpha)."""
+    nt = m.node_tree
+    p = nt.nodes.get("Principled BSDF")
+    out_all = next(n for n in nt.nodes if n.type == "OUTPUT_MATERIAL")
+    out_all.target = "ALL"; out_all.is_active_output = True
+    rp = nt.nodes.new("ShaderNodeBsdfPrincipled")
+    rp.inputs["Base Color"].default_value = (*kit.srgb_to_lin(kit.hex_rgb(rim_hex)), 1.0)
+    rp.inputs["Roughness"].default_value = 0.15
+    rp.inputs["Alpha"].default_value = 1.0
+    lw = nt.nodes.new("ShaderNodeLayerWeight"); lw.inputs["Blend"].default_value = 0.5
+    pw = nt.nodes.new("ShaderNodeMath"); pw.operation = "POWER"; pw.inputs[1].default_value = 1.0 / max(power, 1e-3)
+    mul = nt.nodes.new("ShaderNodeMath"); mul.operation = "MULTIPLY"; mul.inputs[1].default_value = rim_alpha
+    nt.links.new(lw.outputs["Facing"], pw.inputs[0]); nt.links.new(pw.outputs[0], mul.inputs[0])
+    mix = nt.nodes.new("ShaderNodeMixShader")
+    nt.links.new(mul.outputs[0], mix.inputs[0]); nt.links.new(p.outputs[0], mix.inputs[1]); nt.links.new(rp.outputs[0], mix.inputs[2])
+    out_c = nt.nodes.new("ShaderNodeOutputMaterial"); out_c.target = "CYCLES"
+    nt.links.new(mix.outputs[0], out_c.inputs["Surface"])
+    out_all.is_active_output = True
+    m["fishbowl_rim"] = 1
 
 kit.HEADWEAR["animal_hood"] = animal_hood
 kit.HEADWEAR["fishbowl"] = fishbowl
