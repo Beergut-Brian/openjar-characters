@@ -76,7 +76,13 @@ def roster(chars):
 
 out = {"version": 1, "characters": scan("characters")}
 out["roster"] = roster(out["characters"])
-out["defaults"] = {f"P{c['default_for']}": c["id"] for c in out["characters"] if c["default_for"]}
+out["defaults"] = {f"P{c['default_for']}": c["id"] for c in sorted(out["characters"], key=lambda c: c["default_for"] or 9) if c["default_for"]}
+# The rules every playable character follows (README "Playable characters"); tests and games read these.
+out["player_colours"] = {"P1": "#3cc24a", "P2": "#e4393c"}
+out["body_types"] = {"standard": {
+    "rig": "avatar/kit (Jarling humanoid)", "params": ["build", "height", "leg_scale"],
+    "builds": ["slim", "regular", "stocky", "round", "boxy", "puffy"],
+    "height": [0.8, 1.3], "leg_scale": [0.8, 1.2]}}
 out["proposed"] = scan("proposals", {"status": "proposed"})
 (root / "characters.json").write_text(json.dumps(out, indent=2) + "\n")
 print(f"wrote characters.json with {len(out['characters'])} characters "
