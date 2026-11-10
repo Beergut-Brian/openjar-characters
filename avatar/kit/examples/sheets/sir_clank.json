@@ -1,0 +1,55 @@
+{
+ "id": "sir_clank",
+ "name": "Sir Clank",
+ "notes": "Kit v2 example for the sheet, not an approved look.",
+ "head": {
+  "shape": "round",
+  "size": 1.0,
+  "ears": "round"
+ },
+ "skin": "#F7CFAE",
+ "face": {
+  "eyes": "round",
+  "brows": "thick",
+  "brow_color": "#4A2F23",
+  "brow_tilt": 0.25,
+  "mouth": "grin",
+  "eye_y": -0.09
+ },
+ "hair": {
+  "style": "short",
+  "color": "#4A2F23"
+ },
+ "headwear": {
+  "type": "pot_helmet",
+  "color": "#B8BEC6"
+ },
+ "body": {
+  "build": "regular",
+  "height": 1.05
+ },
+ "outfit": {
+  "top": {
+   "style": "tee",
+   "color": "#8A8F98",
+   "pattern": {
+    "type": "emblem",
+    "shape": "shield",
+    "accent": "#F2C230"
+   }
+  },
+  "bottoms": {
+   "style": "pants",
+   "color": "#23305E"
+  },
+  "shoes": {
+   "style": "chunky_boots",
+   "color": "#7A4E2A"
+  }
+ },
+ "costume": [],
+ "posture": {
+  "spine_lean": -3,
+  "head_lean": -2
+ }
+}

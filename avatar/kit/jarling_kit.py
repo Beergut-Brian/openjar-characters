@@ -31,6 +31,37 @@ def mix_hex(a, b, t):
 PLAYER_GREEN = "#3CC24A"
 PLAYER_RED = "#E4393C"
 
+def is_fantasy_skin(skin):
+    """True for skins outside the human range (blue, green, purple, grey...): their blush, brows
+    and face lines are derived from the skin colour instead of the human defaults."""
+    import colorsys
+    h, s_, _v = colorsys.rgb_to_hsv(*hex_rgb(skin))
+    return not (7 / 360 <= h <= 45 / 360 and s_ >= 0.12)
+
+def luminance(h):
+    r, g, b = srgb_to_lin(hex_rgb(h))
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b
+
+def face_colours(face, skin):
+    """Blush, line and brow colours for a face. Explicit `blush_color` / `line_color` /
+    `brow_color` win; otherwise human skins keep the kit's originals and fantasy skins derive
+    them from the skin so they read on blue, green, purple or grey."""
+    fantasy = is_fantasy_skin(skin)
+    dark = luminance(skin) < 0.16
+    line = mix_hex(face["eye_color"], MOUTH_DARK, 0.35)
+    if hex_rgb(skin)[0] < 0.5 and not fantasy:   # deep skin: darker lines so the mouth still reads
+        line = shade(line, 0.7)
+    blush = "#FF7F86"
+    brow = face["brow_color"]
+    if fantasy:
+        blush = mix_hex(shade(skin, 0.72), "#F0509A", 0.5) if not dark else mix_hex(skin, "#FF9AC8", 0.45)
+        line = mix_hex(shade(skin, 0.30), face["eye_color"], 0.35) if not dark else shade(skin, 0.35)
+        if face.get("_brow_auto"):
+            brow = shade(skin, 0.42) if not dark else mix_hex(skin, "#FFFFFF", 0.5)
+    return dict(blush=face.get("blush_color") or blush, line=face.get("line_color") or line, brow=brow)
+
+from colour_rule import delta_e2000, de2000_lab, main_colours, player_colour_clashes, PLAYER_DE_MIN   # noqa: E402  (pure Python, also used by tools/check_colours.py)
+
 # ------------------------------------------------------------------------------------- defaults
 DEFAULTS = {
     "id": "jarling", "name": "Jarling",
@@ -294,7 +325,9 @@ def open_mouth(cv, w, y, h, teeth, line):
 def draw_mouth(cv, kind, line, wscale=1.0):
     y = MOUTH_Y; w = 0.17 * wscale
     sl, X, Y = cv.grid(-0.32, y - 0.25, 0.32, y + 0.15)
-    if kind == "smile":
+    if kind in MOUTH_DRAW:
+        MOUTH_DRAW[kind](cv, line, y, w)
+    elif kind == "smile":
         cv.paint(sl, sd_stroke(X, Y, bez((-w, y + 0.05), (0, y - 0.075), (w, y + 0.05)), 0.036), line)
     elif kind == "grin":
         open_mouth(cv, w * 1.05, y, 0.13, None, line)
@@ -326,19 +359,22 @@ def draw_face_cell(face, expr, skin):
     k = 0.5 * (1 - 2 * FACE_MARGIN) * float(face.get("scale", 1.3))
     cv = Canvas(cell, cell, (-0.5 / k, 0.5 / k, -0.5 / k, 0.5 / k), skin)
     spec = expr_spec(face, expr)
+    fcol = face_colours(face, skin)
+    extras = [(FACE_EXTRAS[e["type"]], e) for e in ([{"type": x} if isinstance(x, str) else x for x in face.get("extras", [])])]
+    for (fn, layer), e in extras:
+        if layer == "under":
+            fn(cv, face, e, skin, spec)
     blush = min(1.0, face["blush"] + spec["blush_add"])
     if blush > 0.01:
         for sx in (-1, 1):
             sl, X, Y = cv.grid(sx * 0.56 - 0.25, -0.5, sx * 0.56 + 0.25, -0.05)
-            cv.paint(sl, sd_ellipse(X, Y, sx * 0.56, -0.29, 0.12, 0.075), "#FF7F86", 0.5 * blush, soft=0.09)
+            cv.paint(sl, sd_ellipse(X, Y, sx * 0.56, -0.29, 0.12, 0.075), fcol["blush"], 0.5 * blush, soft=0.09)
     if face.get("freckles"):
         for sx in (-1, 1):
             for fx, fy in ((0.46, -0.22), (0.55, -0.19), (0.50, -0.29), (0.62, -0.27)):
                 sl, X, Y = cv.grid(sx * fx - 0.03, fy - 0.03, sx * fx + 0.03, fy + 0.03)
                 cv.paint(sl, sd_circle(X, Y, sx * fx, fy, 0.013), shade(skin, 0.72), 0.8)
-    line = mix_hex(face["eye_color"], MOUTH_DARK, 0.35)
-    if hex_rgb(skin)[0] < 0.5:   # deep skin: darker lines so the mouth still reads
-        line = shade(line, 0.7)
+    line = fcol["line"]
     ex = face["eye_spacing"]
     ey = float(face.get("eye_y", EYE_Y))   # lower eyes (and brows) for a face under a low hat brim
     for sx in (-1, 1):
@@ -346,9 +382,13 @@ def draw_face_cell(face, expr, skin):
         bry = ey + EYES[face["eyes"]]["ry"] * spec["eye_scale"] + 0.11 + spec["brow_raise"]
         if sx > 0:   # one brow up (baffled): the character's left brow
             bry += spec.get("brow_raise_left", 0.0)
-        draw_brow(cv, sx * (ex + 0.01), bry, face["brows"], spec, face["brow_color"])
+        if not (face.get("brow_skip") == ("L" if sx > 0 else "R")):   # a face extra draws that brow (scorch mark)
+            draw_brow(cv, sx * (ex + 0.01), bry, face["brows"], spec, fcol["brow"])
     draw_nose(cv, face["nose"], skin)
-    draw_mouth(cv, spec["mouth"], line)
+    draw_mouth(cv, spec["mouth"], line, float(face.get("mouth_width", 1.0)))
+    for (fn, layer), e in extras:
+        if layer != "under":
+            fn(cv, face, e, skin, spec)
     return cv.img
 
 FACE_CELL = 1024
@@ -440,6 +480,27 @@ class Mats:
         self.cache[name] = m
         return m
 
+    def glass(self, key, hexcol, alpha=0.22, rough=0.08):
+        """See-through material (fishbowl helmet, lenses): exports as glTF alpha blend."""
+        m = self.flat(key, hexcol, rough=rough, spec=0.25)
+        p = m.node_tree.nodes.get("Principled BSDF")
+        p.inputs["Alpha"].default_value = alpha
+        # transmissive, so the glass does not lay a milky diffuse veil over dark hair behind it
+        p.inputs["Transmission Weight"].default_value = 1.0
+        p.inputs["IOR"].default_value = 1.05
+        m.diffuse_color = (*srgb_to_lin(hex_rgb(hexcol)), alpha)
+        if hasattr(m, "surface_render_method"):
+            m.surface_render_method = "BLENDED"
+        return m
+
+    def emit(self, key, hexcol, strength=4.0):
+        """Glowing material (lamp lenses, lights)."""
+        m = self.flat(key, hexcol, rough=0.5, spec=0.2)
+        p = m.node_tree.nodes.get("Principled BSDF")
+        p.inputs["Emission Color"].default_value = (*srgb_to_lin(hex_rgb(hexcol)), 1.0)
+        p.inputs["Emission Strength"].default_value = strength
+        return m
+
     def tex(self, key, image, rough=0.6, spec=0.3):
         name = f"{self.prefix}{key}"
         m = bpy.data.materials.new(name)
@@ -501,7 +562,7 @@ def blob(z0, z1, widths, depth=0.82, n_end=2.4, power=2.0, chest=None, segs=40, 
         t = (1 - math.cos(math.pi * s)) / 2
         e = envelope(t, n_end)
         w = smooth_interp(t, widths)
-        cy = -smooth_interp(t, chest) if chest else 0.0
+        cy = -(chest(t) if callable(chest) else smooth_interp(t, chest)) if chest else 0.0
         rings.append((z0 + (z1 - z0) * t, w * e, w * e * depth, 0.0, cy))
     return lathe(rings, segs, power)
 
@@ -635,6 +696,18 @@ HEADWEAR = {}     # headwear type -> fn(builder, headwear_dict)   (builder.cur_p
 COSTUME = {}      # costume piece -> fn(builder, piece_dict)
 ACTIONS = {}      # extra action  -> (fn(builder) -> [(frame, pose), ...], loops: bool); listed in params "actions"
 BODY_TYPES = {}   # body.type     -> class with the Builder interface (see avatar/README.md "Body types")
+# Kit v2 registries (docs/kit-v2.md):
+HEADWEAR_OPTS = {}  # headwear type -> {"hair": "tuck" (default: hair clamped under the hat) | "free" | "hide"}
+SHOES = {}        # shoes.style   -> fn(builder, s, side, ank, shoes): one foot (s +1 = the character's left)
+PATTERNS = {}     # pattern name  -> fn(img, U, V, spec, part): paints a top / bottoms texture in place
+FACE_EXTRAS = {}  # face extra    -> (fn(canvas, face, extra, skin, spec), "under" | "over")
+MOUTH_DRAW = {}   # mouth name    -> fn(canvas, line_colour, y, w)
+FEATURES = {}     # head feature  -> fn(builder, feature_dict)   (builder.cur_part is "feature_<type>")
+HAIR_PIECES = {}  # hair piece    -> fn(builder, piece_dict, material)
+HAIR_PRESETS = {} # hair.style    -> {"base": <cap style>, "pieces": [...]}   data-only styles
+
+WIDTH_RANGE = (0.75, 1.5)   # body.width
+BELLY_RANGE = (0.0, 1.0)    # body.belly
 
 class Builder:
     def __init__(self, params, prefix=""):
@@ -645,7 +718,48 @@ class Builder:
         self.part_tags = []      # parallel to parts: None (main body) or a separable body part, see BODY_PARTS
         self.cur_part = None
         self.extra_bones = []
+        self.bob_bones = []      # (bone, amount, side sign): follow the comb's secondary bob in every action
+        self.lamps = []          # real lights on the head bone: dict(name, pos, dir, color, watts, spot_deg)
+        self.P["face"]["_brow_auto"] = "brow_color" not in (params or {}).get("face", {})
         self.coll = bpy.context.scene.collection
+
+    def add_bob_bone(self, name, head, tail, amount=1.0, side=1.0, parent="head"):
+        """A floppy bone under the head that gets the comb's soft secondary bob (scaled by
+        `amount`; `side` -1 mirrors the sideways sway). Skin pieces to it with add(bm, mat, name)."""
+        self.extra_bones.append((name, Vector(head), Vector(tail)))
+        if amount:
+            self.bob_bones.append((name, float(amount), float(side)))
+        return name
+
+    def pattern_image(self, key, d, part, w=1024, h=512):
+        """Texture for `top` / `bottoms` with `pattern`: a name, a layer dict or a list of layers."""
+        u = (np.arange(w) + 0.5) / w; v = (np.arange(h) + 0.5) / h
+        U, V = np.meshgrid(u.astype(np.float32), v[::-1].astype(np.float32))
+        img = np.empty((h, w, 3), np.float32); img[:] = hex_rgb(d["color"])
+        layers = d["pattern"] if isinstance(d["pattern"], list) else [d["pattern"]]
+        for layer in layers:
+            layer = {"type": layer} if isinstance(layer, str) else dict(layer)
+            for k in ("color", "accent", "accent2"):
+                if k not in layer and k in d:
+                    layer[k] = d[k]
+            layer.setdefault("accent", "#FFFFFF")
+            if layer["type"] not in PATTERNS:
+                raise ValueError(f"unknown pattern {layer['type']!r}; known: {', '.join(sorted(PATTERNS))}")
+            PATTERNS[layer["type"]](img, U, V, layer, part)
+        return np_to_image(f"{self.mats.prefix}{key}", np.clip(img, 0, 1))
+
+    def chest_at(self, t):
+        """How far the torso centre line is pushed forward (-Y) at height fraction t (chest / belly)."""
+        return self.torso_chest(t) if getattr(self, "torso_chest", None) else 0.0
+
+    def torso_point(self, t, th, grow=1.0):
+        """Point on the torso surface at height fraction t (0 bottom, 1 top) and lathe angle th
+        (-pi/2 = front, 0 = the character's left, pi/2 = back). Follows build, width and belly."""
+        L = self.L; b = L["b"]
+        t = min(1.0, max(0.0, t))
+        w = smooth_interp(t, self.torso_widths) * envelope(t, b["n"]) * grow
+        dx, dy = superxy(th, b["power"])
+        return Vector((w * dx, -self.chest_at(t) + w * b["depth"] * dy, L["torso_z0"] + (L["torso_z1"] - L["torso_z0"]) * t))
 
     def add(self, bm, mat, bone, uv_fn=None):
         uv = bm.loops.layers.uv.get("UVMap") or bm.loops.layers.uv.new("UVMap")
@@ -657,7 +771,22 @@ class Builder:
     # --- layout
     def layout(self):
         P = self.P
-        b = BUILDS[P["body"]["build"]]
+        b = dict(BUILDS[P["body"]["build"]])
+        width = float(P["body"].get("width", 1.0))
+        belly = P["body"].get("belly")
+        if not WIDTH_RANGE[0] - 1e-9 <= width <= WIDTH_RANGE[1] + 1e-9:
+            raise ValueError(f"body.width {width} is outside {WIDTH_RANGE}")
+        if belly is not None and not BELLY_RANGE[0] - 1e-9 <= float(belly) <= BELLY_RANGE[1] + 1e-9:
+            raise ValueError(f"body.belly {belly} is outside {BELLY_RANGE}")
+        self.belly01 = float(belly or 0.0)
+        self.reshaped = width != 1.0 or self.belly01 > 0.0
+        hip_floor = 1.0
+        if width != 1.0:      # fat / skinny on the same skeleton: torso and limbs scale, bones do not move
+            b["w"] *= width
+            b["limb"] *= 1 + 0.45 * (width - 1)
+            hip_floor = min(1.0, 1 - 0.9 * (1 - width))
+        if self.belly01 > 0.0:
+            b["belly"] += 0.075 * self.belly01
         h = float(P["body"].get("height", 1.0))
         R = 0.235 * float(P["head"].get("size", 1.0))
         sx, sy, sz, jaw = HEAD_SHAPES[P["head"]["shape"]]
@@ -669,7 +798,7 @@ class Builder:
         L["shoulder_z"] = L["torso_z1"] - 0.075
         L["head_c"] = Vector((0, 0, L["torso_z1"] + 0.015 + R * 0.93 * sz))
         L["tw"] = 0.152 * b["w"]
-        L["hip_x"] = 0.072 * max(1.0, b["w"] * 0.95)
+        L["hip_x"] = 0.072 * max(hip_floor, b["w"] * 0.95)
         L["ank_x"] = L["hip_x"] * 1.05 + float(P.get("posture", {}).get("stance", 0.0))   # stance: feet wider apart
         L["limb"] = b["limb"]
         self.L = L
@@ -708,7 +837,7 @@ class Builder:
         self.add(bm, self.face_mat, "head")
         skin = self.mats.flat("skin", P["skin"], rough=0.55, spec=0.3)
         self.skin = skin
-        if P["head"].get("ears", "round") != "none":
+        if P["head"].get("ears", "round") != "none" and not any(f.get("type") == "pointy_ears" for f in P["head"].get("features", [])):
             for s in (-1, 1):
                 e = ellipsoid_bm(c + Vector((s * R * L["hsx"] * 0.97, 0.01, -0.06 * R)),
                                  (0.10 * R, 0.13 * R, 0.17 * R), segs=20, rings=12)
@@ -732,9 +861,45 @@ class Builder:
 
     # --- hair
     def build_hair(self):
+        """Hair = a scalp cap (`hair.style`) plus data-driven pieces (`hair.pieces`, or the pieces
+        of a HAIR_PRESETS style). Under headwear: "tuck" clamps the cap and drops the pieces (a
+        piece with `"keep": true` stays), "free" leaves everything, "hide" builds no hair."""
+        P = self.P
+        hair = P["hair"]; style = hair["style"]
+        pieces = list(hair.get("pieces", []))
+        if style in HAIR_PRESETS:
+            pieces = copy.deepcopy(HAIR_PRESETS[style]["pieces"]) + pieces
+            style = HAIR_PRESETS[style]["base"]
+        hw_t = P["headwear"]["type"]
+        mode = P["headwear"].get("hair") or HEADWEAR_OPTS.get(hw_t, {}).get("hair", "tuck")
+        if hw_t == "chicken_hood" or mode == "hide":
+            return
+        self._hair_cap(style, mode == "tuck")
+        n0 = len(self.parts)
+        for pc in pieces:
+            if hw_t != "none" and mode == "tuck" and not pc.get("keep"):
+                continue
+            if pc["type"] not in HAIR_PIECES:
+                raise ValueError(f"unknown hair piece {pc['type']!r}; known: {', '.join(sorted(HAIR_PIECES))}")
+            col = pc.get("color") or hair.get("color", "#5A3A28")
+            mat = self.mats.flat("hair" if col == hair.get("color") else f"hair_{col.lstrip('#')}", col, rough=0.5, spec=0.4)
+            HAIR_PIECES[pc["type"]](self, pc, mat)
+        self.crown_skip = set(range(n0, len(self.parts)))   # hat fit follows the scalp, not buns and spikes
+
+    def build_features(self):
+        """`head.features`: antennae, horns, pointy ears, fins... Body features of the species, not
+        hats: each is its own part `<id>_part_feature_<type>` on its own bone(s) under `head`."""
+        for f in self.P["head"].get("features", []):
+            f = {"type": f} if isinstance(f, str) else f
+            if f["type"] not in FEATURES:
+                raise ValueError(f"unknown head feature {f['type']!r}; known: {', '.join(sorted(FEATURES))}")
+            self.cur_part = f"feature_{f['type']}"
+            FEATURES[f["type"]](self, f)
+            self.cur_part = None
+
+    def _hair_cap(self, style, tuck):
         P, L = self.P, self.L
-        style = P["hair"]["style"]
-        if style in ("none", "bald") or P["headwear"]["type"] == "chicken_hood":
+        if style in ("none", "bald"):
             return
         col = P["hair"]["color"]
         mat = self.mats.flat("hair", col, rough=0.5, spec=0.4)
@@ -771,7 +936,7 @@ class Builder:
             base = blend(0.40, -0.85, 1.0)
             thr = lambda phi: base(phi) + 0.03 * math.cos(phi * 14) * ((1 + math.cos(phi)) / 2) ** 4
             sc = lambda el, phi: 1.09 + 0.12 * max(0, math.cos(el)) * ((1 - math.cos(phi)) / 2 + 0.4)
-        elif style in ("bun", "ponytail", "long"):
+        elif style in ("bun", "ponytail", "long", "sleek"):
             thr = tufts(blend(0.50, -0.55, side=0.35), 5, 0.08)
             sc = lambda el, phi: 1.06 + 0.06 * max(0, math.sin(el)) ** 2
         elif style == "spiky":
@@ -791,7 +956,7 @@ class Builder:
             sc = lambda el, phi: 1.22 + 0.04 * math.sin(phi * 11) * math.cos(el * 9) + 0.26 * max(0, math.sin(el)) ** 1.5
         else:
             raise ValueError(f"unknown hair style {style}")
-        if P["headwear"]["type"] != "none" and style != "mane":   # keep hair inside hats (a mane wears its hat on top)
+        if P["headwear"]["type"] != "none" and style != "mane" and tuck:   # keep hair inside hats (a mane wears its hat on top)
             sc0 = sc
             sc = lambda el, phi: min(sc0(el, phi), 1.05)
         taper = None if style in ("afro",) else (0.0 if style == "mane" else 0.12)
@@ -821,11 +986,34 @@ class Builder:
         top = P["outfit"]["top"]; bot = P["outfit"]["bottoms"]; shoes = P["outfit"]["shoes"]
         z0, z1 = L["torso_z0"], L["torso_z1"]
         widths = [(0.0, tw * 1.08), (0.3, tw * (1.08 + b["belly"] * 3)), (0.62, tw * 0.98), (0.9, tw * 1.0), (1.0, tw)]
+        if self.belly01 > 0.0:   # a belly is a soft ball, not a ridge: the bulge carries up towards the chest
+            k = self.belly01
+            widths = [(0.0, tw * 1.08), (0.34, tw * (1.08 + b["belly"] * 3)), (0.62, tw * (0.98 + 0.20 * k)), (0.9, tw * (1.0 + 0.04 * k)), (1.0, tw)]
         chest = None
         if b["power"] > 2.5:   # boxy: chest out
             chest = [(0.0, 0.0), (0.45, 0.0), (0.78, 0.022), (1.0, 0.01)]
+        self.torso_chest = (lambda t, _c=chest: smooth_interp(t, _c)) if chest else None
+        if self.belly01 > 0.0:   # belly: the middle of the torso is pushed forward as well as out
+            fwd = 0.17 * tw * self.belly01
+            bump = [(0.0, 0.0), (0.12, 0.45 * fwd), (0.38, fwd), (0.62, 0.55 * fwd), (0.86, 0.0), (1.0, 0.0)]
+            self.torso_chest = (lambda t, _c=chest, _b=bump: (smooth_interp(t, _c) if _c else 0.0) + smooth_interp(t, _b))
+            chest = self.torso_chest
         torso_bm = blob(z0, z1, widths, depth=b["depth"], n_end=b["n"], power=b["power"], chest=chest)
-        if top["style"] == "tiedye":
+        def cyl_uv(bm, uv):
+            for f in bm.faces:
+                us = []
+                for lp in f.loops:
+                    co = lp.vert.co
+                    us.append(0.5 + math.atan2(co.x, -co.y) / (2 * math.pi))
+                if max(us) - min(us) > 0.5:
+                    us = [u + 1 if u < 0.5 else u for u in us]
+                for lp, u in zip(f.loops, us):
+                    lp[uv].uv = (u, (lp.vert.co.z - z0) / (z1 - z0))
+        if top.get("pattern") and top["style"] not in ("tiedye", "bare"):
+            tmat = self.mats.tex("shirt", self.pattern_image("shirt_pattern", top, "top"), rough=0.75, spec=0.25)
+            sleeve_mat = self.mats.flat("shirt_sleeve", top.get("sleeve", top["color"]), rough=0.75, spec=0.25)
+            self.add(torso_bm, tmat, "spine", cyl_uv)
+        elif top["style"] == "tiedye":
             img = tiedye_texture(f"{self.mats.prefix}tiedye", top["color"], top.get("accent", PLAYER_RED))
             tmat = self.mats.tex("shirt", img, rough=0.8, spec=0.2)
             sleeve_mat = self.mats.flat("shirt_sleeve", top["color"], rough=0.8, spec=0.2)
@@ -843,17 +1031,20 @@ class Builder:
         else:
             tmat = self.skin if top["style"] == "bare" else self.mats.flat("shirt", top["color"], rough=0.75, spec=0.25)
             sleeve_mat = tmat
-            self.add(torso_bm, tmat, "spine")
+            self.add(torso_bm, tmat, "spine", cyl_uv if bot.get("pattern") else None)
             if top["style"] == "stripe":
                 acc = self.mats.flat("shirt_accent", top.get("accent", "#FFFFFF"), rough=0.75, spec=0.25)
                 rings = []
                 for t in np.linspace(0.50, 0.66, 5):
                     w = smooth_interp(t, widths) * envelope(t, b["n"]) * 1.012 + 0.002
-                    rings.append((z0 + (z1 - z0) * t, w, w * b["depth"], 0, 0))
+                    rings.append((z0 + (z1 - z0) * t, w, w * b["depth"], 0, -self.chest_at(t) if self.belly01 > 0.0 else 0))
                 self.add(lathe(rings, 40, b["power"]), acc, "spine")
         self.torso_widths = widths
         # bottoms: the lower part of the torso takes the trouser material, a hem ring covers the join
         pants = self.skin if bot["style"] == "none" else self.mats.flat("pants", bot["color"], rough=0.8, spec=0.2)
+        pat_uv = None
+        if bot.get("pattern") and bot["style"] != "none":
+            pants = self.mats.tex("pants", self.pattern_image("pants_pattern", bot, "bottoms"), rough=0.8, spec=0.2)
         self.pants = pants
         z_split = z0 + (z1 - z0) * 0.24
         L["waist_z"] = z0 + (z1 - z0) * 0.245   # middle of the hem ring: where a belt sits
@@ -865,7 +1056,7 @@ class Builder:
         rings = []
         for t in np.linspace(0.215, 0.275, 3):
             w = smooth_interp(t, widths) * envelope(t, b["n"]) * 1.018 + 0.002
-            rings.append((z0 + (z1 - z0) * t, w, w * b["depth"], 0, -smooth_interp(t, chest) if chest else 0))
+            rings.append((z0 + (z1 - z0) * t, w, w * b["depth"], 0, -self.chest_at(t) if chest else 0))
         self.add(lathe(rings, 40, b["power"]), hem_mat, "spine")
         if bot["style"] == "skirt":
             rings = [(L["hip_z"] - 0.13, 0.0, 0.0, 0, 0)]
@@ -877,11 +1068,13 @@ class Builder:
             self.add(lathe(rings, 40), pants, "spine")
         # legs
         leg_r = 0.047 * limb * float(P["body"].get("leg_scale", 1.0))
+        self.leg_r = leg_r
         flare = bot["style"] == "flared"
         for s, side in ((1, "L"), (-1, "R")):
             hip = Vector((s * L["hip_x"], 0, L["hip_z"] + 0.02))
             ank = Vector((s * L["ank_x"], 0, L["ankle_z"]))
             bone = f"leg.{side}"
+            n_leg0 = len(self.parts)
             bow = float(P.get("posture", {}).get("leg_bow", 0.0))
             if bot["style"] in ("shorts", "skirt", "none") and bow > 0:   # bowed legs: knees out
                 knee = hip + (ank - hip) * 0.5 + Vector((s * bow, 0, 0))
@@ -913,8 +1106,44 @@ class Builder:
                     self.flare_hem = (ank, r1)
                 else:
                     self.add(capsule_bm(hip, ank, leg_r * 1.05, leg_r * 1.02), pants, bone)
-            self.cur_part = f"foot_{side.lower()}"   # shoes and bare feet, incl. boot shafts
-            self.build_foot(s, side, ank, shoes)
+            if bot.get("pattern") and bot["style"] != "none":   # patterned trousers: UVs around each leg
+                def leg_uv(bm, uv, _hip=hip, _ank=ank):
+                    for f in bm.faces:
+                        us = []
+                        for lp in f.loops:
+                            co = lp.vert.co
+                            tt = (co.z - _ank.z) / max(1e-6, _hip.z - _ank.z)
+                            us.append(0.5 + math.atan2(co.x - (_ank.x + (_hip.x - _ank.x) * tt), -co.y) / (2 * math.pi))
+                        if max(us) - min(us) > 0.5:
+                            us = [u + 1 if u < 0.5 else u for u in us]
+                        for lp, u in zip(f.loops, us):
+                            lp[uv].uv = (u, (lp.vert.co.z - _ank.z) / max(1e-6, _hip.z - _ank.z))
+                for pbm, pm, _pb in self.parts[n_leg0:]:
+                    if pm is pants:
+                        leg_uv(pbm, pbm.loops.layers.uv.get("UVMap"))
+            self.cur_part = f"foot_{side.lower()}"   # shoes and bare feet, incl. boot shafts and socks
+            sh = dict(shoes)
+            for k in ("color", "sole", "style"):          # mismatched shoes: color_l / color_r ...
+                if f"{k}_{side.lower()}" in shoes:
+                    sh[k] = shoes[f"{k}_{side.lower()}"]
+            n_foot0 = len(self.parts)
+            socks = shoes.get("socks")
+            if socks:                                      # {"color", "color_l", "color_r", "height" 0..1 of the leg, "cuff"}
+                socks = {"color": socks} if isinstance(socks, str) else socks
+                scol = socks.get(f"color_{side.lower()}", socks.get("color", "#FFFFFF"))
+                smat = self.mats.flat(f"sock_{scol.lstrip('#')}", scol, rough=0.85, spec=0.15)
+                top_p = ank + (hip - ank) * float(socks.get("height", 0.35))
+                self.add(capsule_bm(ank + Vector((0, 0, -0.02)), top_p, leg_r * 1.13, leg_r * 1.13), smat, bone)
+                cuff = socks.get("cuff")
+                if cuff:
+                    self.add(ellipsoid_bm(top_p, (leg_r * 1.24, leg_r * 1.24, 0.016), segs=20, rings=8),
+                             self.mats.flat(f"sock_{cuff.lstrip('#')}", cuff, rough=0.85, spec=0.15), bone)
+            self.build_foot(s, side, ank, sh)
+            size = float(shoes.get("size", 1.0))
+            if size != 1.0:                                # oversized / tiny shoes, scaled about the ground point
+                M = Matrix.Translation((ank.x, 0, 0)) @ Matrix.Scale(size, 4) @ Matrix.Translation((-ank.x, 0, 0))
+                for pbm, _m, _b in self.parts[n_foot0:]:
+                    bmesh.ops.transform(pbm, matrix=M, verts=pbm.verts)
             self.cur_part = None
 
     def build_foot(self, s, side, ank, shoes):
@@ -922,6 +1151,11 @@ class Builder:
         bone = f"foot.{side}"
         x = ank.x
         st = shoes["style"]
+        if st in SHOES:
+            SHOES[st](self, s, side, ank, shoes)
+            return
+        if st not in ("barefoot", "boots", "sneaker"):
+            raise ValueError(f"unknown shoes.style {st!r}; known: barefoot, boots, sneaker, {', '.join(sorted(SHOES))}")
         if st == "barefoot":
             n0 = len(self.parts)
             sc = 1.25 * float(shoes.get("foot_size", 1.0))
@@ -978,6 +1212,10 @@ class Builder:
         for s, side in ((1, "L"), (-1, "R")):
             sh = Vector((s * tw * 0.92, 0, L["shoulder_z"]))
             wr = Vector((s * (tw * 0.92 + 0.07), -0.005, L["shoulder_z"] - 0.205 * L["h"] ** 0.5))
+            if self.reshaped:   # fat bodies: the hands hang clear of the belly
+                tz = (wr.z - 0.04 - L["torso_z0"]) / (L["torso_z1"] - L["torso_z0"])
+                edge = max(abs(self.torso_point(tz + d, 0.0).x) for d in (-0.08, 0.0, 0.08))
+                wr.x = s * max(abs(wr.x), edge + 0.042 * limb)
             self.arm_pts[side] = (sh, wr)
             bone = f"arm.{side}"
             if top["style"] in ("long", "costume"):
@@ -1072,6 +1310,15 @@ class Builder:
                 pts.append(tuple(self.head_point(thr(phi) + 0.1, phi, 1.09)))
             self.add(tube_bm(pts, 0.12 * R, cyclic=True), cuff, "head")
             self.add(ellipsoid_bm(c + Vector((0, 0.05 * R, R * L["hsz"] * 1.2)), (0.24 * R,) * 3, segs=20, rings=12), cuff, "head")
+            bs = float(hw.get("scale", 1.0))
+            if bs != 1.0:    # a tiny beanie perched on the crown (or an oversized one)
+                top_pt = c + Vector((0, 0, R * L["hsz"] * 1.08))
+                lift = 0.0
+                if bs < 1.0:   # sit on the crown (over the hair) instead of sinking into it
+                    lift = (1.07 * math.sqrt(max(0.0, 1 - (bs / 1.07) ** 2)) - (1.08 - 0.865 * bs) - 0.05 * bs) * R * L["hsz"] * min(1.0, (1 - bs) / 0.4)
+                M = Matrix.Translation(top_pt + Vector((0, 0, lift))) @ Matrix.Scale(bs, 4) @ Matrix.Translation(-top_pt)
+                for pbm, _m, _b in self.parts[-3:]:
+                    bmesh.ops.transform(pbm, matrix=M, verts=pbm.verts)
         elif t == "headband":
             self.add_headband(hw["color"])
         elif t in HEADWEAR:
@@ -1314,7 +1561,9 @@ class Builder:
         L, P = self.L, self.P
         c, R = L["head_c"], L["R"]
         out = {}
-        crown = max(co.z for co in self._cos({"head"})) - c.z
+        skip = getattr(self, "crown_skip", ())
+        crown = max(v.co.z for i, ((bm, _m, bone), tag) in enumerate(zip(self.parts, self.part_tags))
+                    if bone == "head" and tag is None and i not in skip for v in bm.verts) - c.z
         out["head"] = ("head", c.copy(), (crown / SLOT_REF["head_crown"],) * 3)
         fs = float(P["face"].get("scale", 1.3))
         ez = EYE_Y * fs
@@ -1372,6 +1621,7 @@ class Builder:
         self.build_body()
         self.build_arms()
         self.build_hair()
+        self.build_features()
         self.build_costume()
         self.build_headwear()
         pid = self.P["id"]
@@ -1414,9 +1664,28 @@ class Builder:
             hat["jarling_detachable"] = True
             hat["jarling_part"] = "headwear"
             self.hat = hat
+        self.lamp_obs = []
+        for lp in self.lamps:     # real lights (a miner's headlamp): spot lights on the head bone, exported in the glb
+            ld = bpy.data.lights.new(f"{self.prefix}{pid}_{lp.get('name', 'lamp')}", "SPOT")
+            ld.energy = float(lp.get("watts", 30)); ld.color = srgb_to_lin(hex_rgb(lp.get("color", "#FFF2C0")))
+            ld.spot_size = math.radians(float(lp.get("spot_deg", 55))); ld.spot_blend = 0.4; ld.shadow_soft_size = 0.03
+            lo = bpy.data.objects.new(ld.name, ld)
+            self.coll.objects.link(lo)
+            b = rig.data.bones["head"]
+            lo.parent = rig; lo.parent_type = "BONE"; lo.parent_bone = "head"
+            lo.matrix_parent_inverse = (rig.matrix_world @ b.matrix_local @ Matrix.Translation((0, b.length, 0))).inverted()
+            q = Vector(lp.get("dir", (0, -1, 0))).normalized().to_track_quat("-Z", "Y")
+            lo.matrix_basis = Matrix.LocRotScale(Vector(lp["pos"]), q, None)
+            lo["jarling_lamp"] = lp.get("name", "lamp")
+            self.lamp_obs.append(lo)
         self.slots = self.add_slots(rig, slot_fit)
         rig["jarling_slots"] = list(self.slots.keys())
-        build_actions(rig, self.P.get("posture", {}), self.prefix, extra=extra)
+        if self.reshaped:
+            rig["jarling_width"] = float(self.P["body"].get("width", 1.0)); rig["jarling_belly"] = self.belly01
+        feats = sorted(t[len("feature_"):] for t in self.part_obs if t.startswith("feature_"))
+        if feats:
+            rig["jarling_features"] = feats
+        build_actions(rig, self.P.get("posture", {}), self.prefix, extra=extra, bob=self.bob_bones)
         return self
 
 # -------------------------------------------------------------------------------------- actions
@@ -1549,7 +1818,18 @@ def apply_pose(rig, pose, frame=None):
             for path in ("rotation_quaternion", "location", "scale"):
                 pb.keyframe_insert(path, frame=frame, group=pb.name)
 
-def build_actions(rig, posture, prefix="", extra=None, acts=None):
+def _with_bob(pose, bob):
+    """Copy the comb's secondary motion onto the other floppy head bones (antennae, pom-poms...)."""
+    src = pose.get("comb")
+    if not bob or not src:
+        return pose
+    pose = dict(pose)
+    for name, amount, side in bob:
+        if name not in pose:
+            pose[name] = {k: (v * amount * (side if k == "tilt" else 1.0)) for k, v in src.items() if not isinstance(v, tuple)}
+    return pose
+
+def build_actions(rig, posture, prefix="", extra=None, acts=None, bob=None):
     """Key the actions on `rig`. `acts` replaces the standard set (other body types pass their
     own {name: [(frame, pose), ...]}, which must include "idle"); `extra` is added to it."""
     rig.animation_data_create()
@@ -1561,7 +1841,7 @@ def build_actions(rig, posture, prefix="", extra=None, acts=None):
         act.use_fake_user = True
         rig.animation_data.action = act
         for f, pose in keys:
-            apply_pose(rig, pose, f)
+            apply_pose(rig, _with_bob(pose, bob), f)
         act.frame_range = (keys[0][0], keys[-1][0])
         act.use_frame_range = True
         made[name] = act

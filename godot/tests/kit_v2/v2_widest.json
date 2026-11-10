@@ -1,0 +1,5 @@
+{"id": "v2_widest", "name": "Kit v2 widest", "skin": "#E8B48C",
+ "hair": {"style": "buzz", "color": "#4A2F23"}, "headwear": {"type": "beanie", "color": "#2E3A66", "scale": 0.45, "hair": "free"},
+ "body": {"build": "round", "height": 1.3, "width": 1.5, "belly": 1.0},
+ "outfit": {"top": {"style": "tee", "color": "#7EC8F2"}, "bottoms": {"style": "pants", "color": "#80848C"},
+            "shoes": {"style": "sneaker", "color": "#F7F7F5", "size": 1.35}}}

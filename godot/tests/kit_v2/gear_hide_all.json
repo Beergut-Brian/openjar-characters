@@ -1,0 +1,2 @@
+{"id": "test_hide_all", "name": "Test hide-all helmet", "slots": ["head"], "scene": "hat.glb",
+ "replaces_body_part": ["headwear"], "hides_features": true}

@@ -1,0 +1,57 @@
+{
+ "id": "mayor_pip",
+ "name": "Mayor Pip",
+ "notes": "Kit v2 example for the sheet, not an approved look.",
+ "head": {
+  "shape": "round",
+  "size": 1.0,
+  "ears": "round"
+ },
+ "skin": "#EFBB90",
+ "face": {
+  "eyes": "button",
+  "brows": "arched",
+  "brow_color": "#4A2F23",
+  "brow_raise": 0.04,
+  "mouth": "set",
+  "lid": 0.2
+ },
+ "hair": {
+  "style": "short",
+  "color": "#4A2F23"
+ },
+ "headwear": {
+  "type": "top_hat",
+  "color": "#1C1C22",
+  "band": "#D9B23A",
+  "height": 2.3,
+  "scale": 1.12
+ },
+ "body": {
+  "build": "slim",
+  "height": 0.8,
+  "leg_scale": 0.8,
+  "width": 0.9
+ },
+ "outfit": {
+  "top": {
+   "style": "long",
+   "color": "#A8CFF0"
+  },
+  "bottoms": {
+   "style": "pants",
+   "color": "#7D8088"
+  },
+  "shoes": {
+   "style": "dress",
+   "color": "#15151A"
+  }
+ },
+ "costume": [
+  {
+   "piece": "sash",
+   "color": "#D9B23A",
+   "side": "R"
+  }
+ ]
+}

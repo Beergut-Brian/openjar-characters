@@ -113,6 +113,10 @@ func _initialize() -> void:
 		check(str(body.get("build", "regular")) in std.builds, "build %s is a kit build" % body.get("build", "regular"))
 		var h := float(body.get("height", 1.0))
 		check(h >= std.height[0] and h <= std.height[1], "height %.2f in %s" % [h, std.height])
+		var bw := float(body.get("width", 1.0))
+		check(bw >= std.width[0] and bw <= std.width[1], "width %.2f in %s" % [bw, std.width])
+		var bb := float(body.get("belly", 0.0))
+		check(bb >= std.belly[0] and bb <= std.belly[1], "belly %.2f in %s" % [bb, std.belly])
 		var ls := float(body.get("leg_scale", 1.0))
 		check(ls >= std.leg_scale[0] and ls <= std.leg_scale[1], "leg_scale %.2f in %s" % [ls, std.leg_scale])
 		# the glb is a standard Jarling: same skeleton, actions and slots as every other playable

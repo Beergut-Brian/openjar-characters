@@ -1,0 +1,63 @@
+{
+ "id": "zorp",
+ "name": "Zorp",
+ "notes": "Kit v2 example for the sheet, not an approved look.",
+ "head": {
+  "shape": "tall",
+  "size": 1.05,
+  "ears": "none",
+  "features": [
+   {
+    "type": "antennae",
+    "count": 2,
+    "color": "#7FB9D6",
+    "tip": "#FFD23F"
+   }
+  ]
+ },
+ "skin": "#9FD6F0",
+ "face": {
+  "eyes": "round",
+  "brows": "thin",
+  "nose": "none",
+  "mouth": "o",
+  "blush": 0.5,
+  "expressions": {
+   "neutral": {
+    "eye_scale": 1.15
+   }
+  }
+ },
+ "hair": {
+  "style": "none"
+ },
+ "headwear": {
+  "type": "headband",
+  "color": "#C9CED4"
+ },
+ "body": {
+  "build": "slim",
+  "height": 1.05,
+  "width": 0.85
+ },
+ "outfit": {
+  "top": {
+   "style": "tee",
+   "color": "#FFD23F",
+   "pattern": {
+    "type": "vacation",
+    "accent": "#FF7EB9",
+    "accent2": "#FF9A2E"
+   }
+  },
+  "bottoms": {
+   "style": "shorts",
+   "color": "#F5F5F2"
+  },
+  "shoes": {
+   "style": "sandals",
+   "color": "#C89A63"
+  }
+ },
+ "costume": []
+}

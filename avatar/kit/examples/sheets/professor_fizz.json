@@ -1,0 +1,72 @@
+{
+ "id": "professor_fizz",
+ "name": "Professor Fizz",
+ "notes": "Kit v2 example for the sheet, not an approved look.",
+ "head": {
+  "shape": "round",
+  "size": 1.0,
+  "ears": "round"
+ },
+ "skin": "#F7CFAE",
+ "face": {
+  "eyes": "wide",
+  "brows": "arched",
+  "brow_color": "#8A8F99",
+  "brow_skip": "L",
+  "mouth": "grin",
+  "extras": [
+   {
+    "type": "scorch_brow",
+    "side": "L"
+   }
+  ]
+ },
+ "hair": {
+  "style": "upright",
+  "color": "#F7F7F2"
+ },
+ "headwear": {
+  "type": "none"
+ },
+ "body": {
+  "build": "regular",
+  "height": 1.0
+ },
+ "outfit": {
+  "top": {
+   "style": "long",
+   "color": "#F4F5F2",
+   "pattern": [
+    {
+     "type": "collar",
+     "accent": "#5E2F94"
+    },
+    {
+     "type": "buttons",
+     "accent": "#5E2F94"
+    }
+   ]
+  },
+  "bottoms": {
+   "style": "shorts",
+   "color": "#5E2F94"
+  },
+  "shoes": {
+   "style": "dress",
+   "color": "#1B1B20",
+   "socks": {
+    "color_l": "#FF9A2E",
+    "color_r": "#5CC6F2",
+    "height": 0.45
+   }
+  }
+ },
+ "costume": [
+  {
+   "piece": "goggles",
+   "pos": "forehead",
+   "style": "round",
+   "color": "#6B4A2A"
+  }
+ ]
+}

@@ -1,0 +1,55 @@
+{
+ "id": "rexy",
+ "name": "Rexy",
+ "notes": "Kit v2 example for the sheet, not an approved look.",
+ "head": {
+  "shape": "round",
+  "size": 1.05,
+  "ears": "none"
+ },
+ "skin": "#F0BE94",
+ "face": {
+  "eyes": "round",
+  "brows": "soft",
+  "mouth": "yell"
+ },
+ "hair": {
+  "style": "none"
+ },
+ "headwear": {
+  "type": "animal_hood",
+  "color": "#F7941D",
+  "teeth": "#FFFFFF",
+  "spikes": "#FFD23F"
+ },
+ "body": {
+  "build": "round",
+  "height": 0.8,
+  "leg_scale": 0.8
+ },
+ "outfit": {
+  "top": {
+   "style": "costume",
+   "color": "#F7941D"
+  },
+  "bottoms": {
+   "style": "pants",
+   "color": "#F7941D"
+  },
+  "shoes": {
+   "style": "footies",
+   "color": "#F7941D"
+  }
+ },
+ "costume": [
+  {
+   "piece": "back_spikes",
+   "color": "#FFD23F"
+  },
+  {
+   "piece": "dino_tail",
+   "color": "#F7941D",
+   "spikes": "#FFD23F"
+  }
+ ]
+}

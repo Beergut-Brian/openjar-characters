@@ -6,6 +6,17 @@ Gear is something a Jarling **wears**: shoes, kneepads, a cape, a jetpack, a hat
 **slot**, follows the body as it animates, can **replace** a body part (shoes hide the bare feet),
 and a slot holds **one item at a time**. Getting the same item again levels it up; it never stacks.
 
+## Kit v2 notes (2026-11-10)
+
+- **Fat and skinny bodies.** Slot markers are measured from the built surface, so their scale is
+  the fit: on the widest body (`width` 1.5, `belly` 1) the waist, back, knee, hand and foot slots
+  are bigger, on the skinniest smaller. Nothing changes for gear authors.
+- **Head features** (`feature_antennae`, `feature_horns`, `feature_pointy_ears`, `feature_fins`) are
+  body parts. Gear hides them only if its JSON says so: `"hides_features": ["antennae"]` or `true`
+  (all). `JarlingEquipment.features()` lists what a Jarling has. Hats normally leave it out and the
+  antennae poke through.
+- The head slot fit follows the scalp, not hair pieces: a tall hairdo can poke through a hat.
+
 ## 1. Slots
 
 Every Jarling `.glb` built by `avatar/kit` (Jeff, Chuck, every generic) has ten slot markers. Each

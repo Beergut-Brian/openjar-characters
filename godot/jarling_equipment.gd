@@ -91,7 +91,7 @@ func equip(item: JarlingGear) -> bool:
 		inst.free()
 	_slot_id_set(item, w)
 	_apply_level(w)
-	for p in item.replaces_body_part:
+	for p in item.hidden_parts(_parts.keys()):
 		_hide_part(p, true)
 	for s in item.slots:
 		if pop_in and w.holders[s].is_inside_tree():
@@ -117,7 +117,7 @@ func unequip(slot: StringName) -> JarlingGear:
 			h.get_parent().remove_child(h)
 			h.queue_free()
 		_slot_id.erase(s)
-	for p in item.replaces_body_part:
+	for p in item.hidden_parts(_parts.keys()):
 		_hide_part(p, false)
 	_worn.erase(id)
 	poof.emit(slot, _slot_pos(slot))
@@ -193,6 +193,18 @@ func body_type() -> String:
 func body_parts() -> Array:
 	_scan()
 	return _parts.keys()
+
+
+## Head features this Jarling has (kit v2 `head.features`): ["antennae"], ["horns"] ... Each is the
+## body part `feature_<type>`.
+func features() -> Array:
+	_scan()
+	var out := []
+	for p in _parts.keys():
+		if String(p).begins_with("feature_"):
+			out.append(String(p).substr(8))
+	out.sort()
+	return out
 
 
 func is_part_hidden(part: StringName) -> bool:

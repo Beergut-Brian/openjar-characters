@@ -1,0 +1,2 @@
+{"id": "test_closed_helmet", "name": "Test closed helmet", "slots": ["head"], "scene": "hat.glb",
+ "replaces_body_part": ["headwear"], "hides_features": ["antennae"]}

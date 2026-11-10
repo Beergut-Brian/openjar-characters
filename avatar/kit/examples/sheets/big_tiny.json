@@ -1,0 +1,53 @@
+{
+ "id": "big_tiny",
+ "name": "Big Tiny",
+ "notes": "Kit v2 example for the sheet, not an approved look.",
+ "head": {
+  "shape": "round",
+  "size": 1.0,
+  "ears": "round"
+ },
+ "skin": "#D99E6E",
+ "face": {
+  "eyes": "drop",
+  "brows": "soft",
+  "mouth": "smile",
+  "expressions": {
+   "neutral": {
+    "eye_mode": "arc"
+   }
+  }
+ },
+ "hair": {
+  "style": "buzz",
+  "color": "#4A2F23"
+ },
+ "headwear": {
+  "type": "beanie",
+  "color": "#2E3A66",
+  "scale": 0.45,
+  "hair": "free"
+ },
+ "body": {
+  "build": "round",
+  "height": 1.3,
+  "width": 1.5,
+  "belly": 1.0
+ },
+ "outfit": {
+  "top": {
+   "style": "tee",
+   "color": "#7EC8F2"
+  },
+  "bottoms": {
+   "style": "pants",
+   "color": "#80848C"
+  },
+  "shoes": {
+   "style": "sneaker",
+   "color": "#F7F7F5",
+   "size": 1.35
+  }
+ },
+ "costume": []
+}

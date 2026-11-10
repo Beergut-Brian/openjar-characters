@@ -1,0 +1,63 @@
+{
+ "id": "granny_gravel",
+ "name": "Granny Gravel",
+ "notes": "Kit v2 example for the sheet, not an approved look.",
+ "head": {
+  "shape": "round",
+  "size": 1.0,
+  "ears": "round"
+ },
+ "skin": "#F7CFAE",
+ "face": {
+  "eyes": "button",
+  "brows": "thin",
+  "brow_color": "#B9B4AE",
+  "brow_raise": 0.05,
+  "mouth": "smile",
+  "mouth_width": 0.6
+ },
+ "hair": {
+  "style": "top_bun",
+  "color": "#F2F0EA"
+ },
+ "headwear": {
+  "type": "none"
+ },
+ "body": {
+  "build": "regular",
+  "height": 0.9,
+  "leg_scale": 0.85
+ },
+ "outfit": {
+  "top": {
+   "style": "long",
+   "color": "#B9A3D9",
+   "pattern": {
+    "type": "buttons",
+    "accent": "#F2F0EA",
+    "rows": 1
+   }
+  },
+  "bottoms": {
+   "style": "pants",
+   "color": "#8C8F96"
+  },
+  "shoes": {
+   "style": "sneaker",
+   "color": "#FFD93B"
+  }
+ },
+ "costume": [
+  {
+   "piece": "long_skirt",
+   "color": "#8C8F96",
+   "length": 0.85
+  },
+  {
+   "piece": "goggles",
+   "pos": "forehead",
+   "style": "safety",
+   "color": "#4A4F5A"
+  }
+ ]
+}

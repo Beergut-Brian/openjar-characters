@@ -1,0 +1,69 @@
+{
+ "id": "snooze",
+ "name": "Snooze",
+ "notes": "Kit v2 example for the sheet, not an approved look.",
+ "head": {
+  "shape": "round",
+  "size": 1.0,
+  "ears": "round"
+ },
+ "skin": "#F7CFAE",
+ "face": {
+  "eyes": "drop",
+  "brows": "soft",
+  "mouth": "smile",
+  "expressions": {
+   "neutral": {
+    "eye_mode": "arc"
+   },
+   "surprised": {
+    "eye_mode": "arc"
+   },
+   "determined": {
+    "eye_mode": "arc"
+   }
+  }
+ },
+ "hair": {
+  "style": "short",
+  "color": "#7A4B2A"
+ },
+ "headwear": {
+  "type": "nightcap",
+  "color": "#6F7FD8",
+  "stripe": "#F5F5F2",
+  "pom": "#F5F5F2"
+ },
+ "body": {
+  "build": "regular",
+  "height": 1.0,
+  "leg_scale": 0.95
+ },
+ "outfit": {
+  "top": {
+   "style": "long",
+   "color": "#A9D4F2",
+   "pattern": {
+    "type": "stars",
+    "accent": "#FFFFFF"
+   }
+  },
+  "bottoms": {
+   "style": "pants",
+   "color": "#A9D4F2",
+   "pattern": {
+    "type": "stars",
+    "accent": "#FFFFFF"
+   }
+  },
+  "shoes": {
+   "style": "slippers",
+   "color": "#FFD95A"
+  }
+ },
+ "costume": [],
+ "posture": {
+  "spine_lean": 7,
+  "head_lean": 4
+ }
+}

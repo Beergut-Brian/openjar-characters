@@ -1,0 +1,62 @@
+{
+ "id": "lampy",
+ "name": "Lampy",
+ "notes": "Kit v2 example for the sheet, not an approved look.",
+ "head": {
+  "shape": "round",
+  "size": 1.0,
+  "ears": "round"
+ },
+ "skin": "#EFBB90",
+ "face": {
+  "eyes": "round",
+  "brows": "thin",
+  "nose": "dot",
+  "mouth": "smile",
+  "expressions": {
+   "neutral": {
+    "eye_scale": 1.2
+   }
+  },
+  "extras": [
+   {
+    "type": "smudge",
+    "side": "R"
+   }
+  ]
+ },
+ "hair": {
+  "style": "short",
+  "color": "#7A4B2A"
+ },
+ "headwear": {
+  "type": "miner_helmet",
+  "color": "#F1F1EC"
+ },
+ "body": {
+  "build": "slim",
+  "height": 1.25,
+  "leg_scale": 1.15,
+  "width": 0.8
+ },
+ "outfit": {
+  "top": {
+   "style": "tee",
+   "color": "#3F8A99",
+   "pattern": {
+    "type": "bib",
+    "accent": "#35778A"
+   }
+  },
+  "bottoms": {
+   "style": "pants",
+   "color": "#7A5536"
+  },
+  "shoes": {
+   "style": "chunky_boots",
+   "color": "#7B7F86",
+   "sole": "#4A4D55"
+  }
+ },
+ "costume": []
+}

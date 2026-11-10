@@ -1,0 +1,55 @@
+{
+ "id": "scrap",
+ "name": "Scrap",
+ "notes": "Kit v2 example for the sheet, not an approved look.",
+ "head": {
+  "shape": "round",
+  "size": 1.05,
+  "ears": "round"
+ },
+ "skin": "#F0BE94",
+ "face": {
+  "eyes": "drop",
+  "brows": "soft",
+  "brow_color": "#7A3A1A",
+  "mouth": "grin_gap",
+  "extras": [
+   "freckles_big"
+  ],
+  "eye_y": -0.09
+ },
+ "hair": {
+  "style": "short",
+  "color": "#B5651D"
+ },
+ "headwear": {
+  "type": "colander",
+  "color": "#B9BEC4"
+ },
+ "body": {
+  "build": "regular",
+  "height": 0.85,
+  "leg_scale": 0.85
+ },
+ "outfit": {
+  "top": {
+   "style": "tee",
+   "color": "#F2C230",
+   "pattern": {
+    "type": "patches",
+    "accent": "#E8873D",
+    "accent2": "#5B8FD6"
+   }
+  },
+  "bottoms": {
+   "style": "shorts",
+   "color": "#3E6DB5"
+  },
+  "shoes": {
+   "style": "sneaker",
+   "color": "#F28C28",
+   "color_r": "#8A4FC4"
+  }
+ },
+ "costume": []
+}

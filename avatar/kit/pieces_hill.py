@@ -16,14 +16,7 @@ from jarling_kit import lathe, ellipsoid_bm, capsule_bm, tube_bm, grid_bm, solid
 def torso_pt(B, t, th, grow=1.0):
     """Point on the torso surface at height fraction t (0 bottom, 1 top), lathe angle th
     (0 = +X / the character's left, -pi/2 = front)."""
-    L = B.L; b = L["b"]
-    t = min(1.0, max(0.0, t))
-    w = smooth_interp(t, B.torso_widths) * envelope(t, b["n"]) * grow
-    dx, dy = superxy(th, b["power"])
-    cy = 0.0
-    if b["power"] > 2.5:
-        cy = -smooth_interp(t, [(0.0, 0.0), (0.45, 0.0), (0.78, 0.022), (1.0, 0.01)])
-    return Vector((w * dx, cy + w * b["depth"] * dy, L["torso_z0"] + (L["torso_z1"] - L["torso_z0"]) * t))
+    return B.torso_point(t, th, grow)
 
 def rbox(c, hw, hd, hh, power=8, segs=32):
     """Rounded box centred on c: half width (x), half depth (y), half height (z)."""
