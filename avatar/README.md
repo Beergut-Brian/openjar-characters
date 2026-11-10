@@ -25,12 +25,68 @@ avatar system.
 - **Squash-and-stretch friendly.** Body parts are rigid pieces with ball joints, so bone *scale*
   (squash and stretch) never tears the mesh.
 
+## Body types
+
+Kaden, 2026-11-10: *"one standard humanoid size, like we have now, but then non standard sizes for
+the Dragon, mole, etc. Let's not go wild adding non standard sizes, but when it makes sense let's
+get a new size/body type added."* Characters are designed **3D-first**: the Jarling is the master
+for silhouette, proportions and colours, and every 2D style is derived from it.
+
+`body.type` in `jarling.json` picks the body (default `"standard"`). `body.height` always means
+"in standard Jarlings" (1.0 is about 1.1 m to the top of a bare head), on every type.
+
+| Type | What it is | Use it for | Code | Characters |
+| --- | --- | --- | --- | --- |
+| `standard` | the humanoid Jarling: round head, capsule torso, arms, legs | every playable character, and any resident who is a person. Change `build`, `height`, `leg_scale`, head shape; add hats, beards, tunics as kit pieces (`pieces_*.py`) | `jarling_kit.py` | Jeff, Chuck, Gnome Foreman, Caveman, generics |
+| `critter` | a small no-neck animal: one pear (a head blob sunk into a body blob), no visible legs, feet peeking out under the body, short arms with big paws | small round animals that stand upright: moles, hedgehogs, penguins, owls, frogs | `body_critter.py` | The Mole |
+| `giant` | a huge sitting beanbag creature: round head on a bigger round body, stubby arms, big round feet out front, a thick tail, optional tiny wings and horn nubs | landmark-sized friendly creatures (about 3 to 8 Jarlings tall) | `body_giant.py` | The Dragon |
+
+**When to add a body type.** Only when the standard body can't honestly express the character
+*and* the type will be reused by later characters of that kind. Try `height`, `build`, `leg_scale`,
+head shape and new kit pieces first. A one-off is a prop, not a body type. Non-standard types are
+for non-playable residents only (README "Playable characters").
+
+**What every body type provides** (the contract games and tests rely on, listed per type in
+`characters.json` under `body_types`):
+
+- **Bones.** All types share `root`, `spine`, `head`, `arm.L/R`, `hand.L/R`, `leg.L/R`, `foot.L/R`
+  with the same meaning and parenting, so game code that nods a head or squashes `root` works on
+  anyone. `critter` adds `prop` (a held item, child of `spine`); its leg bones are short stubs
+  inside the body. `giant` adds `tail.1` > `tail.2` > `tail.3` (from `root`) and `wing.L/R` (from `spine`).
+- **Actions.** Every type has `idle` (loop), `run` (loop: that body's way of getting about, a
+  shuffle for a critter, a slow waddle for a giant) and `cheer` (loop). `standard` also has `kick`.
+  `critter` adds `popup` and `bow`; `giant` adds `yawn`, `wave`, `flap` (loop) and `sleep` (loop).
+  A standard character lists extra actions its bible needs in `"actions"` (registered in a
+  `pieces_*.py` module, e.g. `march`, `write`, `polish`).
+- **Equipment slots** wherever the body has the matching part, with the same names, axes and fit
+  rule as `docs/equipment.md` (gear made for the reference Jarling fits). `critter` and `giant`
+  have no knees: they lack `knee_l` / `knee_r`. `JarlingEquipment` reports a missing slot
+  (`has_slot`, `missing_slots`, signal `slot_missing`, `equip` returns false) and never crashes.
+- **Extras.** Rig: `jarling_body_type`, `jarling_slots`, `jarling_actions`, `jarling_loops`. Body
+  mesh: `jarling_expressions`.
+- **Rigid skinning, flat exact colours, face atlas, feet at y=0, faces +Z**, as the standard body.
+
+**Expressions.** `face.expression_list` names up to six expressions (the first is the resting
+face); the atlas is 2x2 cells for up to four and 3x2 for five or six. Without it a Jarling has the
+standard `neutral`, `happy`, `surprised`, `determined`. Read the UV offsets from
+`jarling_expressions`, do not hard-code them.
+
+**Writing a body type.** Add `avatar/kit/body_<type>.py` with a class registered in
+`kit.BODY_TYPES["<type>"]`. It takes `(params, prefix)` and `build()` returns itself with `.P`,
+`.prefix`, `.rig`, `.body`, `.face_mat`, `.expr_names`, `.expr_uv`, `.slots`, `.L["head_c"]` and
+`.L["R"]` (head centre and radius, for framing). Use `kit.build_actions(rig, posture, prefix,
+acts=...)`, `kit.face_atlas(face, skin, draw=...)` and the kit's geometry helpers. Then add the
+type's row to `tools/build_index.py` and the table above.
+
 ## Files
 
 ```
 avatar/kit/jarling_kit.py      the kit: face-part library, geometry, rig, actions, random generics
 avatar/kit/build_jarling.py    params JSON -> .glb (CLI)
-avatar/kit/render_refs.py      turnaround / expressions / kick renders for one Jarling (Cycles CPU)
+avatar/kit/render_refs.py      turnaround / expressions / action / side renders for one Jarling of any body type (Cycles CPU)
+avatar/kit/sprite_side.py      Pillow: the side render at The Hill's sprite scale (tracing base for 2D)
+avatar/kit/pieces_*.py         kit pieces for the standard body (hats, beards, tunics, props, extra actions)
+avatar/kit/body_*.py           non-standard body types (critter, giant)
 avatar/kit/render_scenes.py    style_mock.png and generic_lineup.png
 avatar/kit/render_common.py    shared lights / sky / camera
 avatar/kit/render_scenes_ball.py  the six-panel ball used in renders

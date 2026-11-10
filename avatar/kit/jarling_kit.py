@@ -176,12 +176,27 @@ MOUTH_DARK = "#6A2232"
 TONGUE = "#F2848C"
 TEETH = "#FFFFFF"
 
+def expression_names(face):
+    """The character's expression list. `face.expression_list` (up to 6 names, the first is the
+    resting face) or the standard four."""
+    return list(face.get("expression_list") or EXPRESSIONS)
+
+def expr_grid(n):
+    """(cols, rows) of the face atlas for n expressions: 2x2 up to four, 3x2 up to six."""
+    assert 1 <= n <= 6, "at most six expressions per face atlas"
+    return (2, 2) if n <= 4 else (3, 2)
+
+def expr_offsets(names):
+    """Godot/glTF UV offset per expression (cell 0 is top-left; v grows downwards in glTF)."""
+    cols, rows = expr_grid(len(names))
+    return {n: ((i % cols) / cols, (i // cols) / rows) for i, n in enumerate(names)}
+
 def expr_spec(face, name):
     spec = dict(lid=face["lid"], lid_low=face["lid_low"], lid_tilt=face["lid_tilt"],
                 brow_tilt=face["brow_tilt"], brow_raise=face["brow_raise"], mouth=face["mouth"],
                 eye_mode="open", eye_scale=1.0, blush_add=0.0)
     if name != "neutral":
-        spec.update(EXPR_DEFAULTS[name])
+        spec.update(EXPR_DEFAULTS.get(name, {}))
     spec.update(face.get("expressions", {}).get(name, {}))
     return spec
 
@@ -329,11 +344,16 @@ def draw_face_cell(face, expr, skin):
 FACE_CELL = 1024
 FACE_MARGIN = 0.03
 
-def face_atlas(face, skin):
+def face_atlas(face, skin, draw=None):
+    """Atlas of the character's expressions, one square cell each (see expr_grid). `draw(face,
+    name, skin)` returns one FACE_CELL x FACE_CELL x 3 float image; default is the humanoid face."""
     c = FACE_CELL
-    A = np.empty((2 * c, 2 * c, 3), np.float32)
-    for name, (r, col) in zip(EXPRESSIONS, [(0, 0), (0, 1), (1, 0), (1, 1)]):
-        A[r * c:(r + 1) * c, col * c:(col + 1) * c] = draw_face_cell(face, name, skin)
+    names = expression_names(face)
+    cols, rows = expr_grid(len(names))
+    A = np.empty((rows * c, cols * c, 3), np.float32)
+    for i in range(cols * rows):                      # unused cells repeat the resting face
+        r, col = i // cols, i % cols
+        A[r * c:(r + 1) * c, col * c:(col + 1) * c] = (draw or draw_face_cell)(face, names[min(i, len(names) - 1)] if i < len(names) else names[0], skin)
     return A
 
 def np_to_image(name, arr):
@@ -599,6 +619,13 @@ BODY_PARTS = ["foot_l", "foot_r", "hand_l", "hand_r", "headwear", "tail"]
 # The reference Jarling (regular build, round head, size 1, short hair): slot scale 1.0 means this.
 SLOT_REF = dict(head_crown=0.27, face_r=0.235, back_tw=0.152, waist_rx=0.155, waist_ry=0.127, knee_r=0.049)
 
+# Registries filled by the plug-in modules next to this file (loaded at the bottom):
+#   pieces_*.py  kit pieces for the standard body;  body_*.py  non-standard body types.
+HEADWEAR = {}     # headwear type -> fn(builder, headwear_dict)   (builder.cur_part is "headwear")
+COSTUME = {}      # costume piece -> fn(builder, piece_dict)
+ACTIONS = {}      # extra action  -> (fn(builder) -> [(frame, pose), ...], loops: bool); listed in params "actions"
+BODY_TYPES = {}   # body.type     -> class with the Builder interface (see avatar/README.md "Body types")
+
 class Builder:
     def __init__(self, params, prefix=""):
         self.P = deep_merge(DEFAULTS, params)
@@ -649,15 +676,19 @@ class Builder:
         bmesh.ops.create_uvsphere(bm, u_segments=64, v_segments=40, radius=1.0)
         uv = bm.loops.layers.uv.new("UVMap")
         k = 0.5 * (1 - 2 * FACE_MARGIN)
+        self.expr_names = expression_names(face)
+        self.expr_uv = expr_offsets(self.expr_names)
+        cols, rows = expr_grid(len(self.expr_names))
+        cu, cv_ = 1.0 / cols, 1.0 / rows
         for f in bm.faces:
             fc = f.calc_center_median()
             front = -fc.y > 0.22
             for lp in f.loops:
                 u0 = lp.vert.co
                 if front:
-                    lp[uv].uv = (0.5 * (0.5 + u0.x * k), 0.5 + 0.5 * (0.5 + u0.z * k))
+                    lp[uv].uv = (cu * (0.5 + u0.x * k), 1 - cv_ + cv_ * (0.5 + u0.z * k))
                 else:
-                    lp[uv].uv = (0.5 * (0.5 + 0.97 * k), 0.5 + 0.5 * (0.5 + 0.97 * k))
+                    lp[uv].uv = (cu * (0.5 + 0.97 * k), 1 - cv_ + cv_ * (0.5 + 0.97 * k))
         for v in bm.verts:
             x, y, z = v.co
             jw = 1 + L["jaw"] * (-z) * 0.5
@@ -959,6 +990,9 @@ class Builder:
                     self.add(ellipsoid_bm(base + rot @ Vector((0, 0.0, 0.06)), (0.03, 0.022, 0.085), rot=rot, segs=16, rings=10),
                              mat, "spine")
                 self.cur_part = None
+            elif kind in COSTUME:
+                COSTUME[kind](self, piece)
+                self.cur_part = None
             elif kind == "jeans_stitch":
                 mat = self.mats.flat("stitch", piece["color"], rough=0.6)
                 if hasattr(self, "flare_hem"):
@@ -1006,6 +1040,8 @@ class Builder:
             self.add(ellipsoid_bm(c + Vector((0, 0.05 * R, R * L["hsz"] * 1.2)), (0.24 * R,) * 3, segs=20, rings=12), cuff, "head")
         elif t == "headband":
             self.add_headband(hw["color"])
+        elif t in HEADWEAR:
+            HEADWEAR[t](self, hw)
         self.cur_part = None
 
     def add_headband(self, color, el=0.50, s=1.0):
@@ -1313,7 +1349,8 @@ class Builder:
         mod = body.modifiers.new("Armature", "ARMATURE"); mod.object = rig
         # separable body parts: their own skinned meshes on the same rig, so gear can hide them
         self.part_obs = {}
-        for tag in BODY_PARTS:
+        tags = BODY_PARTS + sorted({t for t in self.part_tags if t and t not in BODY_PARTS})
+        for tag in tags:
             pp = [p for p, t in zip(self.parts, self.part_tags) if t == tag]
             if not pp:
                 continue
@@ -1322,9 +1359,17 @@ class Builder:
             m = ob.modifiers.new("Armature", "ARMATURE"); m.object = rig
             ob["jarling_part"] = tag
             self.part_obs[tag] = ob
-        body["jarling_expressions"] = {k: list(v) for k, v in EXPR_UV_OFFSET.items()}
+        body["jarling_expressions"] = {k: list(v) for k, v in self.expr_uv.items()}
         rig["jarling"] = 1
-        rig["jarling_loops"] = ["idle", "run", "cheer"]
+        rig["jarling_body_type"] = "standard"
+        extra = {}
+        loops = ["idle", "run", "cheer"]
+        for name in self.P.get("actions", []):       # extra actions a character's bible needs
+            fn, loop = ACTIONS[name]
+            extra[name] = fn(self)
+            if loop:
+                loops.append(name)
+        rig["jarling_loops"] = loops
         self.rig, self.body, self.hat = rig, body, None
         if self.hat_parts:
             hat = self.make_mesh(f"{self.prefix}{pid}_hat", [(bm, m, "hat") for bm, m in self.hat_parts], with_groups=False)
@@ -1336,7 +1381,8 @@ class Builder:
             hat["jarling_part"] = "headwear"
             self.hat = hat
         self.slots = self.add_slots(rig, slot_fit)
-        build_actions(rig, self.P.get("posture", {}), self.prefix)
+        rig["jarling_slots"] = list(self.slots.keys())
+        build_actions(rig, self.P.get("posture", {}), self.prefix, extra=extra)
         return self
 
 # -------------------------------------------------------------------------------------- actions
@@ -1469,9 +1515,12 @@ def apply_pose(rig, pose, frame=None):
             for path in ("rotation_quaternion", "location", "scale"):
                 pb.keyframe_insert(path, frame=frame, group=pb.name)
 
-def build_actions(rig, posture, prefix=""):
+def build_actions(rig, posture, prefix="", extra=None, acts=None):
+    """Key the actions on `rig`. `acts` replaces the standard set (other body types pass their
+    own {name: [(frame, pose), ...]}, which must include "idle"); `extra` is added to it."""
     rig.animation_data_create()
-    acts = action_keys(posture)
+    acts = dict(acts) if acts is not None else action_keys(posture)
+    acts.update(extra or {})
     made = {}
     for name, keys in acts.items():
         act = bpy.data.actions.new(f"{prefix}{name}" if prefix else name)
@@ -1498,7 +1547,7 @@ def pose_at(builder, action, frame):
 
 def set_expression(builder, expr):
     """Shift the face UVs to another atlas cell (Blender UV space: v up)."""
-    du, dv = EXPR_UV_OFFSET[expr]
+    du, dv = getattr(builder, "expr_uv", EXPR_UV_OFFSET)[expr]
     cur = builder.__dict__.get("_expr_off", (0.0, 0.0))
     me = builder.body.data
     mi = list(me.materials).index(builder.face_mat)
@@ -1511,7 +1560,12 @@ def set_expression(builder, expr):
     builder._expr_off = (du, dv)
 
 def build_jarling(params, prefix=""):
-    return Builder(params, prefix).build()
+    t = params.get("body", {}).get("type", "standard")
+    if t == "standard":
+        return Builder(params, prefix).build()
+    if t not in BODY_TYPES:
+        raise ValueError(f"unknown body.type {t!r}; known: standard, {', '.join(sorted(BODY_TYPES))}")
+    return BODY_TYPES[t](params, prefix).build()
 
 # ------------------------------------------------------------------------------- random generics
 SKIN_TONES = ["#FFE1CC", "#F7CFAE", "#EFBB90", "#D99E6E", "#BF8150", "#9A6239", "#7A4A2C", "#5C3720"]
@@ -1558,3 +1612,12 @@ def random_params(seed):
 
 def reset_scene():
     bpy.ops.wm.read_factory_settings(use_empty=True)
+
+# ---------------------------------------------------------------------------------- plug-ins
+def _load_plugins():
+    import glob, importlib, os
+    here = os.path.dirname(os.path.abspath(__file__))
+    for f in sorted(glob.glob(os.path.join(here, "pieces_*.py")) + glob.glob(os.path.join(here, "body_*.py"))):
+        importlib.import_module(os.path.splitext(os.path.basename(f))[0])
+
+_load_plugins()
