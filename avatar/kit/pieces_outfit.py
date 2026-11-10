@@ -12,8 +12,8 @@ a layer inherits `color`/`accent` from the top/bottoms dict):
   vest         accent "#5A4A8C" (vest), open 0.10 (front strip half width in U), pockets true, trim null
   collar       accent "#8A5CC9", depth 0.34 (how far the V comes down, in V), width 0.07, inner null (colour inside the V)
   bib          accent "#3E6FB0", top 0.66 (V), width 0.22 (half width in U), button "#F2D16B"
-  belly_panel  accent "#FFE38A", v 0.40, width 0.22 (half width in U), height 0.30 (half height in V), soft 0.02
-  dials        accent "#FF9F1C", line "#2A2A33"
+  belly_panel  accent "#FFE38A", v 0.42, width 0.22 (half width in U), height 0.34 (half height in V), soft 0.02
+  dials        accent "#FF9F1C", line "#2A2A33", size 1.35
 Shoes (`outfit.shoes.style`; `color` is per side, `size`/`socks` are the core's):
   sandals          color "#8B5A2B" (straps; the sole is a darker shade), foot_size 1.0; the foot is B.skin
   moon_boots       color "#D9DCE3", sole "#7C808A", rings 2
@@ -229,7 +229,7 @@ def pat_patches(img, U, V, spec, part):
     cols = [spec.get("accent", "#E8A33D"), spec.get("accent2", "#5B8FD6")]
     spots = [(0.42, 0.40, 0.07, 0.06, 0.15), (0.0, 0.62, 0.09, 0.075, -0.1), (0.66, 0.70, 0.06, 0.05, -0.2)]
     if part == "bottoms":
-        spots = [(0.5, 0.55, 0.06, 0.06, 0.12), (0.05, 0.35, 0.05, 0.05, -0.15)]
+        spots = [(0.5, 0.55, 0.13, 0.11, 0.12), (0.05, 0.3, 0.11, 0.1, -0.15)]
     for k, (u, v, hw, hh, rot) in enumerate(spots[:int(spec.get("count", 3))]):
         col = cols[k % 2]
         w = _window(U, V, u, v, max(hw, hh) * 1.6)
@@ -353,8 +353,8 @@ def pat_bib(img, U, V, spec, part):
 
 def pat_belly_panel(img, U, V, spec, part):
     X = _x(U, 0.5)
-    rx, ry = float(spec.get("width", 0.22)) * 2.0, float(spec.get("height", 0.30))
-    vc = float(spec.get("v", 0.40))
+    rx, ry = float(spec.get("width", 0.22)) * 2.0, float(spec.get("height", 0.34))
+    vc = float(spec.get("v", 0.42))
     r = np.sqrt((X / rx) ** 2 + ((V - vc) / ry) ** 2)
     d = (r - 1.0) * min(rx, ry)
     soft = float(spec.get("soft", 0.02))
@@ -391,10 +391,11 @@ def _dials(img, X, Y, acc, line, lw=0.0045):
     _put(img, np.maximum(np.abs(Y - 0.80) - lw, np.abs(X + 0.02) - 0.06), line)   # a little speaker slot
 
 def pat_dials(img, U, V, spec, part):
-    w = _window(U, V, 0.5, 0.58, 0.32)
+    k = float(spec.get("size", 1.35))   # the drawing is made at 1.0 around V 0.58
+    w = _window(U, V, 0.5, 0.58, 0.32 * k)
     if w is None: return
     sl, X, Y = w
-    _dials(img[sl], X, Y + 0.58, spec.get("accent", "#FF9F1C"), spec.get("line", "#2A2A33"))
+    _dials(img[sl], X / k, Y / k + 0.58, spec.get("accent", "#FF9F1C"), spec.get("line", "#2A2A33"), lw=0.0045 / k)
 
 for _n, _f in (("vstripes", pat_vstripes), ("vacation", pat_vacation), ("hstripe", pat_hstripe), ("stars", pat_stars),
                ("patches", pat_patches), ("emblem", pat_emblem), ("buttons", pat_buttons), ("vest", pat_vest),
@@ -722,7 +723,7 @@ def box_torso(B, piece):
     # faint cardboard fluting, then the marker drawing in front coords (x across the face, y up, V-like units)
     img *= (1 - 0.025 * (np.sin(Y * 260) > 0.6))[..., None]
     sx = 2 * hw / (2 * hh)   # keep marker circles round on the face
-    FX, FY = (X - 0.5) * sx * 0.9, Y * 0.9 + 0.12
+    FX, FY = (X - 0.5) * sx * 0.62, Y * 0.62 + 0.29
     _dials(img, FX, FY, piece.get("accent", "#FF9F1C"), piece.get("line", "#3A2A1E"), lw=0.006)
     img[(X < 0.04) & (Y < 0.04)] = hex_rgb(col)
     img[:20, :20] = hex_rgb(col)
