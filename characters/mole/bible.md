@@ -36,4 +36,4 @@ Jeff thinks the Mole is a legend and offers him things to hold. Chuck checks his
 Encounter: he steals the shovel, pops up elsewhere, apologises, gives it back, three times. Arrival: he waits at the shaft holding the shovel like a bouquet. The bubble shows the shovel with a sheepish face, then the Old Shed with a hopeful face. Fix-up: the Old Shed becomes the Lost & Found. Tiles near buried treasure glow when he is near, and found items appear at his door.
 
 ## Status
-Proposed by the maker profile (Character Designer lane) on 2026-11-09. Awaiting Kaden's approval.
+Approved by Kaden 2026-11-09 (D46 a, as drafted; bible and look). Universal; debut game The Hill. Proposed by the maker profile (Character Designer lane) on 2026-11-09. Voice: directions drafted, not rendered.

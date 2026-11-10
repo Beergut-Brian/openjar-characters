@@ -26,7 +26,7 @@ Sleepy (neutral), yawn, happy, sorry, hopeful. Her mouth is never open wide enou
 Smoke rings, sometimes heart-shaped. Gnome lanterns, once they have hung them on her.
 
 ## Jarling 3D
-A sketch only. No `jarling.json` is created until Kaden approves.
+A sketch only. Look approved (Kaden 2026-11-09, D46 a); `jarling.json` is not made yet (Character lane, with the new kit pieces below).
 - Not a Jarling body: a bespoke prop-scale model in Jarling style, about 6 Jarlings tall.
 - Params: smooth, unoutlined, face atlas with lid 0.55, lid_tilt -0.1, blush 0.6.
 - New kit pieces needed: none (a separate prop model, not a kit piece).

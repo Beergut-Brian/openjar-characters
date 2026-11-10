@@ -36,4 +36,4 @@ Jeff and the Caveman understand each other perfectly without a single word. Chuc
 Encounter: he is frozen in the Ice layer. He thaws, waves, and follows you to the elevator. Arrival: he waits at the shaft, beaming. The bubble shows the ice cube with a sheepish face, then the Flooded Cabin with a hopeful face. Fix-up: the cabin becomes the Museum. He displays and polishes every treasure, and shows how many are left in each layer.
 
 ## Status
-Proposed by the maker profile (Character Designer lane) on 2026-11-09. Awaiting Kaden's approval.
+Approved by Kaden 2026-11-09 (D46 a, as drafted; bible and look). Universal; debut game The Hill. Proposed by the maker profile (Character Designer lane) on 2026-11-09. Voice: directions drafted, not rendered.

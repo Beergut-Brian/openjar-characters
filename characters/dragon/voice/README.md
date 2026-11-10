@@ -33,4 +33,4 @@ dragon_tummy | Tummy rumble | Hungry for warm rocks
 dragon_stretch | Long stretch groan | After a nap
 
 ## Status
-Nothing rendered yet; to be rendered after approval.
+Nothing rendered yet. Character approved (Kaden 2026-11-09, D46 a); barks to be rendered by the Character lane.

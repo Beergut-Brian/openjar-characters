@@ -32,4 +32,4 @@ foreman_paper_sigh | Sigh into paper | Unfilled form
 foreman_hat_back_ahh | Relieved "ahh" | Hard hat replaced
 
 ## Status
-Nothing rendered yet; to be rendered after approval.
+Nothing rendered yet. Character approved (Kaden 2026-11-09, D46 a); barks to be rendered by the Character lane.

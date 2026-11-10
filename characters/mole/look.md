@@ -26,7 +26,7 @@ Squint (neutral), happy, sorry, hopeful, startled. The nose tip is a darker pink
 The shovel (wood handle, steel blade). It is the only prop, and it is always carried upright.
 
 ## Jarling 3D
-A sketch only. No `jarling.json` is created until Kaden approves.
+A sketch only. Look approved (Kaden 2026-11-09, D46 a); `jarling.json` is not made yet (Character lane, with the new kit pieces below).
 - Proportions: round build, height 0.8, leg_scale 0.6.
 - Params: head pear, ears none, eyes button with lid 0.55, nose bump (pink), no hair, skin = fur slate.
 - New kit pieces needed: snout, claw mitts.

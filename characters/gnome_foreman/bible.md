@@ -36,4 +36,4 @@ Jeff signs everything with a big happy scribble, and the Foreman treasures every
 Encounter: his crew is found walled into the Gnome Room in the Stone layer, and their hats peek over the wall. Arrival: he waits at the shaft holding his hard hat in both hands. The bubble shows the wall with a sheepish face, then the Crooked Watchtower with a hopeful face. Fix-up: the tower becomes the Gnome Village. The crew digs overnight and leaves blocks at the shaft, and he blows the shift whistle from the tower.
 
 ## Status
-Proposed by the maker profile (Character Designer lane) on 2026-11-09. Awaiting Kaden's approval.
+Approved by Kaden 2026-11-09 (D46 a, as drafted; bible and look). Universal; debut game The Hill. Proposed by the maker profile (Character Designer lane) on 2026-11-09. Voice: directions drafted, not rendered.

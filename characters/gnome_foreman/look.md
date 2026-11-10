@@ -29,7 +29,7 @@ Stern (neutral), approving, sorry, hopeful, whistle. The mouth is hidden by the 
 The tiny hard hat (separate, it can fall off the cone tip), the clipboard and the whistle on its cord.
 
 ## Jarling 3D
-A sketch only. No `jarling.json` is created until Kaden approves.
+A sketch only. Look approved (Kaden 2026-11-09, D46 a); `jarling.json` is not made yet (Character lane, with the new kit pieces below).
 - Proportions: height 0.6, stocky build, head wide.
 - Params: brows bushy (cream), nose bump, mouth hidden by the beard.
 - New kit pieces needed: cone hat with a hard-hat tip (separate, can fall off), beard, vest.

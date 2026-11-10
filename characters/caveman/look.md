@@ -25,7 +25,7 @@ Delighted (neutral), baffled, sorry, hopeful, amazed. Wide eyes, bushy brows and
 The cloth club, used only for polishing. The ice cube counts as headwear.
 
 ## Jarling 3D
-A sketch only. No `jarling.json` is created until Kaden approves.
+A sketch only. Look approved (Kaden 2026-11-09, D46 a); `jarling.json` is not made yet (Character lane, with the new kit pieces below).
 - Proportions: boxy build, height 0.95, leg_scale 0.75.
 - Params: head wide, eyes wide, brows bushy, mouth grin_top, hair afro (chestnut), barefoot.
 - New kit pieces needed: beard, fur tunic, ice cube headwear, cloth-club hand item.

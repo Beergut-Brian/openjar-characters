@@ -20,8 +20,8 @@ SW = {
 }
 TITLE = {"mole": "The Mole", "foreman": "The Gnome Foreman", "caveman": "The Caveman", "dragon": "The Dragon"}
 DEED = {"mole": px.ic_shovel, "foreman": px.ic_wall, "caveman": px.ic_ice, "dragon": px.ic_snore}
-OUTD = {"mole": "proposals/mole", "foreman": "proposals/gnome_foreman", "caveman": "proposals/caveman",
-        "dragon": "proposals/dragon"}
+OUTD = {"mole": "characters/mole", "foreman": "characters/gnome_foreman", "caveman": "characters/caveman",
+        "dragon": "characters/dragon"}
 
 
 def canvas():

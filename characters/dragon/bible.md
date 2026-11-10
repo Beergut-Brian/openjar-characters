@@ -36,4 +36,4 @@ Jeff hugs her and she purrs. Chuck is wary at first, then falls asleep leaning o
 Encounter: she is asleep at the Bottom, curled round the last treasure. Arrival: she wakes with a yawn, rides up in pieces, and waits on the peak. The bubble shows the shaken hill with a sheepish face, then the Ruined Keep with a hopeful face. Fix-up: the keep becomes the Dragon Perch. She warms the Ice layer and the town in winter, and she is the landmark.
 
 ## Status
-Proposed by the maker profile (Character Designer lane) on 2026-11-09. Awaiting Kaden's approval.
+Approved by Kaden 2026-11-09 (D46 a, as drafted; bible and look). Universal; debut game The Hill. Proposed by the maker profile (Character Designer lane) on 2026-11-09. Voice: directions drafted, not rendered.
