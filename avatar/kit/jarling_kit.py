@@ -54,7 +54,7 @@ def face_colours(face, skin):
     blush = "#FF7F86"
     brow = face["brow_color"]
     if fantasy:
-        blush = mix_hex(shade(skin, 0.80), "#F0509A", 0.38) if not dark else mix_hex(skin, "#FF9AC8", 0.45)
+        blush = mix_hex(shade(skin, 0.72), "#F0509A", 0.5) if not dark else mix_hex(skin, "#FF9AC8", 0.45)
         line = mix_hex(shade(skin, 0.30), face["eye_color"], 0.35) if not dark else shade(skin, 0.35)
         if face.get("_brow_auto"):
             brow = shade(skin, 0.42) if not dark else mix_hex(skin, "#FFFFFF", 0.5)
@@ -1043,13 +1043,16 @@ class Builder:
         top = P["outfit"]["top"]; bot = P["outfit"]["bottoms"]; shoes = P["outfit"]["shoes"]
         z0, z1 = L["torso_z0"], L["torso_z1"]
         widths = [(0.0, tw * 1.08), (0.3, tw * (1.08 + b["belly"] * 3)), (0.62, tw * 0.98), (0.9, tw * 1.0), (1.0, tw)]
+        if self.belly01 > 0.0:   # a belly is a soft ball, not a ridge: the bulge carries up towards the chest
+            k = self.belly01
+            widths = [(0.0, tw * 1.08), (0.34, tw * (1.08 + b["belly"] * 3)), (0.62, tw * (0.98 + 0.20 * k)), (0.9, tw * (1.0 + 0.04 * k)), (1.0, tw)]
         chest = None
         if b["power"] > 2.5:   # boxy: chest out
             chest = [(0.0, 0.0), (0.45, 0.0), (0.78, 0.022), (1.0, 0.01)]
         self.torso_chest = (lambda t, _c=chest: smooth_interp(t, _c)) if chest else None
         if self.belly01 > 0.0:   # belly: the middle of the torso is pushed forward as well as out
-            fwd = 0.36 * tw * self.belly01
-            bump = [(0.0, 0.0), (0.10, 0.35 * fwd), (0.33, fwd), (0.60, 0.30 * fwd), (0.82, 0.0), (1.0, 0.0)]
+            fwd = 0.17 * tw * self.belly01
+            bump = [(0.0, 0.0), (0.12, 0.45 * fwd), (0.38, fwd), (0.62, 0.55 * fwd), (0.86, 0.0), (1.0, 0.0)]
             self.torso_chest = (lambda t, _c=chest, _b=bump: (smooth_interp(t, _c) if _c else 0.0) + smooth_interp(t, _b))
             chest = self.torso_chest
         torso_bm = blob(z0, z1, widths, depth=b["depth"], n_end=b["n"], power=b["power"], chest=chest)
@@ -1367,7 +1370,10 @@ class Builder:
             bs = float(hw.get("scale", 1.0))
             if bs != 1.0:    # a tiny beanie perched on the crown (or an oversized one)
                 top_pt = c + Vector((0, 0, R * L["hsz"] * 1.08))
-                M = Matrix.Translation(top_pt + Vector((0, 0, -0.10 * R * (1 - bs)))) @ Matrix.Scale(bs, 4) @ Matrix.Translation(-top_pt)
+                lift = 0.0
+                if bs < 1.0:   # sit on the crown (over the hair) instead of sinking into it
+                    lift = (1.07 * math.sqrt(max(0.0, 1 - (bs / 1.07) ** 2)) - (1.08 - 0.865 * bs) - 0.05 * bs) * R * L["hsz"] * min(1.0, (1 - bs) / 0.4)
+                M = Matrix.Translation(top_pt + Vector((0, 0, lift))) @ Matrix.Scale(bs, 4) @ Matrix.Translation(-top_pt)
                 for pbm, _m, _b in self.parts[-3:]:
                     bmesh.ops.transform(pbm, matrix=M, verts=pbm.verts)
         elif t == "headband":
