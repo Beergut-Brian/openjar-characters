@@ -1,6 +1,6 @@
 # Old Reel
 
-**Kind:** universal. **Playable:** false (planned playable: Kaden's sheet; flips to true only when the 3D master, pixel form and voice exist and Kaden approves). **Default for:** none. **Body:** standard. **Home game:** Life of a Worm. **First appears:** Life of a Worm.
+**Kind:** universal. **Playable:** true (proposed: Kaden's sheet 2026-11-10; playtest build: Kaden wrote this sheet and asked on 2026-11-10 to playtest the chooser with it tonight, which is the approval for this move). **Status:** proposed. **Default for:** none. **Body:** standard. **Home game:** Life of a Worm. **First appears:** Life of a Worm.
 
 ## Who they are (Kaden's sheet, verbatim)
 A fisherman who has been after the same worm for years. The worm's funny nemesis in Life of a Worm, and a friendly playable everywhere else. Tells long stories that go nowhere.
