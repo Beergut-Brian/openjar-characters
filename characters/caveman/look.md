@@ -25,10 +25,14 @@ Delighted (neutral), baffled, sorry, hopeful, amazed. Wide eyes, bushy brows and
 The cloth club, used only for polishing. The ice cube counts as headwear.
 
 ## Jarling 3D
-A sketch only. Look approved (Kaden 2026-11-09, D46 a); `jarling.json` is not made yet (Character lane, with the new kit pieces below).
-- Proportions: boxy build, height 0.95, leg_scale 0.75.
-- Params: head wide, eyes wide, brows bushy, mouth grin_top, hair afro (chestnut), barefoot.
-- New kit pieces needed: beard, fur tunic, ice cube headwear, cloth-club hand item.
+Status of the 3D form: **proposed** (Character lane 2026-11-10, awaiting Kaden). The 2D look above is approved (D46 a). Since Kaden's 3D-first direction (2026-11-10) this model is meant to become the master for silhouette, proportions and colours, and the 2D sprites get redrawn from `refs/jarling/caveman_side.png` / `caveman_side_sprite.png`.
+- **Body type: `standard`.** `build` boxy, `height` 0.95, `leg_scale` 0.75, head `wide`, bowed legs (`posture.leg_bow`), big bare feet (`shoes.foot_size`). About 1.2 m tall including the ice cube.
+- New kit pieces (`avatar/kit/pieces_hill.py`): hair `mane` plus `mane_beard` (one wild chestnut mass round the whole face); `ice_cube` headwear (part `headwear`); `fur_tunic` (one shoulder, spots, zigzag hem) over top `bare` and bottoms `none`; `cloth_club` in his left hand (part `prop`).
+- Face (atlas, five cells): `delighted` (resting), `baffled`, `sorry`, `hopeful`, `amazed`. Eyes `wide`, brows `bushy`.
+- Actions: the standard `idle`, `run`, `kick`, `cheer`, plus `polish` (loop, the signature rub), `point` (whole arm) and `wave`.
+- Equipment: all ten slots. A hat in the head slot replaces the ice cube (his `headwear` part), so games that keep the "never melts" rule should not offer him hats.
+- Files: `jarling.json`, `refs/jarling/caveman.glb`, `caveman_turnaround.png`, `caveman_expressions.png`, `caveman_polish.png`, `caveman_side.png`, `caveman_side_sprite.png`.
+- Changes from the 2D look: none in colour. The knee equipment slot sits on the straight hip-to-ankle line, about 3 cm inside his bowed knee. Not built: the sneeze (snowflakes are a game effect).
 
 ## 2D pixel (The Hill)
 - 32 px tall including a 1 px #2A1E2C outline, on 16 px tiles, drawn on a 40 x 32 canvas.

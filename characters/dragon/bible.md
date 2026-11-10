@@ -1,6 +1,6 @@
 # The Dragon
 
-**Kind:** universal. **Playable:** false. **Default for:** none. **Body:** standard. **First appears:** The Hill (the landmark).
+**Kind:** universal. **Playable:** false. **Default for:** none. **Body:** giant. **First appears:** The Hill (the landmark).
 
 ## Who they are
 The Dragon is enormous, slow, yawning, and wants to be friends. She is sleepy and huggable from the first frame, and never scary: no visible teeth, no sharp claws, no fire. She snores smoke rings, and sometimes they are heart-shaped. She likes being built on.

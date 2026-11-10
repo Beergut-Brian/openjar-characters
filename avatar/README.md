@@ -153,6 +153,17 @@ Every key is optional: missing keys fall back to `DEFAULTS` in `jarling_kit.py`.
 }
 ```
 
+Options added for the Hill residents (all optional, standard body): mouth `none` (hidden by a beard)
+and `frown`; expression `eye_mode` `shut`; `face.eye_y` (moves eyes and brows up or down, default
+-0.04, lower it under a low hat brim); `brow_raise_left` (one brow up); `face.nose_color` and
+`nose_size` for the 3D `bump` nose; top `bare` (skin torso and arms); bottoms `none` (bare legs);
+`posture.leg_bow` (knees out, metres); `shoes.foot_size` (scales bare feet); hair `mane`.
+`"actions": [...]` adds extra actions and `"ref_action"` picks the action sheet's pose.
+From `pieces_hill.py`: headwear `cone_hat` (with a detachable `hard_hat` tip) and `ice_cube`;
+costume pieces `gnome_beard`, `vest_stripes`, `clipboard`, `whistle`, `mane_beard`, `fur_tunic`,
+`cloth_club` (`clipboard` and `cloth_club` take `"hand": "L"|"R"` and are part `prop`); actions
+`march`, `write`, `salute`, `polish`, `point`, `wave`.
+
 Character-specific headwear options: `chicken_hood` takes `comb`, `beak`, `headband`, `opening_deg`
 and `beak_deg`. `trucker` takes `brim`, `piping`, `patch`, `tilt_deg` and `lift`.
 

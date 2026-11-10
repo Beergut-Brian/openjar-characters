@@ -26,9 +26,15 @@ character chooser; the index still has `kind`/`player` fields for old readers, a
 
 Players pick who they are in every game's start menu and in the launcher (see
 [`docs/roster.md`](docs/roster.md)). Only **playable** characters can be picked. Each bible's header
-says `**Playable:** true|false`, `**Default for:** none|1|2` and `**Body:** standard`; the index lists
+says `**Playable:** true|false`, `**Default for:** none|1|2` and `**Body:** standard|critter|giant` (the body types are in [`avatar/README.md`](avatar/README.md)); the index lists
 the playable ids in display order under `roster` (defaults first). Today: Jeff (P1 default) and
 Chuck (P2 default). The Hill residents (Mole, Gnome Foreman, Caveman, Dragon) are not playable.
+
+**3D-first (Kaden, 2026-11-10).** A character is designed as a Jarling first; every other style is
+derived from that 3D master. The four Hill residents were drawn 2D-first, so their 3D masters were
+backfilled (status: proposed). Gnome Foreman and Caveman use the standard body with new kit pieces;
+the Mole uses the `critter` body type and the Dragon the `giant` body type. All six in 3D:
+`characters/residents_3d_lineup.png`; 3D beside the approved 2D: `characters/residents_3d_compare.png`.
 
 Rules for every playable character (checked by `godot/run_tests.sh`):
 
