@@ -25,3 +25,6 @@ Half-lidded happy eyes, big easy grin, two-tooth smile. Expressions: delighted, 
 
 ## Refs
 `refs/` — to be produced by the Character lane after approval. Technique-neutral line art first.
+
+## Pixel form (The Hill, hard hat): proposed
+Proposed, awaiting Kaden; nothing above changes. Shown in `characters/residents_lineup.png`. 32 px tall. A green (#3CC24A) hard hat sits on the chicken hood, and the comb pokes up through a slot in it. Yellow hood and puffy torso #FFD84D, orange beak #F7932F, green wing tips, flared jeans #3B5BA5, bare feet. The comb must read at 16 px.
