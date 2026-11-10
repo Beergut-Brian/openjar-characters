@@ -197,22 +197,51 @@ def whistle(B, piece):
 
 # ------------------------------------------------------------------------------- the caveman
 def mane_beard(B, piece):
-    """The beard half of the caveman's hair mass: one smooth shaggy shell round the jaw, wide enough
-    to run into the `mane` at the sides, ending in ragged tufts at the top of the chest."""
+    """The beard half of the caveman's hair mass: one shaggy shell round the jaw, wide enough
+    to run into the `mane` at the sides, ending in ragged tufts on the chest. Params: `width`
+    (x the face width, default 1.0), `length` (default 1.0), `tufts` (count), `shag` (how ragged
+    the bottom edge is, default 0.3), `clumps` (extra hanging tuft lumps along the edge, default 0)."""
     L = B.L; R, c = L["R"], L["head_c"]
     mat = B.mats.flat("hair", piece["color"], rough=0.5, spec=0.4)
-    rz = 0.62 * R
-    tufts = piece.get("tufts", 9)
-    def shag(co):
+    rz = 0.62 * R * piece.get("length", 1.0)
+    wid = piece.get("width", 1.0)
+    tufts, shag = piece.get("tufts", 9), piece.get("shag", 0.30)
+    cz = c + Vector((0, -0.12 * R, -0.92 * R))
+    rx, ry = 1.22 * R * L["hsx"] * wid, 0.86 * R
+    # a fat body (kit v2 belly / width) pushes the chest forward: lean the beard's lower half out
+    # over it (the top stays round the mouth)
+    push = 0.0
+    zb = cz.z - rz * 0.75
+    tz = (zb - L["torso_z0"]) / (L["torso_z1"] - L["torso_z0"])
+    if 0.0 <= tz <= 1.0:
+        push = -min(0.0, B.torso_point(tz, -math.pi / 2, 1.08).y - (cz.y - ry * 0.62))
+    def ragged(co):
         a = math.atan2(co.y, co.x)
         co.x *= 1 + 0.03 * math.sin(a * 11 + co.z * 40)
         if co.z < 0:
             t = -co.z / rz
             co.x *= 1 - 0.30 * t ** 2
-            co.z *= 1 + 0.30 * t ** 3 * max(0.0, math.cos(a * tufts)) ** 2
+            co.y -= push * min(1.0, t / 0.75)
+            co.z *= 1 + shag * t ** 3 * max(0.0, math.cos(a * tufts)) ** 2
         return co
-    B.add(ellipsoid_bm(c + Vector((0, -0.12 * R, -0.92 * R)), (1.22 * R * L["hsx"], 0.86 * R, rz), segs=64, rings=32, deform=shag),
-          mat, "head")
+    B.add(ellipsoid_bm(cz, (rx, ry, rz), segs=64, rings=32, deform=ragged), mat, "head")
+    n = piece.get("clumps", 0)
+    rnd = random.Random(7)
+    for k in range(n):        # pointed tufts hanging from the front / side edge
+        u = (k + 0.5) / n
+        a = math.pi * (0.08 + 0.84 * u)                  # front half: from the left side round to the right
+        x = -math.cos(a) * rx * 0.66
+        y = -math.sin(a) * ry * 0.62
+        z = cz.z - rz * (0.78 - 0.30 * abs(math.cos(a))) * rnd.uniform(0.96, 1.04)
+        ln = R * rnd.uniform(0.40, 0.52) * (1.0 - 0.30 * abs(math.cos(a)))
+        def point(co, ln=ln):
+            if co.z < 0:
+                f = (-co.z / ln)
+                co.x *= 1 - 0.75 * f; co.y *= 1 - 0.6 * f
+            return co
+        rot = Euler((0.25 * math.sin(a) * 0, -0.35 * math.cos(a), 0)).to_matrix()
+        B.add(ellipsoid_bm(Vector((x, y + cz.y - push * min(1.0, (cz.z - z) / rz / 0.75), z)), (R * 0.20, R * 0.15, ln), rot=rot, segs=18, rings=12, deform=point),
+              mat, "head")
 
 def ice_cube(B, hw):
     L = B.L; R, c = L["R"], L["head_c"]
