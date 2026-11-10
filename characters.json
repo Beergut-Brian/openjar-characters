@@ -611,6 +611,61 @@
         "foot_r"
       ],
       "playable": false
+    },
+    "quadruped": {
+      "rig": "avatar/kit/body_quadruped.py (four-legged farm animal or pet; arm/hand = front legs and hooves, leg/foot = hind)",
+      "params": [
+        "height",
+        "length",
+        "girth",
+        "width",
+        "leg",
+        "head"
+      ],
+      "bones": [
+        "root",
+        "spine",
+        "head",
+        "arm.L",
+        "arm.R",
+        "hand.L",
+        "hand.R",
+        "leg.L",
+        "leg.R",
+        "foot.L",
+        "foot.R",
+        "tail.1",
+        "tail.2"
+      ],
+      "actions": [
+        "idle",
+        "run",
+        "cheer",
+        "tipped",
+        "stiff",
+        "graze",
+        "sit"
+      ],
+      "loops": [
+        "idle",
+        "run",
+        "cheer",
+        "tipped",
+        "stiff",
+        "graze",
+        "sit"
+      ],
+      "slots": [
+        "head",
+        "face",
+        "back",
+        "waist",
+        "mouth"
+      ],
+      "hold_styles": [
+        "in_mouth"
+      ],
+      "playable": false
     }
   },
   "proposed": [
@@ -672,6 +727,27 @@
       "voice": "proposals/captain_crumbs/voice/",
       "model_3d": null,
       "jarling_params": null,
+      "pixel": null,
+      "barks": [],
+      "alt_forms": [],
+      "status": "proposed"
+    },
+    {
+      "id": "cow",
+      "name": "Patience the Cow",
+      "kind": "universal",
+      "player": null,
+      "playable": false,
+      "default_for": null,
+      "body_type": "quadruped",
+      "first_appears": "Junk Yard Zap (the cow in the yard: `b1_big_cow`, the cow-car, the raft).",
+      "approved": false,
+      "bible": "proposals/cow/bible.md",
+      "look": "proposals/cow/look.md",
+      "refs": "proposals/cow/refs/",
+      "voice": "proposals/cow/voice/",
+      "model_3d": "proposals/cow/refs/jarling/cow.glb",
+      "jarling_params": "proposals/cow/jarling.json",
       "pixel": null,
       "barks": [],
       "alt_forms": [],

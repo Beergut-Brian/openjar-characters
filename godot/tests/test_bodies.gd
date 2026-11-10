@@ -120,7 +120,7 @@ func _initialize() -> void:
 	var types: Dictionary = idx.body_types
 	var gears := load_gear()
 	check(gears.size() > 0, "gear items found (%d)" % gears.size())
-	for c: Dictionary in idx.characters:
+	for c: Dictionary in idx.characters + idx.get("proposed", []):
 		if c.model_3d == null:
 			continue
 		var id: String = c.id

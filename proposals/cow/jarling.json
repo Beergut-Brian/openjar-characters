@@ -1,0 +1,17 @@
+{
+  "id": "cow",
+  "name": "Patience",
+  "notes": "Proposal (not approved): Kaden approves name and look. Body type quadruped (avatar/kit/body_quadruped.py), its first character. Colours from proposals/cow/look.md 'Fixed colours'.",
+  "body": {"type": "quadruped", "height": 0.95, "length": 1.0, "girth": 0.27, "width": 0.98, "leg": 0.24, "head": 0.22},
+  "skin": "#F4F1EA",
+  "coat": {"pattern": "patches", "accent": "#2B2B33",
+           "patches": [[70, 0.42, 0.20], [150, -0.25, 0.22], [20, -0.55, 0.15], [-15, 0.05, 0.16], [110, -0.85, 0.12]]},
+  "snout": {"style": "muzzle", "color": "#F2B8C0", "nostril": "#B85C70"},
+  "ears": {"style": "side", "inner": "#F2B8C0"},
+  "horns": {"style": "nubs", "color": "#E8CF9A"},
+  "hooves": {"style": "hooves", "color": "#4A3B3B"},
+  "tail": {"style": "tuft", "tip": "#2B2B33"},
+  "face": {"eye_color": "#2A1E2C", "lashes": true, "patch": [-0.62, 0.52, 0.36, 0.30, 0.4],
+           "expression_list": ["neutral", "happy", "wide_eyed", "dizzy", "smug", "panicked"]},
+  "ref_action": {"action": "tipped", "frame": 1, "expression": "dizzy", "yaw": -28}
+}
