@@ -7,12 +7,16 @@ recurring character on its own. Rendered in each game's own technique, but alway
 | --- | --- | --- | --- |
 | [Jeff](characters/jeff/bible.md) | **yes**, P1 default | kicker in Spaceballs | Fun-loving hippy in a chicken costume, jeans, barefoot |
 | [Chuck](characters/chuck/bible.md) | **yes**, P2 default | kicker in Spaceballs | T-Rex trucker hat, black tie-dye, jeans, cowboy boots. Personality: proposed, awaiting Kaden |
+| [Astro Ana](characters/astro_ana/bible.md) | **yes** (proposed, playtest build) | kicker in Spaceballs | Mission-ready astronaut in a clear fishbowl helmet, two hair puffs, orange moon boots |
+| [Coach Whistle](characters/coach_whistle/bible.md) | **yes** (proposed, playtest build) | kicker in Spaceballs | Barrel-chested coach in referee stripes, navy cap, whistle on a cord |
+| [Ribbit](characters/ribbit/bible.md) | **yes** (proposed, playtest build) | kicker in Spaceballs | Small, round and calm in a teal frog hoodie with eyes on the hood; hops |
+| [Zorp](characters/zorp/bible.md) | **yes** (proposed, playtest build) | kicker in Spaceballs | Light-blue alien tourist with two antennae and a loud holiday shirt |
 | [The Mole](characters/mole/bible.md) | no (resident) | shovel thief, then Lost & Found, in The Hill | Nearsighted, polite shovel thief who apologises to boulders |
 | [The Gnome Foreman](characters/gnome_foreman/bible.md) | no (resident) | foreman, then Gnome Village, in The Hill | Tiny, serious, clipboard in hand; passes everything |
 | [The Caveman](characters/caveman/bible.md) | no (resident) | museum keeper in The Hill | Delighted by everything modern, polishes treasures, one ice cube on his head |
 | [The Dragon](characters/dragon/bible.md) | no (resident) | landmark (Dragon Perch) in The Hill | Huge, sleepy, huggable, snores smoke rings |
 
-All six are `kind: universal`.
+All ten are `kind: universal`. The four marked *proposed, playtest build* are from Kaden's sheets of 2026-11-10 (Jarlings batch 1): built so he can playtest the chooser, not yet signed off.
 
 **Alt forms.** A look.md section `## Alt form: <name>` is an approved per-game variant (listed in
 `characters.json` as `alt_forms`). Jeff and Chuck have `the-hill pixel` (hard hat, 32 px), shown in
@@ -28,7 +32,8 @@ Players pick who they are in every game's start menu and in the launcher (see
 [`docs/roster.md`](docs/roster.md)). Only **playable** characters can be picked. Each bible's header
 says `**Playable:** true|false`, `**Default for:** none|1|2` and `**Body:** standard|critter|giant` (the body types are in [`avatar/README.md`](avatar/README.md)); the index lists
 the playable ids in display order under `roster` (defaults first). Today: Jeff (P1 default) and
-Chuck (P2 default). The Hill residents (Mole, Gnome Foreman, Caveman, Dragon) are not playable.
+Chuck (P2 default), then Astro Ana, Coach Whistle, Ribbit and Zorp (batch 1, proposed; lineups
+`characters/batch1_lineup.png`, `characters/batch1_pixel_lineup.png`, read check `characters/batch1_read_check.png`). The Hill residents (Mole, Gnome Foreman, Caveman, Dragon) are not playable.
 
 **3D-first (Kaden, 2026-11-10).** A character is designed as a Jarling first; every other style is
 derived from that 3D master. The four Hill residents were drawn 2D-first, so their 3D masters were
@@ -92,7 +97,10 @@ Drafts awaiting Kaden live in `proposals/<id>/` and are listed under `proposed` 
 `git mv proposals/<id> characters/<id>`, set the bible's `## Status` to "Approved by Kaden <date>" (the
 index reads `approved` from it), then run `tools/build_index.py`.
 
-None right now. The four Hill residents were approved by Kaden on 2026-11-09 (D46 a) and promoted.
+Fifteen of Kaden's 19 sheets (2026-11-10) wait here: `docs/jarlings-19.md`. The four Spaceballs ones (Coach Whistle, Zorp,
+Ribbit, Astro Ana) were moved to `characters/` on 2026-11-10 as a playtest build: Kaden wrote the sheets and asked to playtest
+the chooser with them; their Status stays "Proposed" until he signs off. The four Hill residents were approved by Kaden on
+2026-11-09 (D46 a) and promoted.
 
 ## Consuming from a game
 
