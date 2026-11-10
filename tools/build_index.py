@@ -79,10 +79,25 @@ out["roster"] = roster(out["characters"])
 out["defaults"] = {f"P{c['default_for']}": c["id"] for c in sorted(out["characters"], key=lambda c: c["default_for"] or 9) if c["default_for"]}
 # The rules every playable character follows (README "Playable characters"); tests and games read these.
 out["player_colours"] = {"P1": "#3cc24a", "P2": "#e4393c"}
-out["body_types"] = {"standard": {
-    "rig": "avatar/kit (Jarling humanoid)", "params": ["build", "height", "leg_scale"],
-    "builds": ["slim", "regular", "stocky", "round", "boxy", "puffy"],
-    "height": [0.8, 1.3], "leg_scale": [0.8, 1.2]}}
+SLOTS = ["head", "face", "back", "hand_l", "hand_r", "waist", "knee_l", "knee_r", "foot_l", "foot_r"]
+BONES = ["root", "spine", "head", "arm.L", "arm.R", "hand.L", "hand.R", "leg.L", "leg.R", "foot.L", "foot.R"]
+NO_KNEES = [s for s in SLOTS if not s.startswith("knee_")]
+out["body_types"] = {
+    "standard": {
+        "rig": "avatar/kit (Jarling humanoid)", "params": ["build", "height", "leg_scale"],
+        "builds": ["slim", "regular", "stocky", "round", "boxy", "puffy"],
+        "height": [0.8, 1.3], "leg_scale": [0.8, 1.2],
+        "bones": BONES, "actions": ["idle", "run", "kick", "cheer"], "loops": ["idle", "run", "cheer"],
+        "slots": SLOTS, "playable": True},
+    "critter": {
+        "rig": "avatar/kit/body_critter.py (small no-neck animal)",
+        "bones": BONES + ["prop"], "actions": ["idle", "run", "cheer", "popup", "bow"],
+        "loops": ["idle", "run", "cheer"], "slots": NO_KNEES, "playable": False},
+    "giant": {
+        "rig": "avatar/kit/body_giant.py (huge sitting creature)",
+        "bones": BONES + ["tail.1", "tail.2", "tail.3", "wing.L", "wing.R"],
+        "actions": ["idle", "run", "cheer", "yawn", "wave", "flap", "sleep"],
+        "loops": ["idle", "run", "cheer", "flap", "sleep"], "slots": NO_KNEES, "playable": False}}
 out["proposed"] = scan("proposals", {"status": "proposed"})
 (root / "characters.json").write_text(json.dumps(out, indent=2) + "\n")
 print(f"wrote characters.json with {len(out['characters'])} characters "

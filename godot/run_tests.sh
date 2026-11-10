@@ -4,6 +4,7 @@
 # 1. tools/build_index.py is rerun: characters.json must not change (index up to date, deterministic).
 # 2. test_roster.gd: roster, defaults, player-colour rule, standard-body rule (README "Playable characters").
 # 3. test_equipment.gd: gear on Jeff, Chuck and generic Jarlings.
+# 4. test_bodies.gd: per-body-type contract (bones, actions, expressions, slots, gear) for every character with a model.
 set -uo pipefail
 cd "$(dirname "$0")"
 status=0
@@ -32,7 +33,7 @@ if command -v blender >/dev/null; then
   done
 fi
 godot --headless --path . --import >/dev/null 2>&1 || true
-for t in test_roster test_equipment; do
+for t in test_roster test_equipment test_bodies; do
   timeout 300 godot --headless --path . -s "res://tests/$t.gd" 2>&1 | grep -v "^Godot Engine\|^$"
   rc=${PIPESTATUS[0]}
   [ "$rc" -eq 0 ] || { echo "  ($t exited $rc)"; status=1; }

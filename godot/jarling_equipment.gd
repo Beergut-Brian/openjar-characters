@@ -10,6 +10,8 @@ signal item_unequipped(slot: StringName, item: JarlingGear)
 signal item_leveled_up(slot: StringName, item: JarlingGear, level: int)
 ## Hook for the game's puff / sfx: emitted on equip, swap and level up, at the slot.
 signal poof(slot: StringName, at: Vector3)
+## equip() was refused because this body has no such slot (critter and giant have no knees). Once per missing slot.
+signal slot_missing(slot: StringName, item: JarlingGear)
 
 const SLOTS: Array[StringName] = [&"head", &"face", &"back", &"hand_l", &"hand_r", &"waist",
 		&"knee_l", &"knee_r", &"foot_l", &"foot_r"]
@@ -25,6 +27,7 @@ var _parts := {}    # body part -> Array[Node3D]
 var _hidden := {}   # body part -> how many worn items hide it
 var _markers := {}  # slot -> Node3D
 var _scanned := false
+var _body_type := "standard"
 
 
 func _ready() -> void:
@@ -33,11 +36,21 @@ func _ready() -> void:
 
 # ------------------------------------------------------------------------------------- public API
 
-## Wear `item`. Returns false when the item was already worn and got levelled up instead.
+## Wear `item`. Returns false when the item was already worn and got levelled up instead, or when
+## this body lacks any of the item's slots (then nothing changes and slot_missing is emitted).
 func equip(item: JarlingGear) -> bool:
 	_scan()
 	if item == null or item.slots.is_empty():
 		push_warning("JarlingEquipment: item has no slots")
+		return false
+	var lacking: Array[StringName] = []
+	for s in item.slots:
+		if not has_slot(s):
+			lacking.append(s)
+	if not lacking.is_empty():
+		push_warning("JarlingEquipment: %s has no %s on a %s body, %s not worn" % [_root().name, lacking, _body_type, item.id])
+		for s in lacking:
+			slot_missing.emit(s, item)
 		return false
 	if has_item(item.id):
 		level_up(item.slots[0])
@@ -154,6 +167,28 @@ func slot_node(slot: StringName) -> Node3D:
 	return m
 
 
+## True when this body has the slot_<name> marker.
+func has_slot(slot: StringName) -> bool:
+	_scan()
+	return _markers.has(slot)
+
+
+## The SLOTS this body lacks (critter and giant: knee_l, knee_r).
+func missing_slots() -> Array[StringName]:
+	_scan()
+	var out: Array[StringName] = []
+	for s in SLOTS:
+		if not _markers.has(s):
+			out.append(s)
+	return out
+
+
+## "standard", "critter", "giant" ... from the rig's `jarling_body_type` extras; "standard" if absent.
+func body_type() -> String:
+	_scan()
+	return _body_type
+
+
 ## Body part meshes the Jarling has (foot_l, hand_r, headwear, tail ...).
 func body_parts() -> Array:
 	_scan()
@@ -182,6 +217,8 @@ func _scan() -> void:
 			continue
 		var ex: Dictionary = n.get_meta("extras", {})
 		var nm := String(n.name)
+		if ex.has("jarling_body_type"):
+			_body_type = String(ex["jarling_body_type"])
 		if nm.begins_with("slot_"):
 			_markers[StringName(nm.substr(5))] = n
 		var part := String(ex.get("jarling_part", ""))
