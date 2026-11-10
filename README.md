@@ -20,14 +20,18 @@ recurring character on its own. Rendered in each game's own technique, but alway
 | [Mayor Pip](characters/mayor_pip/bible.md) | **yes** (proposed, playtest build) | mayor of Hillville in The Hill | The smallest Jarling under a top hat nearly half his height; gold sash |
 | [Professor Fizz](characters/professor_fizz/bible.md) | **yes** (proposed, playtest build) | inventor in Junk Yard Zap | Wild white hair straight up, goggles on her forehead, lab coat, one scorch-mark eyebrow |
 | [Scrap](characters/scrap/bible.md) | **yes** (proposed, playtest build) | junkyard kid in Junk Yard Zap | Small kid in a colander helmet, patched yellow shirt, one orange shoe and one purple |
+| [Boxbot](characters/boxbot/bible.md) | **yes** (proposed, playtest build) | universal silly, any game | Kid in a cardboard-box robot costume: head box with a face cut-out, dial-drawn body box, dryer-hose arms |
+| [Captain Crumbs](characters/captain_crumbs/bible.md) | **yes** (proposed, playtest build) | universal silly, any game | Tall pirate-ish chef: very tall chef hat, eyepatch, curly moustache, round middle |
+| [El Burrito](characters/el_burrito/bible.md) | **yes** (proposed, playtest build) | universal silly, any game | Short, wide masked wrestler in gold and purple with a cape |
+| [Rexy](characters/rexy/bible.md) | **yes** (proposed, playtest build) | universal silly, any game | Small kid in an orange dino onesie: felt-teeth hood, yellow back spikes, short tail |
+| [Sir Clank](characters/sir_clank/bible.md) | **yes** (proposed, playtest build) | universal silly, any game | Very upright boy knight with a saucepan helmet (handle out the back) and a yellow shield on his shirt |
+| [Snooze](characters/snooze/bible.md) | **yes** (proposed, playtest build) | universal silly, any game | Slouchy sleepyhead in star pyjamas and a long floppy nightcap; eyes always closed |
 | [The Mole](characters/mole/bible.md) | no (resident) | shovel thief, then Lost & Found, in The Hill | Nearsighted, polite shovel thief who apologises to boulders |
 | [The Gnome Foreman](characters/gnome_foreman/bible.md) | no (resident) | foreman, then Gnome Village, in The Hill | Tiny, serious, clipboard in hand; passes everything |
 | [The Caveman](characters/caveman/bible.md) | no (resident) | museum keeper in The Hill | Delighted by everything modern, polishes treasures, one ice cube on his head |
 | [The Dragon](characters/dragon/bible.md) | no (resident) | landmark (Dragon Perch) in The Hill | Huge, sleepy, huggable, snores smoke rings |
 
-All ten are `kind: universal`. The four marked *proposed, playtest build* are from Kaden's sheets of 2026-11-10 (Jarlings batch 1): built so he can playtest the chooser, not yet signed off.
-All thirteen are `kind: universal`. The seven marked *proposed, playtest build* are from Kaden's sheets of 2026-11-10 (Jarlings batch 2: Junk Yard Zap and The Hill): built so he can playtest the chooser, not yet signed off.
-All fifteen are `kind: universal`. Bloom and Old Reel (batch 4: Life of a Worm, 2026-11-10) are *proposed, playtest build* the same way.
+The nineteen marked *proposed, playtest build* are from Kaden's sheets of 2026-11-10 (Jarlings batch 1: Spaceballs; batch 2: Junk Yard Zap and The Hill; batch 3: the universal sillies; batch 4: Life of a Worm, Bloom and Old Reel): built so he can playtest the chooser, not yet signed off.
 
 **Alt forms.** A look.md section `## Alt form: <name>` is an approved per-game variant (listed in
 `characters.json` as `alt_forms`). Jeff and Chuck have `the-hill pixel` (hard hat, 32 px), shown in
@@ -47,9 +51,9 @@ Chuck (P2 default), then Astro Ana, Coach Whistle, Ribbit and Zorp (batch 1, pro
 `characters/batch1_lineup.png`, `characters/batch1_pixel_lineup.png`, read check `characters/batch1_read_check.png`),
 then Big Tiny, Foreman Dot, Granny Gravel, Lampy, Mayor Pip, Professor Fizz and Scrap (batch 2, proposed; lineups
 `characters/batch2_lineup.png`, `characters/batch2_pixel_lineup.png`, read check `characters/batch2_read_check.png`),
-then Bloom and Old Reel (batch 4, proposed; lineups `characters/batch4_lineup.png`,
-`characters/batch4_pixel_lineup.png`, read check `characters/batch4_read_check.png`). The index sorts the
-non-default playables by id, so batch order is not kept in `roster`.
+then Boxbot, Captain Crumbs, El Burrito, Rexy, Sir Clank and Snooze (batch 3, the universal sillies, proposed; lineups
+`characters/batch3_lineup.png`, `characters/batch3_pixel_lineup.png`, read check `characters/batch3_read_check.png`), then Bloom and Old Reel (batch 4, proposed; lineups `characters/batch4_lineup.png`,
+`characters/batch4_pixel_lineup.png`, read check `characters/batch4_read_check.png`). The index sorts the non-default playables by id, so batch order is not kept in `roster`.
 The Hill residents (Mole, Gnome Foreman, Caveman, Dragon) are not playable.
 
 **3D-first (Kaden, 2026-11-10).** A character is designed as a Jarling first; every other style is

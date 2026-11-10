@@ -80,6 +80,58 @@
       ]
     },
     {
+      "id": "boxbot",
+      "name": "Boxbot",
+      "kind": "universal",
+      "player": null,
+      "playable": true,
+      "default_for": null,
+      "body_type": "standard",
+      "first_appears": "any game (Kaden's \"Universal sillies\" group: no home game).",
+      "approved": false,
+      "bible": "characters/boxbot/bible.md",
+      "look": "characters/boxbot/look.md",
+      "refs": "characters/boxbot/refs/",
+      "voice": "characters/boxbot/voice/",
+      "model_3d": "characters/boxbot/refs/jarling/boxbot.glb",
+      "jarling_params": "characters/boxbot/jarling.json",
+      "pixel": {
+        "alt_form": "the-hill pixel",
+        "source": "tools/pixel/boxbot.py",
+        "function": "boxbot"
+      },
+      "barks": [],
+      "alt_forms": [
+        "the-hill pixel: proposed"
+      ]
+    },
+    {
+      "id": "captain_crumbs",
+      "name": "Captain Crumbs",
+      "kind": "universal",
+      "player": null,
+      "playable": true,
+      "default_for": null,
+      "body_type": "standard",
+      "first_appears": "any game (Kaden's \"Universal sillies\" group: no home game).",
+      "approved": false,
+      "bible": "characters/captain_crumbs/bible.md",
+      "look": "characters/captain_crumbs/look.md",
+      "refs": "characters/captain_crumbs/refs/",
+      "voice": "characters/captain_crumbs/voice/",
+      "model_3d": "characters/captain_crumbs/refs/jarling/captain_crumbs.glb",
+      "jarling_params": "characters/captain_crumbs/jarling.json",
+      "pixel": {
+        "alt_form": "the-hill pixel",
+        "source": "tools/pixel/captain_crumbs.py",
+        "function": "captain_crumbs"
+      },
+      "barks": [],
+      "alt_forms": [
+        "the-hill pixel: proposed"
+      ]
+    },
+    {
       "id": "caveman",
       "name": "The Caveman",
       "kind": "universal",
@@ -170,6 +222,32 @@
       "pixel": null,
       "barks": [],
       "alt_forms": []
+    },
+    {
+      "id": "el_burrito",
+      "name": "El Burrito",
+      "kind": "universal",
+      "player": null,
+      "playable": true,
+      "default_for": null,
+      "body_type": "standard",
+      "first_appears": "any game (Kaden's \"Universal sillies\" group: no home game).",
+      "approved": false,
+      "bible": "characters/el_burrito/bible.md",
+      "look": "characters/el_burrito/look.md",
+      "refs": "characters/el_burrito/refs/",
+      "voice": "characters/el_burrito/voice/",
+      "model_3d": "characters/el_burrito/refs/jarling/el_burrito.glb",
+      "jarling_params": "characters/el_burrito/jarling.json",
+      "pixel": {
+        "alt_form": "the-hill pixel",
+        "source": "tools/pixel/el_burrito.py",
+        "function": "el_burrito"
+      },
+      "barks": [],
+      "alt_forms": [
+        "the-hill pixel: proposed"
+      ]
     },
     {
       "id": "foreman_dot",
@@ -394,6 +472,32 @@
       ]
     },
     {
+      "id": "rexy",
+      "name": "Rexy",
+      "kind": "universal",
+      "player": null,
+      "playable": true,
+      "default_for": null,
+      "body_type": "standard",
+      "first_appears": "any game (Kaden's \"Universal sillies\" group: no home game).",
+      "approved": false,
+      "bible": "characters/rexy/bible.md",
+      "look": "characters/rexy/look.md",
+      "refs": "characters/rexy/refs/",
+      "voice": "characters/rexy/voice/",
+      "model_3d": "characters/rexy/refs/jarling/rexy.glb",
+      "jarling_params": "characters/rexy/jarling.json",
+      "pixel": {
+        "alt_form": "the-hill pixel",
+        "source": "tools/pixel/rexy.py",
+        "function": "rexy"
+      },
+      "barks": [],
+      "alt_forms": [
+        "the-hill pixel: proposed"
+      ]
+    },
+    {
       "id": "ribbit",
       "name": "Ribbit",
       "kind": "universal",
@@ -446,6 +550,58 @@
       ]
     },
     {
+      "id": "sir_clank",
+      "name": "Sir Clank",
+      "kind": "universal",
+      "player": null,
+      "playable": true,
+      "default_for": null,
+      "body_type": "standard",
+      "first_appears": "any game (Kaden's \"Universal sillies\" group: no home game).",
+      "approved": false,
+      "bible": "characters/sir_clank/bible.md",
+      "look": "characters/sir_clank/look.md",
+      "refs": "characters/sir_clank/refs/",
+      "voice": "characters/sir_clank/voice/",
+      "model_3d": "characters/sir_clank/refs/jarling/sir_clank.glb",
+      "jarling_params": "characters/sir_clank/jarling.json",
+      "pixel": {
+        "alt_form": "the-hill pixel",
+        "source": "tools/pixel/sir_clank.py",
+        "function": "sir_clank"
+      },
+      "barks": [],
+      "alt_forms": [
+        "the-hill pixel: proposed"
+      ]
+    },
+    {
+      "id": "snooze",
+      "name": "Snooze",
+      "kind": "universal",
+      "player": null,
+      "playable": true,
+      "default_for": null,
+      "body_type": "standard",
+      "first_appears": "any game (Kaden's \"Universal sillies\" group: no home game).",
+      "approved": false,
+      "bible": "characters/snooze/bible.md",
+      "look": "characters/snooze/look.md",
+      "refs": "characters/snooze/refs/",
+      "voice": "characters/snooze/voice/",
+      "model_3d": "characters/snooze/refs/jarling/snooze.glb",
+      "jarling_params": "characters/snooze/jarling.json",
+      "pixel": {
+        "alt_form": "the-hill pixel",
+        "source": "tools/pixel/snooze.py",
+        "function": "snooze"
+      },
+      "barks": [],
+      "alt_forms": [
+        "the-hill pixel: proposed"
+      ]
+    },
+    {
       "id": "zorp",
       "name": "Zorp",
       "kind": "universal",
@@ -478,15 +634,21 @@
     "astro_ana",
     "big_tiny",
     "bloom",
+    "boxbot",
+    "captain_crumbs",
     "coach_whistle",
+    "el_burrito",
     "foreman_dot",
     "granny_gravel",
     "lampy",
     "mayor_pip",
     "old_reel",
     "professor_fizz",
+    "rexy",
     "ribbit",
     "scrap",
+    "sir_clank",
+    "snooze",
     "zorp"
   ],
   "defaults": {
@@ -665,130 +827,80 @@
         "foot_r"
       ],
       "playable": false
+    },
+    "quadruped": {
+      "rig": "avatar/kit/body_quadruped.py (four-legged farm animal or pet; arm/hand = front legs and hooves, leg/foot = hind)",
+      "params": [
+        "height",
+        "length",
+        "girth",
+        "width",
+        "leg",
+        "head"
+      ],
+      "bones": [
+        "root",
+        "spine",
+        "head",
+        "arm.L",
+        "arm.R",
+        "hand.L",
+        "hand.R",
+        "leg.L",
+        "leg.R",
+        "foot.L",
+        "foot.R",
+        "tail.1",
+        "tail.2"
+      ],
+      "actions": [
+        "idle",
+        "run",
+        "cheer",
+        "tipped",
+        "stiff",
+        "graze",
+        "sit"
+      ],
+      "loops": [
+        "idle",
+        "run",
+        "cheer",
+        "tipped",
+        "stiff",
+        "graze",
+        "sit"
+      ],
+      "slots": [
+        "head",
+        "face",
+        "back",
+        "waist",
+        "mouth"
+      ],
+      "hold_styles": [
+        "in_mouth"
+      ],
+      "playable": false
     }
   },
   "proposed": [
     {
-      "id": "boxbot",
-      "name": "Boxbot",
+      "id": "cow",
+      "name": "Patience the Cow",
       "kind": "universal",
       "player": null,
       "playable": false,
       "default_for": null,
-      "body_type": "standard",
-      "first_appears": "any game (Kaden's \"Universal sillies\" group: no home game).",
+      "body_type": "quadruped",
+      "first_appears": "Junk Yard Zap (the cow in the yard: `b1_big_cow`, the cow-car, the raft).",
       "approved": false,
-      "bible": "proposals/boxbot/bible.md",
-      "look": "proposals/boxbot/look.md",
-      "refs": "proposals/boxbot/refs/",
-      "voice": "proposals/boxbot/voice/",
-      "model_3d": null,
-      "jarling_params": null,
-      "pixel": null,
-      "barks": [],
-      "alt_forms": [],
-      "status": "proposed"
-    },
-    {
-      "id": "captain_crumbs",
-      "name": "Captain Crumbs",
-      "kind": "universal",
-      "player": null,
-      "playable": false,
-      "default_for": null,
-      "body_type": "standard",
-      "first_appears": "any game (Kaden's \"Universal sillies\" group: no home game).",
-      "approved": false,
-      "bible": "proposals/captain_crumbs/bible.md",
-      "look": "proposals/captain_crumbs/look.md",
-      "refs": "proposals/captain_crumbs/refs/",
-      "voice": "proposals/captain_crumbs/voice/",
-      "model_3d": null,
-      "jarling_params": null,
-      "pixel": null,
-      "barks": [],
-      "alt_forms": [],
-      "status": "proposed"
-    },
-    {
-      "id": "el_burrito",
-      "name": "El Burrito",
-      "kind": "universal",
-      "player": null,
-      "playable": false,
-      "default_for": null,
-      "body_type": "standard",
-      "first_appears": "any game (Kaden's \"Universal sillies\" group: no home game).",
-      "approved": false,
-      "bible": "proposals/el_burrito/bible.md",
-      "look": "proposals/el_burrito/look.md",
-      "refs": "proposals/el_burrito/refs/",
-      "voice": "proposals/el_burrito/voice/",
-      "model_3d": null,
-      "jarling_params": null,
-      "pixel": null,
-      "barks": [],
-      "alt_forms": [],
-      "status": "proposed"
-    },
-    {
-      "id": "rexy",
-      "name": "Rexy",
-      "kind": "universal",
-      "player": null,
-      "playable": false,
-      "default_for": null,
-      "body_type": "standard",
-      "first_appears": "any game (Kaden's \"Universal sillies\" group: no home game).",
-      "approved": false,
-      "bible": "proposals/rexy/bible.md",
-      "look": "proposals/rexy/look.md",
-      "refs": "proposals/rexy/refs/",
-      "voice": "proposals/rexy/voice/",
-      "model_3d": null,
-      "jarling_params": null,
-      "pixel": null,
-      "barks": [],
-      "alt_forms": [],
-      "status": "proposed"
-    },
-    {
-      "id": "sir_clank",
-      "name": "Sir Clank",
-      "kind": "universal",
-      "player": null,
-      "playable": false,
-      "default_for": null,
-      "body_type": "standard",
-      "first_appears": "any game (Kaden's \"Universal sillies\" group: no home game).",
-      "approved": false,
-      "bible": "proposals/sir_clank/bible.md",
-      "look": "proposals/sir_clank/look.md",
-      "refs": "proposals/sir_clank/refs/",
-      "voice": "proposals/sir_clank/voice/",
-      "model_3d": null,
-      "jarling_params": null,
-      "pixel": null,
-      "barks": [],
-      "alt_forms": [],
-      "status": "proposed"
-    },
-    {
-      "id": "snooze",
-      "name": "Snooze",
-      "kind": "universal",
-      "player": null,
-      "playable": false,
-      "default_for": null,
-      "body_type": "standard",
-      "first_appears": "any game (Kaden's \"Universal sillies\" group: no home game).",
-      "approved": false,
-      "bible": "proposals/snooze/bible.md",
-      "look": "proposals/snooze/look.md",
-      "refs": "proposals/snooze/refs/",
-      "voice": "proposals/snooze/voice/",
-      "model_3d": null,
-      "jarling_params": null,
+      "bible": "proposals/cow/bible.md",
+      "look": "proposals/cow/look.md",
+      "refs": "proposals/cow/refs/",
+      "voice": "proposals/cow/voice/",
+      "model_3d": "proposals/cow/refs/jarling/cow.glb",
+      "jarling_params": "proposals/cow/jarling.json",
       "pixel": null,
       "barks": [],
       "alt_forms": [],

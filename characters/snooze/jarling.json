@@ -1,0 +1,91 @@
+{
+ "id": "snooze",
+ "name": "Snooze",
+ "notes": "From characters/snooze/look.md (Kaden's sheet 2026-11-10; proposed, playtest build).",
+ "head": {
+  "shape": "round",
+  "size": 1.0,
+  "ears": "round"
+ },
+ "skin": "#F7CFAE",
+ "face": {
+  "eyes": "drop",
+  "brows": "soft",
+  "mouth": "smile",
+  "expressions": {
+   "neutral": {
+    "eye_mode": "arc",
+    "mouth": "smile"
+   },
+   "happy": {
+    "eye_mode": "arc",
+    "mouth": "smile"
+   },
+   "surprised": {
+    "eye_mode": "shut",
+    "mouth": "o",
+    "eye_scale": 1.0,
+    "brow_raise": 0.02,
+    "brow_tilt": 0.0
+   },
+   "determined": {
+    "eye_mode": "arc",
+    "mouth": "o",
+    "eye_scale": 1.0,
+    "brow_raise": 0.0,
+    "brow_tilt": 0.0,
+    "lid": 0.0,
+    "lid_tilt": 0.0
+   }
+  }
+ },
+ "hair": {
+  "style": "short",
+  "color": "#7A4B2A"
+ },
+ "headwear": {
+  "type": "nightcap",
+  "color": "#6F7FD8",
+  "stripe": "#F5F5F2",
+  "pom": "#F5F5F2",
+  "length": 1.6
+ },
+ "body": {
+  "build": "regular",
+  "height": 1.0,
+  "leg_scale": 0.95
+ },
+ "outfit": {
+  "top": {
+   "style": "long",
+   "color": "#A9D4F2",
+   "pattern": {
+    "type": "stars",
+    "accent": "#FFFFFF"
+   }
+  },
+  "bottoms": {
+   "style": "pants",
+   "color": "#A9D4F2",
+   "pattern": {
+    "type": "stars",
+    "accent": "#FFFFFF"
+   }
+  },
+  "shoes": {
+   "style": "slippers",
+   "color": "#FFD95A"
+  }
+ },
+ "costume": [],
+ "posture": {
+  "spine_lean": 7,
+  "head_lean": 4
+ },
+ "ref_action": {
+  "action": "idle",
+  "frame": 1,
+  "expression": "surprised",
+  "yaw": -28
+ }
+}

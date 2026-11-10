@@ -40,6 +40,7 @@ for silhouette, proportions and colours, and every 2D style is derived from it.
 | `standard` | the humanoid Jarling: round head, capsule torso, arms, legs | every playable character, and any resident who is a person. Change `build`, `height`, `leg_scale`, head shape; add hats, beards, tunics as kit pieces (`pieces_*.py`) | `jarling_kit.py` | Jeff, Chuck, Gnome Foreman, Caveman, generics |
 | `critter` | a small no-neck animal: one pear (a head blob sunk into a body blob), no visible legs, feet peeking out under the body, short arms with big paws | small round animals that stand upright: moles, hedgehogs, penguins, owls, frogs | `body_critter.py` | The Mole |
 | `giant` | a huge sitting beanbag creature: round head on a bigger round body, stubby arms, big round feet out front, a thick tail, optional tiny wings and horn nubs | landmark-sized friendly creatures (about 3 to 8 Jarlings tall) | `body_giant.py` | The Dragon |
+| `quadruped` | a four-legged animal: one rounded barrel body, a Jarling-sized head low on the front with the standard face atlas, four short stub legs with hooves or paws, a tail. Params `length`, `girth`, `width`, `leg`, `head`; pieces: snout (`muzzle`, `disc`), ears (`side`, `floppy`), horns (`nubs`, a body feature), hooves or paws, tail (`tuft`, `curl`, `nub`), coat `pattern` (`patches`, `spots`) or `style` `wool` | farm animals and pets that walk on four legs (cow, pig, sheep, goat, dog, horse) | `body_quadruped.py` | the cow (proposal); kit proofs: pig, sheep (`kit/examples/quadruped/`, `kit/renders/quadruped_check.png`) |
 
 **When to add a body type.** Only when the standard body can't honestly express the character
 *and* the type will be reused by later characters of that kind. Try `height`, `build`, `leg_scale`,
@@ -52,15 +53,22 @@ for non-playable residents only (README "Playable characters").
 - **Bones.** All types share `root`, `spine`, `head`, `arm.L/R`, `hand.L/R`, `leg.L/R`, `foot.L/R`
   with the same meaning and parenting, so game code that nods a head or squashes `root` works on
   anyone. `critter` adds `prop` (a spare attachment bone, child of `spine`; held items go on the hand slots); its leg bones are short stubs
-  inside the body. `giant` adds `tail.1` > `tail.2` > `tail.3` (from `root`) and `wing.L/R` (from `spine`).
+  inside the body. `giant` adds `tail.1` > `tail.2` > `tail.3` (from `root`) and `wing.L/R` (from `spine`). `quadruped`
+  maps the shared bones onto four legs: `arm.L/R` > `hand.L/R` are the front legs and hooves (from
+  `spine`, which runs along the barrel), `leg.L/R` > `foot.L/R` the hind ones (from `root`); it adds
+  `tail.1` > `tail.2` (from `spine`). Game code that swings `arm`/`leg` or nods `head` still works.
 - **Actions.** Every type has `idle` (loop), `run` (loop: that body's way of getting about, a
   shuffle for a critter, a slow waddle for a giant) and `cheer` (loop). `standard` also has `kick`.
   `critter` adds `popup`, `bow` and `dig` (loop, for a two-handed tool); `giant` adds `yawn`, `wave`, `flap` (loop) and `sleep` (loop).
+  `quadruped`: `run` is a trot, `cheer` a hop; it adds `tipped` (rolled onto its side, legs stuck out),
+  `stiff` (the same legs-out pose without the roll, for a physics body that has rolled over by itself),
+  `graze` and `sit`, all loops.
   A standard character lists extra actions its bible needs in `"actions"` (registered in a
   `pieces_*.py` module, e.g. `march`, `write`, `polish`).
 - **Equipment slots** wherever the body has the matching part, with the same names, axes and fit
   rule as `docs/equipment.md` (gear made for the reference Jarling fits). `critter` and `giant`
-  have no knees: they lack `knee_l` / `knee_r`. `JarlingEquipment` reports a missing slot
+  have no knees: they lack `knee_l` / `knee_r`. `quadruped` has `head`, `face`, `back` (top of the
+  barrel), `waist` (a girth strap) and an extra `mouth` slot; it lacks the hand, knee and foot slots. `JarlingEquipment` reports a missing slot
   (`has_slot`, `missing_slots`, signal `slot_missing`, `equip` returns false) and never crashes.
 - **Extras.** Rig: `jarling_body_type`, `jarling_slots`, `jarling_actions`, `jarling_loops`. Body
   mesh: `jarling_expressions`.
@@ -78,6 +86,23 @@ standard `neutral`, `happy`, `surprised`, `determined`. Read the UV offsets from
 acts=...)`, `kit.face_atlas(face, skin, draw=...)` and the kit's geometry helpers. Then add the
 type's row to `tools/build_index.py` and the table above.
 
+### How Junk Yard Zap uses the quadruped (the cow)
+
+- **Physics stays one shape.** The cow keeps a single box or capsule `RigidBody3D` (today
+  `data/objects/cow.tres`: a 1.9 x 1.0 x 0.8 m box). The rig is visual only: put `cow.glb` under the
+  body as its `mesh`, turned so the cow's front (+Z in the glb) runs along the box's long axis, and
+  size the box to her (about 1.56 long x 1.07 tall x 0.62 wide m at step 0). Grow/shrink scale the
+  body node as today and the glb follows; glue joints, freeze and magnet act on the body, never on bones.
+- **Animation is cosmetic.** Play `idle` or `graze` while she sits still, `run` when she slides or is
+  carried fast, `cheer` when she lands on the trampoline, `stiff` when the box has rolled onto its side
+  or back (the box does the rolling, so do not also play `tipped`, which rolls the rig itself; `tipped`
+  is for games without a physics body).
+- **Faces.** One expression per gun, from the yard's reaction list (`proposals/cow/voice.md` "Yard
+  reactions"): set the face material's UV offset from `jarling_expressions`, as for every Jarling.
+- **Gear.** The balloon tie goes on `back` (top of the barrel), glue blobs and the magnet are world
+  effects, a pail or bell can go in `mouth`. Hand items are refused (`slot_missing`), never a crash.
+- **Pitch follows size** (game side): record her moos once at step 0.
+
 ## Files
 
 ```
@@ -86,7 +111,8 @@ avatar/kit/build_jarling.py    params JSON -> .glb (CLI)
 avatar/kit/render_refs.py      turnaround / expressions / action / side renders for one Jarling of any body type (Cycles CPU)
 avatar/kit/sprite_side.py      Pillow: the side render at The Hill's sprite scale (tracing base for 2D)
 avatar/kit/pieces_*.py         kit pieces for the standard body (hats, beards, tunics, props, extra actions)
-avatar/kit/body_*.py           non-standard body types (critter, giant)
+avatar/kit/body_*.py           non-standard body types (critter, giant, quadruped)
+avatar/kit/render_quadruped.py the quadruped's action sheet, scale strip and kit check (renders/quadruped_check.png)
 avatar/kit/hold.py             held items: grips, hold styles, fists (see "Holding items")
 avatar/kit/render_hold.py      the hold sheet (renders/hold_check.png) and the fist-to-grip check (--check)
 avatar/kit/render_scenes.py    style_mock.png and generic_lineup.png
@@ -299,6 +325,11 @@ from `avatar/gear/`, or add the item to `build_gear.py` so the poses are written
 `hand_r`, all Spaceballs gear) sits at the slot origin exactly as before, with the open hand and
 no arm pose (`godot/tests/test_hold.gd` checks this). Give a gun a `hold` block with
 `one_hand_low` or `one_hand_raised` when you want the fist and the arm pose.
+
+**Mouth carry (quadruped).** A body with no hands carries things in its `mouth` slot with the one
+extra hold style `in_mouth`: `grip_r` goes on the bite point, an optional `axis` runs across the
+mouth, and nothing else moves (no fist, no limb pose; the head carries it through every action).
+Blender: `hold.attach_mouth(j, "pail")`; Godot: `equip()` as usual. See `docs/equipment.md` 5d.
 
 Limits: the fist is a plain closed mitten on every body (the Mole's claws curl out of sight);
 two-handed items cross the belly of very wide bodies (Dragon, Mole) because their arms are short.

@@ -1,0 +1,82 @@
+{
+ "id": "rexy",
+ "name": "Rexy",
+ "notes": "From characters/rexy/look.md (Kaden's sheet 2026-11-10; proposed, playtest build).",
+ "head": {
+  "shape": "round",
+  "size": 1.05,
+  "ears": "none"
+ },
+ "skin": "#F0BE94",
+ "face": {
+  "eyes": "round",
+  "brows": "soft",
+  "mouth": "yell",
+  "expressions": {
+   "neutral": {
+    "mouth": "yell",
+    "eye_scale": 1.1
+   },
+   "happy": {
+    "mouth": "yell"
+   },
+   "surprised": {
+    "mouth": "yell",
+    "brow_raise": -0.03,
+    "brow_tilt": 0.4,
+    "lid": 0.25,
+    "lid_tilt": 0.28
+   },
+   "determined": {
+    "mouth": "frown",
+    "brow_raise": 0.04,
+    "brow_tilt": -0.15
+   }
+  }
+ },
+ "hair": {
+  "style": "none"
+ },
+ "headwear": {
+  "type": "animal_hood",
+  "color": "#F7941D",
+  "teeth": "#FFFFFF",
+  "spikes": "#FFD23F"
+ },
+ "body": {
+  "build": "round",
+  "height": 0.8,
+  "leg_scale": 0.8
+ },
+ "outfit": {
+  "top": {
+   "style": "costume",
+   "color": "#F7941D"
+  },
+  "bottoms": {
+   "style": "pants",
+   "color": "#F7941D"
+  },
+  "shoes": {
+   "style": "footies",
+   "color": "#F7941D"
+  }
+ },
+ "costume": [
+  {
+   "piece": "back_spikes",
+   "color": "#FFD23F"
+  },
+  {
+   "piece": "dino_tail",
+   "color": "#F7941D",
+   "spikes": "#FFD23F"
+  }
+ ],
+ "ref_action": {
+  "action": "kick",
+  "frame": 17,
+  "expression": "surprised",
+  "yaw": -60
+ }
+}

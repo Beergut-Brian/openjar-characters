@@ -1,0 +1,13 @@
+{
+  "id": "pig_proof", "name": "Pig (kit proof, not a character)",
+  "notes": "Proof that the quadruped body is reusable: same body, other params and pieces. Proposal art only, no character folder.",
+  "body": {"type": "quadruped", "height": 0.78, "length": 0.92, "girth": 0.30, "width": 1.05, "leg": 0.17, "head": 0.25},
+  "skin": "#F5B3BE",
+  "coat": {"pattern": "none"},
+  "snout": {"style": "disc", "color": "#EE96A6", "nostril": "#B2506A"},
+  "ears": {"style": "floppy"},
+  "horns": {"style": "none"},
+  "hooves": {"style": "hooves", "color": "#B2687A"},
+  "tail": {"style": "curl"},
+  "face": {"eye_color": "#2A1E2C", "lashes": false, "expression_list": ["neutral", "happy", "wide_eyed", "dizzy", "smug", "panicked"]}
+}

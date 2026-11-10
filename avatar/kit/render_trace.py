@@ -21,14 +21,16 @@ import render_common as rc
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
 ap = argparse.ArgumentParser()
-ap.add_argument("--char", required=True); ap.add_argument("--views", default="front,side,back")
+ap.add_argument("--char", default=None); ap.add_argument("--params", default=None)   # --params: a proposal's jarling.json
+ap.add_argument("--views", default="front,side,back")
 ap.add_argument("--action", default=None); ap.add_argument("--frame", type=int, default=None)
 ap.add_argument("--expression", default=None); ap.add_argument("--gear", default=None)
 ap.add_argument("--tag", default=""); ap.add_argument("--out", default=os.path.join(ROOT, ".scratch", "trace"))
 a = ap.parse_args(argv)
 PX_PER_M = 512 / 1.2
 OUT = a.out; os.makedirs(OUT, exist_ok=True)
-P = json.load(open(os.path.join(ROOT, "characters", a.char, "jarling.json")))
+P = json.load(open(a.params or os.path.join(ROOT, "characters", a.char, "jarling.json")))
+a.char = a.char or P["id"]
 name = a.char + (f"_{a.tag}" if a.tag else "")
 YAW = {"front": 0, "side": -90, "back": 180}       # side faces screen-right
 

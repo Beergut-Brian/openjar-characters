@@ -408,6 +408,22 @@ def parcel():
     obj("parcel_body", parts, root)
     return root
 
+def pail():
+    """Carried in a quadruped's mouth (slot `mouth`, hold style in_mouth): the handle bar is the bite,
+    along x through the origin; the pail hangs below it."""
+    root = empty("mouth")
+    steel, paint = mat("pail_steel", STEEL, 0.35, 0.6), mat("pail_paint", TEAL, 0.5, 0.35)
+    parts = [(capsule_bm((-0.05, 0, 0), (0.05, 0, 0), 0.013, 0.013, segs=14, hem=3), mat("pail_grip", TAN))]
+    pts = [(0.075 * math.cos(math.pi * k / 16) * 1.0, 0, -0.10 + 0.085 * math.sin(math.pi * k / 16)) for k in range(17)]
+    parts.append((tube_bm(pts, 0.005), steel))                                                       # the bail
+    prof = [(-0.25, 0.0), (-0.25, 0.058), (-0.245, 0.062), (-0.11, 0.08), (-0.10, 0.083), (-0.095, 0.083), (-0.095, 0.074),
+            (-0.235, 0.056)]
+    parts.append((lathe([(z, r, r, 0, 0) for z, r in prof[:6]] + [(-0.095, 0, 0, 0, 0)], 36), paint))
+    parts.append((tube_bm(ring(0, 0, -0.098, 0.083, 0.083, 40), 0.006, cyclic=True), steel))    # rim
+    parts.append((tube_bm(ring(0, 0, -0.20, 0.068, 0.068, 40), 0.005, cyclic=True), steel))     # band
+    obj("pail_body", parts, root)
+    return root
+
 # ------------------------------------------------------------------------------------------ items
 ITEMS = {
     "sneakers": dict(name="Sneakers", slots=["foot_l", "foot_r"], replaces_body_part=["foot_l", "foot_r"], fn=sneakers),
@@ -432,6 +448,8 @@ ITEMS = {
                          hold=dict(style="one_hand_low", grip_r=(0, 0, 0))),
     "crate": dict(name="Crate", slots=["hand_r"], fn=crate, hold=dict(style="two_hand_front", grip_r=(-0.125, 0, 0), grip_l=(0.125, 0, 0))),
     "parcel": dict(name="Parcel", slots=["hand_r"], fn=parcel, hold=dict(style="chest_clutch", grip_r=(-0.078, 0, 0), grip_l=(0.078, 0, 0))),
+    # carried in the mouth (quadruped): no fist, no limb pose (avatar/kit/hold.py "mouth carry")
+    "pail": dict(name="Pail", slots=["mouth"], fn=pail, hold=dict(style="in_mouth", grip_r=(0, 0, 0))),
 }
 
 def gl_axes(v):
@@ -464,7 +482,10 @@ if __name__ == "__main__":
              "level_up": {"max": 3, "scale_step": 0.06}}
         if "spring" in spec:
             d["spring"] = spec["spring"]
-        if "hold" in spec:      # grips + the resolved hold poses per body type, all in glTF / Godot axes
+        if "hold" in spec and spec["hold"]["style"] in __import__("hold").MOUTH_STYLES:   # mouth carry: grips only
+            h = spec["hold"]
+            d["hold"] = {"style": h["style"], **{k: gl_axes(h[k]) for k in ("grip_r", "axis") if k in h}}
+        elif "hold" in spec:      # grips + the resolved hold poses per body type, all in glTF / Godot axes
             import hold as H
             h = spec["hold"]
             d["hold"] = {"style": h["style"], **{k: gl_axes(h[k]) for k in ("grip_r", "grip_l", "axis") if k in h}}

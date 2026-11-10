@@ -1,0 +1,56 @@
+{
+  "frame": [
+    32,
+    32
+  ],
+  "pivot": [
+    16,
+    32
+  ],
+  "facing": "right",
+  "hand": [
+    22,
+    21
+  ],
+  "rows": {
+    "idle": {
+      "row": 0,
+      "frames": 2,
+      "fps": 2
+    },
+    "walk": {
+      "row": 1,
+      "frames": 4,
+      "fps": 8
+    },
+    "air": {
+      "row": 2,
+      "frames": 2,
+      "fps": 0,
+      "names": [
+        "jump",
+        "fall"
+      ]
+    },
+    "dig_side": {
+      "row": 3,
+      "frames": 3,
+      "fps": 10
+    },
+    "dig_down": {
+      "row": 4,
+      "frames": 3,
+      "fps": 10
+    },
+    "ride": {
+      "row": 5,
+      "frames": 1,
+      "fps": 0
+    },
+    "sleep": {
+      "row": 6,
+      "frames": 2,
+      "fps": 2
+    }
+  }
+}

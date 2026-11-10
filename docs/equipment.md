@@ -140,7 +140,8 @@ signal both called `equipped`, so the method is `equipped(slot)` and the signal 
 
 Non-standard bodies (`critter`, `giant`; `characters.json` `body_types` lists each type's slots)
 keep the slot names, axes and fit rule above; they just may lack some slots. Today `critter` and
-`giant` have no `knee_l` / `knee_r`. `JarlingEquipment` adds `has_slot(slot)`, `missing_slots()`
+`giant` have no `knee_l` / `knee_r`; `quadruped` has only `head`, `face`, `back` and `waist` of the
+ten (no hands, knees or feet) and adds `mouth` (5d). `JarlingEquipment` adds `has_slot(slot)`, `missing_slots()`
 (the SLOTS this body lacks) and `body_type()` (from the rig's `jarling_body_type`, default
 `"standard"`), and the signal `slot_missing(slot, item)`. `equip(item)` on a body lacking ANY of the
 item's slots adds nothing, hides nothing, emits `slot_missing` once per missing slot, warns once and
@@ -150,6 +151,26 @@ returns false; it never crashes and never parents gear to the root. `unequip`, `
 ## 5c. Held items
 
 A hand-slot item with a `hold` block in its JSON (`style`, `grip_r`, optional `grip_l` and `axis`) is *held*: the fist closes on `grip_r`, the arm takes the hold style's pose and the off hand goes to `grip_l`. Items without `hold` behave exactly as before. API: `hold_style(slot)`, `grip_error(slot)`. Full description and the five styles: [`avatar/README.md`](../avatar/README.md) "Holding items".
+
+## 5d. The `mouth` slot (quadruped)
+
+A four-legged Jarling (`body.type` `quadruped`: the cow) has no hands, so it carries things in its
+mouth. `mouth` is an extra slot, on that body type only; it is not in `JarlingEquipment.SLOTS` (the
+standard ten), so `missing_slots()` on other bodies is unchanged. Ask with `has_slot(&"mouth")`.
+
+| Slot | Bone | Origin | Axes | Fit scale | Typical gear |
+| --- | --- | --- | --- | --- | --- |
+| `mouth` | `head` | the bite point, just under the front of the snout | the character's (+X its left, +Y up, +Z front); follows the head (it dips when grazing) | head radius / 0.235 m (like `face`) | a pail, a bell, a flower, a stick |
+
+- A mouth item's JSON has `"slots": ["mouth"]` and a `hold` block with `"style": "in_mouth"`,
+  `grip_r` (where the teeth close, item space) and optional `axis` (turned across the mouth, slot +X,
+  like a bit). `JarlingEquipment` puts `grip_r` on the bite point (`JarlingHold.mouth_transform`); there
+  is no fist and no limb pose, and `hold_style(&"mouth")` returns `"in_mouth"`. Example: `avatar/gear/pail`.
+- On any other body `equip` refuses a mouth item with `slot_missing` (a standard Jarling has no mouth
+  slot), and hand items on a quadruped are refused the same way: shared game code never crashes.
+- On the quadruped, `back` is the top of the barrel (gear's back faces the sky, its up runs to the
+  head: a saddle, a balloon tie, a jetpack) and `waist` is a girth strap round the barrel (a belt's
+  ring runs round the body, buckle on the left side).
 
 ## 6. Versioning
 
