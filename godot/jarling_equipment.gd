@@ -87,6 +87,8 @@ func equip(item: JarlingGear) -> bool:
 		if s == item.slots[0] and _is_held(item):      # grips: the fist closes on grip_r, the off hand goes to grip_l
 			piece.transform = JarlingHold.item_transform(item.hold)
 			_start_hold(s, item, holder, piece)
+		elif s == item.slots[0] and _is_mouth_held(item):   # quadruped: carried in the mouth, grip_r at the bite point
+			piece.transform = JarlingHold.mouth_transform(item.hold)
 		if not item.spring.is_empty():
 			var pivot := piece.find_child(String(item.spring.get("node", "")), true, false) as Node3D
 			if pivot:
@@ -167,7 +169,7 @@ func level(slot: StringName) -> int:
 ## The held item's hold style in `slot` ("" when the slot is empty or the item has no grips).
 func hold_style(slot: StringName) -> String:
 	var it := equipped(slot)
-	return String(it.hold.get("style", "")) if it and _is_held(it) else ""
+	return String(it.hold.get("style", "")) if it and (_is_held(it) or _is_mouth_held(it)) else ""
 
 
 ## Metres between each fist and its grip right now: {"main": d, "off": d}. Empty without a held item.
@@ -191,7 +193,8 @@ func has_slot(slot: StringName) -> bool:
 	return _markers.has(slot)
 
 
-## The SLOTS this body lacks (critter and giant: knee_l, knee_r).
+## The SLOTS this body lacks (critter and giant: knee_l, knee_r; quadruped: hands, knees, feet).
+## Extra slots a body type adds (the quadruped's `mouth`) are not in SLOTS: use has_slot().
 func missing_slots() -> Array[StringName]:
 	_scan()
 	var out: Array[StringName] = []
@@ -262,6 +265,10 @@ func _scan() -> void:
 
 func _is_held(item: JarlingGear) -> bool:
 	return item.hold.has("grip_r") and String(item.slots[0]).begins_with("hand_")
+
+
+func _is_mouth_held(item: JarlingGear) -> bool:
+	return item.hold.has("grip_r") and item.slots[0] == &"mouth"
 
 
 func _off_slot(slot: StringName) -> StringName:

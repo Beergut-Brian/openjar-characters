@@ -197,6 +197,37 @@ def attach_gear(j, gear_id, side=None):
     return {"id": gear_id, "side": side, "style": h["style"], "grip_l": (M @ Vector(gl)) if gl is not None else None,
             "follow": h.get("follow")}
 
+# ------------------------------------------------------------------------------- mouth carry
+# The quadruped body has no hands (its hand slots are missing); it carries things in its mouth. A mouth
+# item sits on the `mouth` slot (the bite point under the snout) with grip_r there and, if given, its
+# `axis` turned across the mouth (slot +x, like a bit). No fist and no limb pose: the head carries it
+# through every action. Godot: JarlingHold.mouth_transform + JarlingEquipment (same rule).
+MOUTH_STYLES = {"in_mouth": dict(follow=1.0)}
+
+def mouth_matrix(grip_r=(0, 0, 0), axis=None):
+    """Item space -> mouth slot space: `axis` onto slot +x, grip_r at the slot origin."""
+    A = arc(axis, (1, 0, 0)).to_matrix().to_4x4() if axis else Matrix.Identity(4)
+    return A @ Matrix.Translation(-Vector(grip_r))
+
+def attach_mouth(j, gear_id):
+    """Build a mouth item (hold style in_mouth) on j's `mouth` slot. Returns its hold, or None when the
+    body has no mouth slot (every body type but quadruped: as in Godot, nothing is worn)."""
+    if "mouth" not in getattr(j, "slots", {}):
+        return None
+    bg = _gear()
+    spec = bg.ITEMS[gear_id]
+    try:
+        ok = all(m.name in bpy.data.materials for m in bg.M.cache.values())
+    except ReferenceError:
+        ok = False
+    if not ok:
+        bg.M.cache.clear()
+    root = spec["fn"]()
+    root.parent = j.slots["mouth"]
+    h = spec.get("hold") or {}
+    root.matrix_basis = mouth_matrix(h.get("grip_r", (0, 0, 0)), h.get("axis"))
+    return {"id": gear_id, "slot": "mouth", "style": h.get("style", "in_mouth")}
+
 # ------------------------------------------------------------------------------- posing
 def _circle_point(W, rho, c, r, t0):
     """The point at rho from W and r from c nearest t0; (point, reachable)."""

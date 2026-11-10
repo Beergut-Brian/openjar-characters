@@ -9,6 +9,8 @@
 #    slots follow the surface, features as parts; needs Blender) and test_kit_v2.gd (gear on the widest and skinniest body).
 # 6. Held items: avatar/kit/render_hold.py --check (Blender: every fist within 3 mm of its grip in every hold-sheet pose)
 #    and test_hold.gd (Godot runtime: grips on all six characters, hold styles, gear without grips unchanged).
+# 7. test_quadruped.gd: the quadruped body (the cow proposal): mouth slot and in_mouth hold, hand gear refused
+#    without a crash, extra bones, actions, features.
 set -uo pipefail
 cd "$(dirname "$0")"
 status=0
@@ -29,6 +31,9 @@ rm -rf _lib && mkdir -p _lib/characters _lib/gear _lib/params
 cp ../characters.json _lib/characters.json
 cp ../characters/*/refs/jarling/*.glb _lib/characters/
 for p in ../characters/*/jarling.json; do cp "$p" "_lib/params/$(basename "$(dirname "$p")").json"; done
+# proposals with a 3D master (the cow): same body-type contract tests (test_bodies.gd reads idx.proposed too)
+for g in ../proposals/*/refs/jarling/*.glb; do [ -e "$g" ] && cp "$g" _lib/characters/; done
+for p in ../proposals/*/jarling.json; do [ -e "$p" ] && cp "$p" "_lib/params/$(basename "$(dirname "$p")").json"; done
 cp ../avatar/gear/*.glb ../avatar/gear/*.json _lib/gear/
 # three generic Jarlings with other builds (stocky + cap, slim + skirt, round + afro), if Blender is here
 if command -v blender >/dev/null; then
@@ -60,7 +65,7 @@ else
   echo "  FAIL blender not found: kit v2 checks need it"; status=1
 fi
 godot --headless --path . --import >/dev/null 2>&1 || true
-for t in test_roster test_equipment test_bodies test_kit_v2 test_hold; do
+for t in test_roster test_equipment test_bodies test_kit_v2 test_hold test_quadruped; do
   timeout 300 godot --headless --path . -s "res://tests/$t.gd" 2>&1 | grep -v "^Godot Engine\|^$"
   rc=${PIPESTATUS[0]}
   [ "$rc" -eq 0 ] || { echo "  ($t exited $rc)"; status=1; }
