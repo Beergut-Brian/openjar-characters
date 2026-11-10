@@ -35,6 +35,19 @@ characters/_template/        copy this to start a new character
 5. Games consume this repo as a git submodule at `addons/openjar/characters/`, pinned to a tag.
 6. When a game renders a character in a new technique, the render goes back into `refs/` by PR.
 
+## Proposals
+
+Drafts awaiting Kaden live in `proposals/<id>/` and are listed under `proposed` in `characters.json`
+(never under `characters`, so games do not see them). Once Kaden approves one, promote it with
+`git mv proposals/<id> characters/<id> && tools/build_index.py`.
+
+| Proposed | One line |
+| --- | --- |
+| [The Mole](proposals/mole/bible.md) | Nearsighted, polite shovel thief who apologises to boulders. Proposed |
+| [The Gnome Foreman](proposals/gnome_foreman/bible.md) | Tiny, serious, clipboard in hand; passes everything. Proposed |
+| [The Caveman](proposals/caveman/bible.md) | Delighted by everything modern, polishes treasures, one ice cube on his head. Proposed |
+| [The Dragon](proposals/dragon/bible.md) | Huge, sleepy, huggable, snores smoke rings. Proposed |
+
 ## Consuming from a game
 
 ```gdscript

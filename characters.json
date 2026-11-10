@@ -27,5 +27,63 @@
       "voice": "characters/jeff/voice/",
       "barks": []
     }
+  ],
+  "proposed": [
+    {
+      "id": "caveman",
+      "name": "The Caveman",
+      "kind": "universal",
+      "player": null,
+      "first_appears": "The Hill (the museum keeper).",
+      "approved": false,
+      "bible": "proposals/caveman/bible.md",
+      "look": "proposals/caveman/look.md",
+      "refs": "proposals/caveman/refs/",
+      "voice": "proposals/caveman/voice/",
+      "barks": [],
+      "status": "proposed"
+    },
+    {
+      "id": "dragon",
+      "name": "The Dragon",
+      "kind": "universal",
+      "player": null,
+      "first_appears": "The Hill (the landmark).",
+      "approved": false,
+      "bible": "proposals/dragon/bible.md",
+      "look": "proposals/dragon/look.md",
+      "refs": "proposals/dragon/refs/",
+      "voice": "proposals/dragon/voice/",
+      "barks": [],
+      "status": "proposed"
+    },
+    {
+      "id": "gnome_foreman",
+      "name": "The Gnome Foreman",
+      "kind": "universal",
+      "player": null,
+      "first_appears": "The Hill (the foreman).",
+      "approved": false,
+      "bible": "proposals/gnome_foreman/bible.md",
+      "look": "proposals/gnome_foreman/look.md",
+      "refs": "proposals/gnome_foreman/refs/",
+      "voice": "proposals/gnome_foreman/voice/",
+      "barks": [],
+      "status": "proposed"
+    },
+    {
+      "id": "mole",
+      "name": "The Mole",
+      "kind": "universal",
+      "player": null,
+      "first_appears": "The Hill (the shovel thief).",
+      "approved": false,
+      "bible": "proposals/mole/bible.md",
+      "look": "proposals/mole/look.md",
+      "refs": "proposals/mole/refs/",
+      "voice": "proposals/mole/voice/",
+      "barks": [],
+      "status": "proposed"
+    }
   ]
 }
