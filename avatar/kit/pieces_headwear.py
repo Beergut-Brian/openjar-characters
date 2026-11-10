@@ -1,12 +1,28 @@
 """Kit v2 headwear and head accessories for the standard Jarling body.
 
 All sizes are multiples of the head radius R, so every piece fits every head size and shape.
-Colours default to neutral toy colours (never the player colours). `separate`: true puts a hat on
-the detachable `<id>_hat` object instead of the body (all hats except the hoods/fishbowl/box).
+Colours default to neutral toy colours (never the player colours). Hats built with `place_parts`
+take `separate` (true: on the detachable `<id>_hat` object), `tilt_deg` (positive lowers the front)
+and `fit` (height of the hat base above the head centre, in R: lower sits lower on the brow).
 
-Headwear (`headwear.type`):
-  animal_hood  color="#2BB3A3", opening_deg=52, inner=<color darker>, eyes=None {"color": "#FFFFFF", "pupil": "#1B1B20", "size": 1.0}, teeth=None (colour), spikes=None (colour), spike_n=6, ears=None (colour); hair hide
-  fishbowl     tint="#CFE8FF", alpha=0.12, scale=1.0, collar="#F4F4F0", highlight=True; hair free
+Headwear (`headwear.type`; hair mode in HEADWEAR_OPTS):
+  animal_hood   color="#2BB3A3", inner=<color darker>, opening_deg=52, eyes=None {"color": "#FFFFFF", "pupil": "#1B1B20", "size": 1.0, "el": 50, "apart": 34}, teeth=None (colour), teeth_n=6, teeth_span=110, spikes=None (colour), spike_n=6, ears=None (colour); hair hide
+  fishbowl      tint="#CFE8FF", alpha=0.12, scale=1.0, collar="#F4F4F0", highlight=True; hair free
+  hard_hat      color="#FFC93C", fit=0.30, tilt_deg=6, separate=False; hair tuck
+  top_hat       color="#2A2A33", band="#7E57C2", height=1.6 (R), scale=1.0, tilt_deg=0, separate=False; hair tuck
+  miner_helmet  color="#F4F4F0", lamp="#3A3A46", light="#FFF2C0", glow=6.0, lamp_size=1.0, watts=30, spot_deg=55, fit=0.28, tilt_deg=0, separate=False; hair tuck
+  colander      color="#C8CDD3", holes="#3A3F48", fit=0.25, tilt_deg=4, separate=False; hair tuck
+  pot_helmet    color="#B9C0C8", handle="#2A2A33", handle_len=1.5 (R), height=1.0, fit=0.18, tilt_deg=0, separate=False; hair tuck
+  nightcap      color="#3E7BEA", stripe="#F4F4F0", pom=<stripe>, stripes=6, side="L", length=1.0, bob=1.0; hair tuck
+  chef_hat      color="#FBFBF7", band=<color>, badge=None (colour), height=1.0, fit=0.32, tilt_deg=0, separate=False; hair tuck
+  bucket_hat    color="#C9B48A", band=<color darker>, brim=0.55 (R), lure=None (colour), lure_deg=50, fit=0.40, tilt_deg=0, separate=False; hair tuck
+  sun_hat       color="#E9C97A", band="#E86FA6", brim=1.3 (R), waves=7, flower=None (colour), flower_mid="#FFD23F", flower_deg=40, fit=0.40, tilt_deg=0, separate=False; hair tuck
+  box_head      color="#C49A6C", tape="#E6CFA0", scale=1.0, hole_w=0.64 (R), tilt_deg=0, separate=False; hair hide
+
+Costume pieces on the head (`costume[]`, each its own separable part named after the piece):
+  goggles       pos="forehead"|"eyes", style="round"|"safety", color="#4A4F5A", strap=<color darker>, lens="#9FD8F0" (see-through over the eyes), size=1.0, height=0.40 (forehead)
+  eyepatch      side="L"|"R" (L = the character's left, +X), color="#1B1B20", strap="#1B1B20", size=1.0
+  moustache     style="curly"|"bushy", color=<hair colour or "#4A2F23">, size=1.0, height=<between nose and mouth>
 """
 import math
 import bmesh
@@ -259,9 +275,9 @@ def top_hat(B, hw):
     rt = 0.70 * R * L["hsx"] * k
     H = float(hw.get("height", 1.6)) * R * k
     zb = max(0.30, math.sqrt(max(0.0, 1 - (0.66 * k) ** 2))) * R * L["hsz"]
-    parts = [(lathe([(zb, 0, 0, 0, 0), (zb, rt, rt, 0, 0), (zb + H * 0.5, rt * 0.98, rt * 0.98, 0, 0), (zb + H * 0.97, rt * 1.07, rt * 1.07, 0, 0),
+    parts = [(lathe([(zb, 0, 0, 0, 0), (zb, rt, rt, 0, 0), (zb + H * 0.4, rt, rt, 0, 0), (zb + H * 0.97, rt * 1.07, rt * 1.07, 0, 0),
                      (zb + H, rt * 1.03, rt * 1.03, 0, 0), (zb + H, 0, 0, 0, 0)], 48, power=2.1), mat)]
-    parts.append((lathe([(zb + 0.03 * R, rt * 1.02, rt * 1.02, 0, 0), (zb + 0.03 * R + 0.30 * R * k, rt * 1.0, rt * 1.0, 0, 0)], 48), band))
+    parts.append((lathe([(zb + 0.02 * R, rt * 1.05, rt * 1.05, 0, 0), (zb + 0.02 * R + 0.30 * R * k, rt * 1.04, rt * 1.04, 0, 0)], 48), band))
     bR = 1.22 * R * k * L["hsx"]
     def brim_pt(u, v):
         a = 2 * math.pi * u
@@ -283,7 +299,7 @@ def miner_helmet(B, hw):
     t = math.radians(30)
     p = Vector((0, -ry * math.cos(t), zb + h * math.sin(t)))
     d = Vector((0, -1, -0.12)).normalized()
-    lr = 0.25 * R * float(hw.get("lamp_size", 1.0))
+    lr = 0.30 * R * float(hw.get("lamp_size", 1.0))
     parts.append((aim(lathe([(-0.25 * R, 0, 0, 0, 0), (-0.25 * R, lr * 0.8, lr * 0.8, 0, 0), (0.05 * R, lr, lr, 0, 0),
                               (0.16 * R, lr * 1.08, lr * 1.08, 0, 0), (0.20 * R, lr * 1.08, lr * 1.08, 0, 0), (0.20 * R, lr * 0.84, lr * 0.84, 0, 0),
                               (0.16 * R, 0, 0, 0, 0)], 32), p, d), dark))
@@ -398,8 +414,8 @@ def chef_hat(B, hw):
     zb = float(hw.get("fit", 0.32)) * R * L["hsz"]
     bh = 0.36 * R
     parts = [(lathe([(zb, 0, 0, 0, 0), (zb, rb, rb * sy, 0, 0), (zb + bh, rb * 1.03, rb * 1.03 * sy, 0, 0), (zb + bh, 0, 0, 0, 0)], 56), bandm)]
-    Hk = float(hw.get("height", 1.0))
-    prof = [(0.0, 0.96), (0.12, 1.12), (0.35, 1.22), (0.7, 1.26), (0.95, 1.2), (1.1, 1.02), (1.2, 0.7), (1.25, 0.0)]
+    Hk = float(hw.get("height", 1.0)) * 1.5
+    prof = [(0.0, 0.96), (0.1, 1.08), (0.35, 1.15), (0.7, 1.19), (0.95, 1.16), (1.1, 1.0), (1.2, 0.7), (1.25, 0.0)]
     z0 = zb + bh - 0.04 * R
     rings = [(z0 + dz * R * Hk, r * rb, r * rb * sy, 0, 0) for dz, r in prof]
     rings.insert(0, (z0, 0, 0, 0, 0))
@@ -422,8 +438,8 @@ def bucket_hat(B, hw):
     mat = B.mats.flat("bucket_hat", hw.get("color", "#C9B48A"), rough=0.85, spec=0.2)
     bandm = B.mats.flat("bucket_band", hw.get("band", shade(hw.get("color", "#C9B48A"), 0.75)), rough=0.8, spec=0.2)
     rc_ = 1.08 * R * L["hsx"]; sy = L["hsy"] / L["hsx"]
-    zb = float(hw.get("fit", 0.20)) * R * L["hsz"]
-    ch = 0.95 * R * L["hsz"]
+    zb = float(hw.get("fit", 0.40)) * R * L["hsz"]
+    ch = 0.85 * R * L["hsz"]
     rings = [(zb, 0, 0, 0, 0), (zb, rc_, rc_ * sy, 0, 0), (zb + ch * 0.75, rc_ * 0.86, rc_ * 0.86 * sy, 0, 0)]
     for th in np.linspace(0, math.pi / 2, 6)[1:]:
         rr = rc_ * 0.86 * (0.55 + 0.45 * math.cos(th))
@@ -435,15 +451,16 @@ def bucket_hat(B, hw):
     def brim_pt(u, v):
         a = 2 * math.pi * u
         r = rc_ * 0.97 + bw * v
-        return (r * math.sin(a), -r * math.cos(a) * sy, zb + 0.02 * R - 0.30 * R * v ** 1.4)
+        return (r * math.sin(a), -r * math.cos(a) * sy, zb + 0.02 * R - (0.24 - 0.06 * math.cos(a)) * R * v ** 1.4)
     parts.append((solidify_bm(grid_bm(brim_pt, 64, 6, closed_u=True), 0.05 * R), mat))
-    M = place_parts(B, hw, parts, hw.get("tilt_deg", 4))
+    M = place_parts(B, hw, parts, hw.get("tilt_deg", 0))
     if hw.get("lure"):
+        R = R * 1.6   # the lure is modelled at 1.6x the head-radius unit so it reads at game scale
         lm = B.mats.flat("lure", hw["lure"], rough=0.3, spec=0.6)
         silver = B.mats.flat("lure_hook", "#C8CDD3", rough=0.25, spec=0.8)
         eye = B.mats.flat("lure_eye", "#1B1B20", rough=0.3, spec=0.5)
         a = math.radians(hw.get("lure_deg", 50))
-        pin = M @ Vector(((rc_ * 0.93 + 0.03 * R) * math.sin(a), -(rc_ * 0.93 + 0.03 * R) * math.cos(a) * sy, zb + ch * 0.45))
+        pin = M @ Vector(((rc_ * 0.93 + 0.02 * R) * math.sin(a), -(rc_ * 0.93 + 0.02 * R) * math.cos(a) * sy, zb + ch * 0.6))
         out = Vector((math.sin(a), -math.cos(a), 0))
         bone = B.add_bob_bone("lure", pin, pin + Vector((0, 0, -0.4 * R)), amount=1.2, side=1.0)
         top = pin + out * 0.04 * R
@@ -463,8 +480,8 @@ def sun_hat(B, hw):
     straw = B.mats.flat("sun_hat", hw.get("color", "#E9C97A"), rough=0.85, spec=0.2)
     bandm = B.mats.flat("sun_band", hw.get("band", "#E86FA6"), rough=0.6, spec=0.3)
     rc_ = 1.07 * R * L["hsx"]; sy = L["hsy"] / L["hsx"]
-    zb = float(hw.get("fit", 0.24)) * R * L["hsz"]
-    ch = 0.9 * R * L["hsz"]
+    zb = float(hw.get("fit", 0.40)) * R * L["hsz"]
+    ch = 0.8 * R * L["hsz"]
     rings = [(zb, 0, 0, 0, 0)]
     for th in np.linspace(0, math.pi / 2, 10):
         rr = rc_ * (0.45 + 0.55 * math.cos(th) ** 0.6)
@@ -477,15 +494,13 @@ def sun_hat(B, hw):
     def brim_pt(u, v):
         a = 2 * math.pi * u
         r = rc_ * 0.97 + bw * v
-        z = zb + 0.02 * R + (0.10 * R * math.sin(waves * a) - 0.16 * R) * v ** 2
+        z = zb + 0.02 * R + (0.09 * R * math.sin(waves * a) - 0.14 * R + 0.16 * R * max(0.0, math.cos(a))) * v ** 2
         return (r * math.sin(a), -r * math.cos(a) * sy, z)
     parts.append((solidify_bm(grid_bm(brim_pt, 140, 8, closed_u=True), 0.045 * R), straw))
     if hw.get("flower"):
         fm = B.mats.flat("sun_flower", hw["flower"], rough=0.6, spec=0.3)
         mid = B.mats.flat("sun_flower_mid", hw.get("flower_mid", "#FFD23F"), rough=0.6, spec=0.3)
         a = math.radians(hw.get("flower_deg", 40))
-        u, v = a / (2 * math.pi) % 1.0, 0.18
-        fc = Vector(brim_pt(u, v)) + Vector((0, 0, 0.05 * R))
         fc = Vector((rc_ * 1.02 * math.sin(a), -rc_ * 1.02 * math.cos(a) * sy, zb + 0.16 * R))
         out = Vector((math.sin(a), -math.cos(a), 0.3)).normalized()
         for k in range(5):
@@ -493,14 +508,13 @@ def sun_hat(B, hw):
             parts.append((aim(ellipsoid_bm((0.13 * R * math.cos(b), 0.13 * R * math.sin(b), 0), (0.12 * R, 0.12 * R, 0.035 * R),
                                            segs=16, rings=8), fc, out), fm))
         parts.append((aim(ellipsoid_bm((0, 0, 0.03 * R), (0.08 * R, 0.08 * R, 0.05 * R), segs=16, rings=8), fc, out), mid))
-    place_parts(B, hw, parts, hw.get("tilt_deg", 3))
+    place_parts(B, hw, parts, hw.get("tilt_deg", 0))
 
 # ------------------------------------------------------------------------------------ box head
 def box_head(B, hw):
     L = B.L; R = L["R"]
     card = B.mats.flat("box_head", hw.get("color", "#C49A6C"), rough=0.9, spec=0.15)
     tape = B.mats.flat("box_tape", hw.get("tape", "#E6CFA0"), rough=0.6, spec=0.3)
-    inside = B.mats.flat("box_inside", shade(hw.get("color", "#C49A6C"), 0.7), rough=0.9, spec=0.1)
     k = float(hw.get("scale", 1.0))
     W, D, H = 1.12 * R * L["hsx"] * k, 1.12 * R * L["hsy"] * k, 1.06 * R * L["hsz"] * k
     t = 0.05 * R
@@ -516,7 +530,6 @@ def box_head(B, hw):
     parts.append((rbox((0, fy, cz + (z0 - H) / 2), W, t, (z0 + H) / 2, **pw), card))
     for s in (-1, 1):
         parts.append((rbox((s * (hx + W) / 2, fy, cz + (z0 + z1) / 2), (W - hx) / 2, t, (z1 - z0) / 2, **pw), card))
-    parts.append((rbox((0, fy + 0.008 * R, cz + (z0 + z1) / 2), hx + 0.02 * R, t * 0.9, (z1 - z0) / 2 + 0.02 * R, **pw), inside))
     parts.append((rbox((0, 0, cz + H + 0.004 * R), 0.17 * R * k, D + 0.008 * R, 0.012 * R, power=6), tape))
     parts.append((rbox((0, -D - 0.004 * R, cz + H - 0.12 * R), 0.17 * R * k, 0.012 * R, 0.13 * R, power=6), tape))
     parts.append((rbox((0, D + 0.004 * R, cz + H - 0.12 * R), 0.17 * R * k, 0.012 * R, 0.13 * R, power=6), tape))
@@ -528,3 +541,108 @@ for _n, _f, _hair in (("hard_hat", hard_hat, "tuck"), ("top_hat", top_hat, "tuck
                       ("box_head", box_head, "hide")):
     kit.HEADWEAR[_n] = _f
     kit.HEADWEAR_OPTS[_n] = {"hair": _hair}
+
+# --------------------------------------------------------------------- head accessories (costume)
+def head_dir(B, p):
+    """Outward normal of the head ellipsoid at p."""
+    L = B.L; d = p - L["head_c"]
+    return Vector((d.x / L["hsx"] ** 2, d.y / L["hsy"] ** 2, d.z / L["hsz"] ** 2)).normalized()
+
+def unit_head(B, d, s=1.0):
+    """Head ellipsoid point in unit direction d."""
+    L = B.L; R = L["R"]
+    d = Vector(d).normalized()
+    return L["head_c"] + Vector((R * L["hsx"] * s * d.x, R * L["hsy"] * s * d.y, R * L["hsz"] * s * d.z))
+
+def goggles(B, piece):
+    """Two lenses with chunky rims and a strap round the head, on the forehead or over the eyes."""
+    L = B.L; R = L["R"]
+    B.cur_part = "goggles"
+    over_eyes = piece.get("pos", "forehead") == "eyes"
+    safety = piece.get("style", "round") == "safety"
+    frame = B.mats.flat("goggles", piece.get("color", "#4A4F5A"), rough=0.45, spec=0.4)
+    strap = B.mats.flat("goggles_strap", piece.get("strap", shade(piece.get("color", "#4A4F5A"), 0.8)), rough=0.8, spec=0.2)
+    lens_c = piece.get("lens", "#9FD8F0")
+    lens = B.mats.glass("goggles_lens", lens_c, alpha=0.35) if over_eyes else B.mats.flat("goggles_lens", lens_c, rough=0.08, spec=0.9)
+    fs = face_scale(B)
+    ex = float(B.P["face"].get("eye_spacing", 0.34)) * fs
+    ez = float(B.P["face"].get("eye_y", kit.EYE_Y)) * fs if over_eyes else float(piece.get("height", 0.40))
+    lr = (0.27 if safety else 0.24) * R * float(piece.get("size", 1.0))
+    pw = 4.0 if safety else 2.0
+    inner = []
+    for s in (-1, 1):
+        p = face_pt(B, s * ex, ez)
+        n = head_dir(B, p)
+        q = p + n * 0.10 * R
+        rim = lathe([(-0.12 * R, lr * 1.0, lr * 1.0, 0, 0), (-0.12 * R, lr * 1.3, lr * 1.3, 0, 0), (0.05 * R, lr * 1.3, lr * 1.3, 0, 0),
+                     (0.07 * R, lr * 1.18, lr * 1.18, 0, 0), (0.05 * R, lr * 1.0, lr * 1.0, 0, 0)], 40, power=pw)
+        B.add(aim(rim, q, n), frame, "head")
+        B.add(aim(lathe([(0.0, 0, 0, 0, 0), (0.0, lr * 1.05, lr * 1.05, 0, 0), (0.03 * R, lr * 1.05, lr * 1.05, 0, 0),
+                         (0.03 * R, 0, 0, 0, 0)], 40, power=pw), q, n), lens, "head")
+        inner.append(q + Vector((-s * lr * 1.15, 0, 0)))
+    B.add(tube_bm([tuple(inner[0]), tuple((inner[0] + inner[1]) / 2 + Vector((0, -0.03 * R, 0.02 * R))), tuple(inner[1])], 0.06 * R), frame, "head")
+    el = math.asin(max(-0.9, min(0.9, ez)))
+    a0 = math.asin(min(0.95, ex + lr * 1.2 / R))
+    pts = [tuple(B.head_point(el + 0.10 * (1 - math.cos(phi)) / 2, phi, 1.06)) for phi in np.linspace(a0, 2 * math.pi - a0, 44)]
+    B.add(tube_bm(pts, 0.07 * R), strap, "head")
+    B.cur_part = None
+
+def eyepatch(B, piece):
+    """A black patch over one eye (`side` L = the character's left, +X) and a thin diagonal strap."""
+    L = B.L; R = L["R"]
+    B.cur_part = "eyepatch"
+    mat = B.mats.flat("eyepatch", piece.get("color", "#1B1B20"), rough=0.6, spec=0.3)
+    strap = B.mats.flat("eyepatch_strap", piece.get("strap", "#1B1B20"), rough=0.6, spec=0.3)
+    s = 1 if piece.get("side", "L") == "L" else -1
+    fs = face_scale(B)
+    ex = float(B.P["face"].get("eye_spacing", 0.34)) * fs
+    ez = float(B.P["face"].get("eye_y", kit.EYE_Y)) * fs
+    p = face_pt(B, s * ex, ez)
+    n = head_dir(B, p)
+    sz = float(piece.get("size", 1.0))
+    B.add(aim(ellipsoid_bm((0, 0, 0), (0.25 * R * sz, 0.22 * R * sz, 0.05 * R), segs=28, rings=12,
+                           deform=lambda co: Vector((co.x, co.y - 0.25 * max(0.0, -co.y) * abs(co.x) / (0.25 * R * sz), co.z))),
+              p + n * 0.035 * R, n), mat, "head")
+    E = (p - L["head_c"]); E = Vector((E.x / L["hsx"], E.y / L["hsy"], E.z / L["hsz"])).normalized()
+    O = Vector((-s * math.cos(math.radians(35)), 0.15, math.sin(math.radians(35)))).normalized()
+    npl = E.cross(O).normalized()
+    u2 = npl.cross(E).normalized()
+    if u2.dot(O) < 0:
+        u2 = -u2
+    pts = [tuple(unit_head(B, E * math.cos(t) + u2 * math.sin(t), 1.035)) for t in np.linspace(0, 2 * math.pi, 72, endpoint=False)]
+    B.add(tube_bm(pts, 0.035 * R, cyclic=True), strap, "head")
+    B.cur_part = None
+
+def moustache(B, piece):
+    """A chunky 3D moustache between the nose and the mouth (`curly` or `bushy`)."""
+    L = B.L; R = L["R"]
+    B.cur_part = "moustache"
+    mat = B.mats.flat("moustache", piece.get("color", B.P.get("hair", {}).get("color", "#4A2F23")), rough=0.75, spec=0.25)
+    fs = face_scale(B)
+    zc = float(piece.get("height", (kit.NOSE_Y + kit.MOUTH_Y) / 2 + 0.02)) * fs
+    k = float(piece.get("size", 1.0))
+    if piece.get("style", "curly") == "bushy":
+        for s in (-1, 1):
+            for x, rz, rx, drop in ((0.10, 0.10, 0.17, 0.0), (0.27, 0.085, 0.15, 0.03), (0.40, 0.065, 0.10, 0.07)):
+                p = face_pt(B, s * x * k, zc - drop * k, 1.0)
+                n = head_dir(B, p)
+                rot = Vector((0, -1, 0)).rotation_difference(n).to_matrix() @ Matrix.Rotation(-s * 0.25, 3, "Y")
+                B.add(ellipsoid_bm(p + n * 0.05 * R, (rx * R * k, 0.09 * R * k, rz * R * k), rot=rot, segs=24, rings=12), mat, "head")
+    else:
+        for s in (-1, 1):
+            path = [(0.0, zc), (0.12, zc + 0.005), (0.24, zc - 0.01), (0.34, zc - 0.005)]
+            cxz, rc = (0.36, zc + 0.065), 0.065   # curl: up and back in
+            for t in np.linspace(-math.pi / 2 + 0.6, math.pi + 0.4, 9):
+                path.append((cxz[0] + rc * math.cos(t), cxz[1] + rc * math.sin(t)))
+            pts, rad = [], []
+            for i, (x, z) in enumerate(path):
+                q = face_pt(B, s * x * k, zc + (z - zc) * k, 1.0)
+                pts.append(tuple(q + head_dir(B, q) * 0.04 * R))
+                rad.append(max(0.25, 1.0 - 0.75 * i / (len(path) - 1)))
+            B.add(tube_bm(pts, 0.075 * R * k, radii=rad), mat, "head")
+        p = face_pt(B, 0, zc)
+        B.add(ellipsoid_bm(p + head_dir(B, p) * 0.04 * R, (0.10 * R * k, 0.07 * R * k, 0.08 * R * k), segs=20, rings=10), mat, "head")
+    B.cur_part = None
+
+for _n, _f in (("goggles", goggles), ("eyepatch", eyepatch), ("moustache", moustache)):
+    kit.COSTUME[_n] = _f
