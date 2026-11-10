@@ -1,0 +1,106 @@
+{
+  "id": "watering_can",
+  "name": "Watering Can",
+  "slots": [
+    "hand_r"
+  ],
+  "scene": "watering_can.glb",
+  "replaces_body_part": [],
+  "fit": {
+    "critter": {
+      "scale": 0.62
+    }
+  },
+  "level_up": {
+    "max": 3,
+    "scale_step": 0.06
+  },
+  "hold": {
+    "style": "one_hand_low",
+    "grip_r": [
+      0,
+      0,
+      0.0
+    ],
+    "poses": {
+      "standard": {
+        "arm": [
+          -0.2,
+          -1.0,
+          0.22
+        ],
+        "axis": [
+          0.0,
+          -0.1,
+          1.0
+        ],
+        "up": [
+          0,
+          1,
+          0.0
+        ],
+        "follow": 0.35
+      },
+      "critter": {
+        "arm": [
+          -1.0,
+          -0.75,
+          0.45
+        ],
+        "axis": [
+          0.0,
+          -0.1,
+          1.0
+        ],
+        "up": [
+          0,
+          1,
+          0.0
+        ],
+        "follow": 0.35
+      },
+      "giant": {
+        "arm": [
+          -0.75,
+          -0.6,
+          0.8
+        ],
+        "axis": [
+          0.0,
+          -0.1,
+          1.0
+        ],
+        "up": [
+          0,
+          1,
+          0.0
+        ],
+        "follow": 0.35
+      }
+    },
+    "action_follow": {
+      "cheer": 0.45,
+      "dig": 1.0
+    },
+    "rigid_actions": [
+      "dig"
+    ],
+    "fist": {
+      "radii": [
+        0.04,
+        0.044,
+        0.047
+      ],
+      "thumb": [
+        -0.012,
+        0.004,
+        0.036
+      ],
+      "thumb_radii": [
+        0.02,
+        0.026,
+        0.018
+      ]
+    }
+  }
+}
