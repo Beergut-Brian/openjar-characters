@@ -695,6 +695,8 @@ SLOT_REF = dict(head_crown=0.27, face_r=0.235, back_tw=0.152, waist_rx=0.155, wa
 HEADWEAR = {}     # headwear type -> fn(builder, headwear_dict)   (builder.cur_part is "headwear")
 COSTUME = {}      # costume piece -> fn(builder, piece_dict)
 ACTIONS = {}      # extra action  -> (fn(builder) -> [(frame, pose), ...], loops: bool); listed in params "actions"
+GAITS = {}        # params "gait" -> fn(builder) -> {action: keys} replacing standard run/idle (pieces_gait.py)
+HELD = {}         # costume piece -> (default hand "L"|"R", hold style): pieces held in a fist (avatar/kit/hold.py)
 BODY_TYPES = {}   # body.type     -> class with the Builder interface (see avatar/README.md "Body types")
 # Kit v2 registries (docs/kit-v2.md):
 HEADWEAR_OPTS = {}  # headwear type -> {"hair": "tuck" (default: hair clamped under the hat) | "free" | "hide"}
@@ -708,6 +710,14 @@ HAIR_PRESETS = {} # hair.style    -> {"base": <cap style>, "pieces": [...]}   da
 
 WIDTH_RANGE = (0.75, 1.5)   # body.width
 BELLY_RANGE = (0.0, 1.0)    # body.belly
+
+def held_sides(P):
+    """{"L"|"R": (piece, style)} for the costume pieces this character holds."""
+    out = {}
+    for pc in P.get("costume", []):
+        if pc.get("piece") in HELD:
+            out[pc.get("hand", HELD[pc["piece"]][0])] = (pc["piece"], pc.get("hold", HELD[pc["piece"]][1]))
+    return out
 
 class Builder:
     def __init__(self, params, prefix=""):
@@ -1234,9 +1244,15 @@ class Builder:
             hand_mat = self.skin
             if top.get("gloves"):
                 hand_mat = self.mats.flat("gloves", top["gloves"], rough=0.6)
-            self.add(ellipsoid_bm(hc, (0.036 * limb, 0.047 * limb, 0.052 * limb), segs=22, rings=12), hand_mat, f"hand.{side}")
-            self.add(ellipsoid_bm(hc + Vector((-s * 0.016, -0.034, 0.008)), (0.016, 0.02, 0.026), segs=14, rings=8),
-                     hand_mat, f"hand.{side}")
+            if side in held_sides(P):      # a kit piece is held in this hand: closed mitten (avatar/kit/hold.py)
+                import hold
+                for fbm in hold.fist_bm(side, limb):
+                    bmesh.ops.translate(fbm, vec=hc, verts=fbm.verts)
+                    self.add(fbm, hand_mat, f"hand.{side}")
+            else:
+                self.add(ellipsoid_bm(hc, (0.036 * limb, 0.047 * limb, 0.052 * limb), segs=22, rings=12), hand_mat, f"hand.{side}")
+                self.add(ellipsoid_bm(hc + Vector((-s * 0.016, -0.034, 0.008)), (0.016, 0.02, 0.026), segs=14, rings=8),
+                         hand_mat, f"hand.{side}")
             self.cur_part = None
 
     # --- costume pieces and headwear
@@ -1654,6 +1670,8 @@ class Builder:
             extra[name] = fn(self)
             if loop:
                 loops.append(name)
+        if self.P.get("gait"):                       # cosmetic run/idle replacement (pieces_gait.py)
+            extra.update(GAITS[self.P["gait"]](self)); rig["jarling_gait"] = self.P["gait"]
         rig["jarling_loops"] = loops
         self.rig, self.body, self.hat = rig, body, None
         if self.hat_parts:
@@ -1686,7 +1704,20 @@ class Builder:
         feats = sorted(t[len("feature_"):] for t in self.part_obs if t.startswith("feature_"))
         if feats:
             rig["jarling_features"] = feats
-        build_actions(rig, self.P.get("posture", {}), self.prefix, extra=extra, bob=self.bob_bones)
+        hold_layer = None
+        self.held = []
+        hs = held_sides(self.P)
+        if hs:                    # the character's own held pieces: the hold pose is baked into its actions
+            import hold
+            hold_layer = {"bones": {}, "follow": {}, "keep": set(extra)}
+            for side, (piece, style) in sorted(hs.items()):
+                loc = hold.hold_locals(rig, style, side)
+                for b in (f"arm.{side}", f"hand.{side}"):
+                    hold_layer["bones"][b] = loc[b]
+                    hold_layer["follow"][b] = style
+                self.held.append({"piece": piece, "side": side, "style": style, "grip": tuple(self.hand_c[side])})
+            rig["jarling_holds"] = [{"piece": h["piece"], "hand": h["side"], "style": h["style"]} for h in self.held]
+        build_actions(rig, self.P.get("posture", {}), self.prefix, extra=extra, bob=self.bob_bones, hold_layer=hold_layer)
         return self
 
 # -------------------------------------------------------------------------------------- actions
@@ -1806,11 +1837,16 @@ def action_keys(posture):
     ]
     return acts
 
-def apply_pose(rig, pose, frame=None):
+def apply_pose(rig, pose, frame=None, hold_q=None):
     for pb in rig.pose.bones:
         e = pose.get(pb.name, {})
         R = pose_entry(pb.name, e)
         q, loc = _to_local(pb, R, e.get("loc"))
+        if "quat" in e:                       # an exact pose rotation (hold poses in an authored action)
+            q = e["quat"]
+        if hold_q and pb.name in hold_q:      # a held item: the hold pose with a little of the action showing through
+            hq, f = hold_q[pb.name]
+            q = hq.slerp(q, f)
         pb.rotation_mode = "QUATERNION"
         pb.rotation_quaternion = q
         pb.location = loc
@@ -1830,7 +1866,7 @@ def _with_bob(pose, bob):
             pose[name] = {k: (v * amount * (side if k == "tilt" else 1.0)) for k, v in src.items() if not isinstance(v, tuple)}
     return pose
 
-def build_actions(rig, posture, prefix="", extra=None, acts=None, bob=None):
+def build_actions(rig, posture, prefix="", extra=None, acts=None, bob=None, hold_layer=None):
     """Key the actions on `rig`. `acts` replaces the standard set (other body types pass their
     own {name: [(frame, pose), ...]}, which must include "idle"); `extra` is added to it."""
     rig.animation_data_create()
@@ -1841,8 +1877,12 @@ def build_actions(rig, posture, prefix="", extra=None, acts=None, bob=None):
         act = bpy.data.actions.new(f"{prefix}{name}" if prefix else name)
         act.use_fake_user = True
         rig.animation_data.action = act
+        hq = None
+        if hold_layer and name not in hold_layer.get("keep", ()):   # a character's own extra actions pose the prop hand themselves
+            import hold
+            hq = {b: (q, hold.follow_for({"style": hold_layer["follow"][b]}, name)) for b, q in hold_layer["bones"].items()}
         for f, pose in keys:
-            apply_pose(rig, _with_bob(pose, bob), f)
+            apply_pose(rig, _with_bob(pose, bob), f, hq)
         act.frame_range = (keys[0][0], keys[-1][0])
         act.use_frame_range = True
         made[name] = act

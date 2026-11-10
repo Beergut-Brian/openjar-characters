@@ -1,0 +1,98 @@
+{
+  "id": "coach_whistle",
+  "name": "Coach Whistle",
+  "notes": "From characters/coach_whistle/look.md (Kaden's sheet 2026-11-10).",
+  "head": {
+    "shape": "round",
+    "size": 1.0,
+    "ears": "round"
+  },
+  "skin": "#D99E6E",
+  "face": {
+    "eyes": "round",
+    "brows": "thick",
+    "brow_color": "#3A2418",
+    "nose": "bump",
+    "mouth": "yell",
+    "lid": 0.0,
+    "lid_low": 0.0,
+    "lid_tilt": 0.0,
+    "brow_tilt": -0.25,
+    "brow_raise": 0.08,
+    "blush": 0.4,
+    "expressions": {
+      "happy": {
+        "eye_mode": "arc",
+        "mouth": "yell",
+        "brow_raise": 0.05,
+        "blush_add": 0.25
+      },
+      "surprised": {
+        "mouth": "o"
+      },
+      "determined": {
+        "mouth": "yell",
+        "lid": 0.3,
+        "lid_tilt": 0.18,
+        "brow_tilt": 0.25,
+        "brow_raise": -0.02
+      }
+    }
+  },
+  "hair": {
+    "style": "buzz",
+    "color": "#3A2418"
+  },
+  "headwear": {
+    "type": "cap",
+    "color": "#1E2B4D",
+    "brim": "#1E2B4D",
+    "tilt_deg": 8
+  },
+  "body": {
+    "build": "stocky",
+    "height": 0.95,
+    "leg_scale": 0.8,
+    "width": 1.15,
+    "belly": 0.1
+  },
+  "outfit": {
+    "top": {
+      "style": "tee",
+      "color": "#F5F5F2",
+      "sleeve": "#1A1A1E",
+      "pattern": {
+        "type": "vstripes",
+        "accent": "#1A1A1E",
+        "count": 10
+      }
+    },
+    "bottoms": {
+      "style": "shorts",
+      "color": "#8A8E96"
+    },
+    "shoes": {
+      "style": "sneaker",
+      "color": "#F7F7F5",
+      "socks": {
+        "color": "#F7F7F5",
+        "height": 0.5,
+        "cuff": "#1E2B4D"
+      }
+    }
+  },
+  "costume": [
+    {
+      "piece": "whistle_cord",
+      "color": "#C9CED4",
+      "cord": "#F2C230",
+      "size": 1.5
+    }
+  ],
+  "ref_action": {
+    "action": "cheer",
+    "frame": 10,
+    "expression": "happy",
+    "yaw": -28
+  }
+}

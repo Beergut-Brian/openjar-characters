@@ -3,7 +3,7 @@
 Headwear: `cone_hat` (teal cone + detachable tiny hard hat), `ice_cube`.
 Costume:  `gnome_beard`, `vest_stripes`, `clipboard` (part `prop`), `whistle`,
           `mane_beard`, `fur_tunic`, `cloth_club` (part `prop`).
-Actions:  `march`, `write`, `salute` (gnome); `polish`, `point`, `wave` (caveman).
+Actions:  `march`, `write`, `salute`, `whistle` (gnome); `polish`, `point`, `wave` (caveman).
 """
 import math, random
 import bmesh
@@ -103,64 +103,149 @@ def vest_stripes(B, piece):
             B.add(solidify_bm(g, 0.006), mat, "spine")
 
 def clipboard(B, piece):
+    """Held piece (hold style one_hand_low): the fist closes on the board's inner edge, the board
+    faces front and sticks out to the side of the hand. Modelled in hand-slot axes (avatar/kit/hold.py)."""
+    import hold
     side = piece.get("hand", "L"); s = 1 if side == "L" else -1
-    hc = B.hand_c[side]
     wood = B.mats.flat("clipboard", piece.get("color", "#B07A3C"), rough=0.6, spec=0.3)
     paper = B.mats.flat("paper", piece.get("paper", "#FFFDF4"), rough=0.8, spec=0.2)
     clip = B.mats.flat("clip", piece.get("clip", "#F4F1E6"), rough=0.35, spec=0.5)
     B.cur_part = "prop"
-    bc = hc + Vector((s * 0.035, -0.055, 0.03))
-    hw_, hh = 0.075, 0.095
+    M = hold.piece_matrix(B, side)
+    hw_, hh = 0.08, 0.10
+    bc = Vector((s * (hw_ - 0.012), 0.0, 0.012))
     bone = f"hand.{side}"
-    B.add(rbox(bc, hw_, 0.008, hh), wood, bone)
+    put = lambda bm, mat: B.add(xform(bm, M), mat, bone)
+    put(rbox(bc, hw_, 0.008, hh), wood)
     pc = bc + Vector((0, -0.007, -0.006))
-    B.add(rbox(pc, hw_ * 0.84, 0.003, hh * 0.86), paper, bone)
-    B.add(rbox(bc + Vector((0, -0.008, hh * 0.95)), 0.03, 0.009, 0.013), clip, bone)
+    put(rbox(pc, hw_ * 0.84, 0.003, hh * 0.86), paper)
+    put(rbox(bc + Vector((0, -0.008, hh * 0.95)), 0.03, 0.009, 0.013), clip)
     for k, ln in enumerate((0.85, 0.6, 0.75, 0.4)):   # scribble lines
         z = pc.z + hh * 0.5 - k * 0.032
         x0 = pc.x - hw_ * 0.62
-        B.add(rbox((x0 + hw_ * 0.62 * ln, pc.y - 0.0035, z), hw_ * 0.62 * ln, 0.0015, 0.0045, power=4, segs=12), wood, bone)
+        put(rbox((x0 + hw_ * 0.62 * ln, pc.y - 0.0035, z), hw_ * 0.62 * ln, 0.0015, 0.0045, power=4, segs=12), wood)
     B.cur_part = None
 
+WHISTLE_R = 0.026        # drum radius (chunky toy referee whistle)
+
+def _whistle_local(r):
+    """The whistle's own frame (rest pose, centred on the drum): drum axis Y (faces the camera),
+    the flat mouthpiece sticks out along `m` (down and to the character's left), the ring sits on
+    top. Returns m, n (mouthpiece 'up'), the mouthpiece length, its tip and the ring centre, relative to the drum."""
+    m = Vector((math.cos(math.radians(-32)), 0, math.sin(math.radians(-32))))
+    n = Vector((-m.z, 0, m.x))
+    k = r / WHISTLE_R
+    ml = 0.046 * k
+    tip = m * (r * 0.55 + ml) + n * (r - 0.0105 * k)
+    ring = Vector((-0.22, 0, 0.975)).normalized() * (r + 0.009 * k)
+    return m, n, ml, tip, ring
+
 def whistle(B, piece):
+    """A chunky referee whistle on a cord, hanging on his chest just below the beard tip: a short
+    drum (axis toward the camera) with a flat mouthpiece out to one side, a slot on top, a ring on
+    the top of the drum. Its own bone `whistle`; the cord is two straight segments on `cord.L` /
+    `cord.R` from the sides of the neck (under the beard edges) to the ring, so the `whistle` action
+    can lift it to his mouth and aim / stretch the cord. All three bones are children of `head`,
+    like the beard, so the whistle always stays under the beard tip."""
     L = B.L; R, c = L["R"], L["head_c"]
     yel = B.mats.flat("whistle", piece.get("color", "#FFD23F"), rough=0.3, spec=0.6)
+    slot = B.mats.flat("whistle_slot", piece.get("slot", kit.shade(piece.get("color", "#FFD23F"), 0.45)), rough=0.5, spec=0.3)
     cord = B.mats.flat("whistle_cord", piece.get("cord", "#B07A3C"), rough=0.7, spec=0.2)
+    r = WHISTLE_R * piece.get("size", 1.0)
+    m, n, ml, tip, ring = _whistle_local(r)
     bm = getattr(B, "beard_bm", None)
-    wx, wz = piece.get("x", 0.42) * R, c.z - piece.get("drop", 1.45) * R
-    def on(x, z, off=0.012):
-        h = surface_y(bm, x, z) if bm else None
-        y = h.y if h else -L["tw"] * 1.1
-        return Vector((x, y - off, z))
-    zn = c.z - 0.8 * R
-    pts = [on(-0.62 * R + (wx + 0.62 * R) * (k / 8), zn + (wz - zn) * (k / 8) ** 0.8) for k in range(9)]
-    pts2 = [on(0.62 * R + (wx - 0.62 * R) * (k / 6), zn + (wz - zn) * (k / 6)) for k in range(7)]
-    B.add(tube_bm([tuple(p) for p in pts], 0.004), cord, "spine")
-    B.add(tube_bm([tuple(p) for p in pts2], 0.004), cord, "spine")
-    p = on(wx, wz, 0.016)
-    rot = Euler((0, 0, 0.5)).to_matrix()
-    B.add(xform(capsule_bm((0, 0, 0), (0, 0.0, 0.055), 0.016, 0.013, segs=16, hem=4),
-                Matrix.Translation(p) @ Matrix.Rotation(-1.2, 4, "Y")), yel, "spine")
-    B.add(ellipsoid_bm(p + Vector((0.006, -0.002, -0.008)), (0.022, 0.018, 0.02), segs=16, rings=10), yel, "spine")
+    tip_z = min(v.co.z for v in bm.verts) if bm else c.z - 1.6 * R
+    rz = tip_z - piece.get("gap", 0.004)                      # ring centre just under the beard tip
+    dz = rz - ring.z                                          # drum centre height
+    tz = (dz - L["torso_z0"]) / (L["torso_z1"] - L["torso_z0"])
+    front = min(B.torso_point(tz + d, -math.pi / 2).y for d in (-0.06, 0.0, 0.06))
+    k = r / WHISTLE_R
+    hd = 0.017 * k                                                # half depth of the drum
+    W = Vector((piece.get("x", 0.0), front - hd - 0.006, dz))
+    B.whistle_c = W.copy(); B.whistle_r = r
+    B.whistle_lips = {}          # where the mouthpiece tip goes in the `whistle` action (rest pose)
+    for s_, side in ((1, "L"), (-1, "R")):
+        lx, lz = s_ * 0.12 * R, c.z - 0.60 * R
+        hit = surface_y(bm, lx, lz) if bm else None
+        B.whistle_lips[side] = Vector((lx, (hit.y if hit else -0.95 * R) + 0.008, lz))
+    # drum: a short cylinder along Y with rounded edges
+    drum = lathe([(-hd, 0, 0, 0, 0), (-hd, r * 0.84, r * 0.84, 0, 0), (-hd * 0.72, r, r, 0, 0),
+                  (hd * 0.72, r, r, 0, 0), (hd, r * 0.84, r * 0.84, 0, 0), (hd, 0, 0, 0, 0)], 36, power=2.0)
+    xform(drum, Matrix.Translation(W) @ Matrix.Rotation(-math.pi / 2, 4, "X"))   # axis Z -> Y
+    B.add(drum, yel, "whistle")
+    # flat mouthpiece, its top flush with the top of the drum
+    mc = W + m * (r * 0.55 + ml * 0.5) + n * (r - 0.0105 * k)
+    mp = rbox((0, 0, 0), 0.0105 * k, 0.0135 * k, ml * 0.5, power=6, segs=24)   # built along Z: x -> n, y -> Y, z -> m
+    xform(mp, Matrix.Translation(mc) @ Matrix((n, (0, 1, 0), m)).transposed().to_4x4())
+    B.add(mp, yel, "whistle")
+    # the slot on top of the drum, next to the mouthpiece
+    sc = W + n * (r * 0.98) + m * (r * 0.05)
+    sl = rbox((0, 0, 0), 0.008 * k, 0.011 * k, 0.0035 * k, power=6, segs=16)
+    xform(sl, Matrix.Translation(sc) @ Matrix((m, (0, 1, 0), n)).transposed().to_4x4())
+    B.add(sl, slot, "whistle")
+    # ring on top (facing the camera)
+    rc_ = W + ring
+    pts = [(rc_.x + 0.0085 * k * math.cos(a), rc_.y, rc_.z + 0.0085 * k * math.sin(a)) for a in [2 * math.pi * i / 20 for i in range(20)]]
+    B.add(tube_bm(pts, 0.0032 * k, cyclic=True), yel, "whistle")
+    B.extra_bones.append(("whistle", W.copy(), W + Vector((0, 0, 0.04))))
+    # the cord: from the sides of the neck, under the beard edges, to the top of the ring
+    ring_top = rc_ + Vector((0, 0, 0.0085 * k))
+    B.whistle_ring = ring_top.copy()
+    B.whistle_anchor = {}
+    for s, side in ((1, "L"), (-1, "R")):
+        a = Vector((s * piece.get("neck_x", 0.62) * R, -piece.get("neck_y", 0.46) * R, c.z - piece.get("neck_z", 1.05) * R))
+        B.whistle_anchor[side] = a
+        e = ring_top + Vector((s * 0.004, 0.0, 0.0))
+        B.add(tube_bm([tuple(a), tuple(e)], 0.0036), cord, f"cord.{side}")
+        B.extra_bones.append((f"cord.{side}", a.copy(), e.copy()))
 
 # ------------------------------------------------------------------------------- the caveman
 def mane_beard(B, piece):
-    """The beard half of the caveman's hair mass: one smooth shaggy shell round the jaw, wide enough
-    to run into the `mane` at the sides, ending in ragged tufts at the top of the chest."""
+    """The beard half of the caveman's hair mass: one shaggy shell round the jaw, wide enough
+    to run into the `mane` at the sides, ending in ragged tufts on the chest. Params: `width`
+    (x the face width, default 1.0), `length` (default 1.0), `tufts` (count), `shag` (how ragged
+    the bottom edge is, default 0.3), `clumps` (extra hanging tuft lumps along the edge, default 0)."""
     L = B.L; R, c = L["R"], L["head_c"]
     mat = B.mats.flat("hair", piece["color"], rough=0.5, spec=0.4)
-    rz = 0.62 * R
-    tufts = piece.get("tufts", 9)
-    def shag(co):
+    rz = 0.62 * R * piece.get("length", 1.0)
+    wid = piece.get("width", 1.0)
+    tufts, shag = piece.get("tufts", 9), piece.get("shag", 0.30)
+    cz = c + Vector((0, -0.12 * R, -0.92 * R))
+    rx, ry = 1.22 * R * L["hsx"] * wid, 0.86 * R
+    # a fat body (kit v2 belly / width) pushes the chest forward: lean the beard's lower half out
+    # over it (the top stays round the mouth)
+    push = 0.0
+    zb = cz.z - rz * 0.75
+    tz = (zb - L["torso_z0"]) / (L["torso_z1"] - L["torso_z0"])
+    if 0.0 <= tz <= 1.0:
+        push = -min(0.0, B.torso_point(tz, -math.pi / 2, 1.08).y - (cz.y - ry * 0.62))
+    def ragged(co):
         a = math.atan2(co.y, co.x)
         co.x *= 1 + 0.03 * math.sin(a * 11 + co.z * 40)
         if co.z < 0:
             t = -co.z / rz
             co.x *= 1 - 0.30 * t ** 2
-            co.z *= 1 + 0.30 * t ** 3 * max(0.0, math.cos(a * tufts)) ** 2
+            co.y -= push * min(1.0, t / 0.75)
+            co.z *= 1 + shag * t ** 3 * max(0.0, math.cos(a * tufts)) ** 2
         return co
-    B.add(ellipsoid_bm(c + Vector((0, -0.12 * R, -0.92 * R)), (1.22 * R * L["hsx"], 0.86 * R, rz), segs=64, rings=32, deform=shag),
-          mat, "head")
+    B.add(ellipsoid_bm(cz, (rx, ry, rz), segs=64, rings=32, deform=ragged), mat, "head")
+    n = piece.get("clumps", 0)
+    rnd = random.Random(7)
+    for k in range(n):        # pointed tufts hanging from the front / side edge
+        u = (k + 0.5) / n
+        a = math.pi * (0.08 + 0.84 * u)                  # front half: from the left side round to the right
+        x = -math.cos(a) * rx * 0.66
+        y = -math.sin(a) * ry * 0.62
+        z = cz.z - rz * (0.78 - 0.30 * abs(math.cos(a))) * rnd.uniform(0.96, 1.04)
+        ln = R * rnd.uniform(0.40, 0.52) * (1.0 - 0.30 * abs(math.cos(a)))
+        def point(co, ln=ln):
+            if co.z < 0:
+                f = (-co.z / ln)
+                co.x *= 1 - 0.75 * f; co.y *= 1 - 0.6 * f
+            return co
+        rot = Euler((0.25 * math.sin(a) * 0, -0.35 * math.cos(a), 0)).to_matrix()
+        B.add(ellipsoid_bm(Vector((x, y + cz.y - push * min(1.0, (cz.z - z) / rz / 0.75), z)), (R * 0.20, R * 0.15, ln), rot=rot, segs=18, rings=12, deform=point),
+              mat, "head")
 
 def ice_cube(B, hw):
     L = B.L; R, c = L["R"], L["head_c"]
@@ -217,29 +302,33 @@ def fur_tunic(B, piece):
         B.add(ellipsoid_bm(p, (r * 1.2, 0.006, r), rot=rot, segs=14, rings=8), spot, "spine")
 
 def cloth_club(B, piece):
-    side = piece.get("hand", "R"); s = 1 if side == "L" else -1
-    hc = B.hand_c[side]
+    """Held piece (hold style one_hand_raised): modelled upright, the stick passes through the fist
+    and the cloth head is at the top; the hold pose (baked into the actions) carries it upright."""
+    import hold
+    side = piece.get("hand", "R")
     wood = B.mats.flat("club_stick", piece.get("stick", "#B07A3C"), rough=0.6, spec=0.3)
     cloth = B.mats.flat("club_cloth", piece.get("color", "#F3EAD2"), rough=0.9, spec=0.15)
     string = B.mats.flat("club_string", piece.get("string", "#1E9AA0"), rough=0.6, spec=0.3)
     bone = f"hand.{side}"
     B.cur_part = "prop"
-    p0 = hc + Vector((-s * 0.03, -0.012, -0.075))
-    p1 = hc + Vector((s * 0.22, -0.05, 0.27))
-    B.add(capsule_bm(p0, p1, 0.014, 0.013, segs=14, hem=3), wood, bone)
-    bc = p1 + Vector((s * 0.05, -0.008, 0.07))
+    M = hold.piece_matrix(B, side, axis=(0, 0, 1))
+    put = lambda bm, mat: B.add(xform(bm, M), mat, bone)
+    put(capsule_bm((0, 0, -0.07), (0, 0, 0.27), 0.015, 0.014, segs=14, hem=3), wood)
+    bc = Vector((0, 0, 0.34))
     def puff(co):
         co.x *= 1 + 0.06 * math.sin(co.z * 120); return co
-    B.add(ellipsoid_bm(bc, (0.085, 0.08, 0.1), segs=28, rings=16, deform=puff), cloth, bone)
-    B.add(ellipsoid_bm(bc + Vector((0.02, -0.02, 0.05)), (0.04, 0.04, 0.035), segs=18, rings=10), cloth, bone)
+    put(ellipsoid_bm(bc, (0.085, 0.08, 0.1), segs=28, rings=16, deform=puff), cloth)
+    put(ellipsoid_bm(bc + Vector((0.02, -0.02, 0.05)), (0.04, 0.04, 0.035), segs=18, rings=10), cloth)
     zt = bc.z - 0.065
     pts = [(bc.x + 0.05 * math.cos(a), bc.y + 0.047 * math.sin(a), zt) for a in [2 * math.pi * i / 28 for i in range(28)]]
-    B.add(tube_bm(pts, 0.007, cyclic=True), string, bone)
+    put(tube_bm(pts, 0.007, cyclic=True), string)
     for d in (-1, 1):   # the knot's two ends
-        a = Vector((bc.x + 0.03 * d * s, bc.y - 0.045, zt))
-        B.add(tube_bm([tuple(a), tuple(a + Vector((0.012 * d, -0.012, -0.03)))], 0.005), string, bone)
+        a = Vector((bc.x + 0.03 * d, bc.y - 0.045, zt))
+        put(tube_bm([tuple(a), tuple(a + Vector((0.012 * d, -0.012, -0.03)))], 0.005), string)
     B.cur_part = None
 
+kit.HELD["clipboard"] = ("L", "one_hand_low")
+kit.HELD["cloth_club"] = ("R", "one_hand_raised")
 kit.HEADWEAR["cone_hat"] = cone_hat
 kit.HEADWEAR["ice_cube"] = ice_cube
 for _n, _f in (("gnome_beard", gnome_beard), ("vest_stripes", vest_stripes), ("clipboard", clipboard), ("whistle", whistle),
@@ -307,25 +396,178 @@ def act_wave(B):
         return _base(B, {"arm.L": {"out": 150, "swing": 10}, "hand.L": {"out": h}, "head": {"tilt": -6}, "spine": {"tilt": 4}})
     return [(1, _base(B)), (6, up(0)), (10, up(28)), (14, up(-24)), (18, up(28)), (22, up(-24)), (26, up(0)), (35, _base(B))]
 
+def _rig_of(B):
+    """The armature being built (build() keys the actions before it sets B.rig)."""
+    import bpy
+    rig = getattr(B, "rig", None)
+    if rig is not None:
+        return rig
+    for ob in bpy.data.objects:
+        if ob.type == "ARMATURE" and ob.name.startswith(f"{B.prefix}{B.P['id']}") and ob.animation_data is None \
+                and "whistle" in ob.data.bones:
+            return ob
+    return None
+
+def _delta(rig, name):
+    pb = rig.pose.bones[name]
+    return pb.matrix @ pb.bone.matrix_local.inverted()
+
+def _euler_deg(Rm):
+    e = Rm.to_euler("XYZ")
+    return {"lean": math.degrees(e.x), "tilt": math.degrees(e.y), "twist": math.degrees(e.z)}
+
+def _stretch_scale(rig, name, k):
+    """World-axis scale tuple that `apply_pose` maps to local Y = k (the bone's own axis)."""
+    B3 = rig.data.bones[name].matrix_local.to_3x3()
+    w = [max(range(3), key=lambda a: abs(B3.col[i][a])) for i in range(3)]
+    if len(set(w)) < 3:
+        return None
+    out = [1.0, 1.0, 1.0]; out[w[1]] = k
+    return tuple(out)
+
+def _whistle_pose(B, rig, body, lift, side):
+    """Pose dict for `lift` (0 hanging .. 1 at his mouth): body pose, the whistle bone placed so its
+    mouthpiece meets the corner of his mouth, the free arm solved so the hand holds the drum, the
+    cord bones aimed (and stretched) from the neck to the ring."""
+    import bpy
+    s = 1 if side == "L" else -1
+    L = B.L; R, c = L["R"], L["head_c"]
+    r = B.whistle_r; W0 = B.whistle_c
+    m, n, ml, tip, ring = _whistle_local(r)
+    pose = {k: dict(v) for k, v in body.items()}
+    kit.apply_pose(rig, pose); bpy.context.view_layer.update()
+    Dh = _delta(rig, "head")
+    # target frame at the mouth: the mouthpiece comes in from the front, out to his free-hand side
+    # the mouth is under the moustache, inside the beard: the mouthpiece tip goes just into the beard
+    lips = Dh @ B.whistle_lips[side]
+    out = (Dh.to_3x3() @ Vector((s * 0.42, -0.88, -0.10))).normalized()
+    d_t = -out                                                  # drum -> lips
+    a = Vector((0, 0, 1)).cross(d_t).normalized()
+    if a.y > 0:
+        a = -a
+    if s < 0:
+        a = -a
+    F_t = Matrix((d_t, a, d_t.cross(a))).transposed()
+    F_0 = Matrix((m, Vector((0, 1, 0)), m.cross(Vector((0, 1, 0))))).transposed()
+    Rw_up = F_t @ F_0.inverted()
+    pw_up = lips - Rw_up @ tip
+    # rest (in world, following the head) and the lifted frame, blended
+    rest = Dh @ Matrix.Translation(W0)
+    up = Matrix.Translation(pw_up) @ Rw_up.to_4x4()
+    q = rest.to_quaternion().slerp(up.to_quaternion(), lift)
+    pw = rest.translation.lerp(up.translation, lift)
+    Mw = Matrix.Translation(pw) @ q.to_matrix().to_4x4()        # the drum's world frame
+    loc = Dh.inverted() @ Mw
+    pose["whistle"] = {"loc": tuple(loc.translation - W0), **_euler_deg(loc.to_3x3())}
+    # cord: from each neck anchor (on the head) to the ring
+    ring_w = Mw @ (B.whistle_ring - W0)
+    for cs, cside in ((1, "L"), (-1, "R")):
+        bn = f"cord.{cside}"
+        bone = rig.data.bones[bn]
+        h0, t0 = bone.head_local.copy(), bone.tail_local.copy()
+        tgt = Dh.inverted() @ ring_w + Vector((cs * 0.004, 0, 0))
+        v0, v1 = (t0 - h0), (tgt - h0)
+        Rm = v0.normalized().rotation_difference(v1.normalized()).to_matrix()
+        e = _euler_deg(Rm)
+        sc = _stretch_scale(rig, bn, v1.length / v0.length)
+        if sc:
+            e["scale"] = sc
+        pose[bn] = e
+    if lift <= 0:
+        return pose
+    # the free hand on the drum: hand centre ~1 cm below / outside the drum surface
+    grip = Mw @ Vector((0, 0, 0)) - Vector((0, 0, 1)) * (r + 0.009) + Vector((s, 0, 0)) * 0.012 + out * 0.004
+    hc0 = B.hand_c[side]
+    an, hn = f"arm.{side}", f"hand.{side}"
+    x = {"swing": 70.0, "out": 20.0, "twist": 0.0, "hswing": 0.0, "hout": 0.0, "k": 1.0}
+    lim = {"swing": (-20, 175), "out": (-60, 110), "twist": (-80, 80), "hswing": (-60, 60), "hout": (-60, 60), "k": (1.0, 1.3)}
+    bw = dict(pose.get(an, {}))
+    def setp(x):
+        p = dict(pose)
+        e = dict(bw); e["swing"] = x["swing"]; e["out"] = x["out"]; e["twist"] = x["twist"]
+        sc = _stretch_scale(rig, an, x["k"])
+        if sc and x["k"] != 1.0:
+            e["scale"] = sc
+        p[an] = e
+        he = {"swing": x["hswing"], "out": x["hout"]}
+        hsc = _stretch_scale(rig, hn, 1.0 / x["k"])
+        if hsc and x["k"] != 1.0:
+            he["scale"] = hsc
+        p[hn] = he
+        return p
+    def cost(x):
+        kit.apply_pose(rig, setp(x)); bpy.context.view_layer.update()
+        hc = _delta(rig, hn) @ hc0
+        return (hc - grip).length + 0.02 * (x["k"] - 1.0)
+    best = cost(x)
+    for step in (24.0, 12.0, 6.0, 3.0, 1.5, 0.75):
+        improved = True
+        while improved:
+            improved = False
+            for key in x:
+                for d in (-1, 1):
+                    y = dict(x); y[key] = min(lim[key][1], max(lim[key][0], x[key] + d * step * (0.01 if key == "k" else 1.0)))
+                    cy = cost(y)
+                    if cy < best - 1e-6:
+                        x, best, improved = y, cy, True
+    B.whistle_grip_err = getattr(B, "whistle_grip_err", {}); B.whistle_grip_err[lift] = best
+    return setp(x)
+
+def act_whistle(B):
+    """The free hand (not the clipboard hand) lifts the whistle off his chest to the corner of his
+    mouth, two blows (cheeks puff), and lets it drop back. Frames 1-34; held at the mouth 9-24."""
+    import bpy
+    rig = _rig_of(B)
+    side = "L" if _prop_side(B, "clipboard", "L") == "R" else "R"
+    s = 1 if side == "L" else -1
+    body = _base(B, {"head": {"lean": 6, "twist": s * 10, "tilt": s * 6}, "spine": {"lean": 2},
+                     f"arm.{('R' if side == 'L' else 'L')}": {"swing": 18, "out": 2}})
+    rest = _base(B)
+    if rig is None or not hasattr(B, "whistle_c"):
+        return [(1, rest), (34, rest)]
+    half = _base(B, {"head": {"lean": 3, "twist": s * 5, "tilt": s * 3}, "spine": {"lean": 1},
+                     f"arm.{('R' if side == 'L' else 'L')}": {"swing": 9, "out": 1}})
+    k0 = _whistle_pose(B, rig, rest, 0.0, side)
+    k1 = _whistle_pose(B, rig, half, 0.45, side)
+    k2 = _whistle_pose(B, rig, body, 1.0, side)
+    def blow(p, puff):
+        p = {k: dict(v) for k, v in p.items()}
+        p["root"] = {"scale": (1.0 + puff * 0.02, 1.0 + puff * 0.02, 1.0 - puff * 0.02)}
+        return p
+    kit.apply_pose(rig, {}); bpy.context.view_layer.update()
+    return [(1, k0), (5, k1), (9, k2), (13, blow(k2, 1)), (16, k2), (20, blow(k2, 1)), (24, k2), (29, k1), (34, k0)]
+
 def _prop_side(B, piece, default):
     for pc in B.P.get("costume", []):
         if pc.get("piece") == piece:
             return pc.get("hand", default)
     return default
 
-def _for_prop(fn, piece, designed):
+def _for_prop(fn, piece, designed, hand_swing=0.0):
     """Wrap an action designed with `piece` in the `designed` hand: mirror it when the character
-    holds the prop in the other hand, so the prop hand always does the work."""
+    holds the prop in the other hand, so the prop hand always does the work. `hand_swing` is added
+    to the prop hand: the club used to stand up out of a hanging hand; now it runs through the fist
+    (hold system), which is the same pose with the hand swung 90 degrees."""
     def f(B):
         keys = fn(B)
-        if _prop_side(B, piece, designed) != designed:
+        side = _prop_side(B, piece, designed)
+        if side != designed:
             keys = [(fr, kit.mirror(pose)) for fr, pose in keys]
+        if hand_swing:
+            out = []
+            for fr, pose in keys:
+                pose = dict(pose); e = dict(pose.get(f"hand.{side}", {}))
+                e["swing"] = e.get("swing", 0.0) + hand_swing
+                pose[f"hand.{side}"] = e
+                out.append((fr, pose))
+            keys = out
         return keys
     return f
 
 kit.ACTIONS.update({"march": (_for_prop(act_march, "clipboard", "L"), True),
                     "write": (_for_prop(act_write, "clipboard", "L"), True),
                     "salute": (_for_prop(act_salute, "clipboard", "L"), False),
-                    "polish": (_for_prop(act_polish, "cloth_club", "R"), True),
-                    "point": (_for_prop(act_point, "cloth_club", "R"), False),
-                    "wave": (_for_prop(act_wave, "cloth_club", "R"), False)})
+                    "whistle": (act_whistle, False),
+                    "polish": (_for_prop(act_polish, "cloth_club", "R", 90.0), True),
+                    "point": (_for_prop(act_point, "cloth_club", "R", 90.0), False),
+                    "wave": (_for_prop(act_wave, "cloth_club", "R", 90.0), False)})

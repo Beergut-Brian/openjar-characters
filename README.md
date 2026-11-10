@@ -7,6 +7,10 @@ recurring character on its own. Rendered in each game's own technique, but alway
 | --- | --- | --- | --- |
 | [Jeff](characters/jeff/bible.md) | **yes**, P1 default | kicker in Spaceballs | Fun-loving hippy in a chicken costume, jeans, barefoot |
 | [Chuck](characters/chuck/bible.md) | **yes**, P2 default | kicker in Spaceballs | T-Rex trucker hat, black tie-dye, jeans, cowboy boots. Personality: proposed, awaiting Kaden |
+| [Astro Ana](characters/astro_ana/bible.md) | **yes** (proposed, playtest build) | kicker in Spaceballs | Mission-ready astronaut in a clear fishbowl helmet, two hair puffs, orange moon boots |
+| [Coach Whistle](characters/coach_whistle/bible.md) | **yes** (proposed, playtest build) | kicker in Spaceballs | Barrel-chested coach in referee stripes, navy cap, whistle on a cord |
+| [Ribbit](characters/ribbit/bible.md) | **yes** (proposed, playtest build) | kicker in Spaceballs | Small, round and calm in a teal frog hoodie with eyes on the hood; hops |
+| [Zorp](characters/zorp/bible.md) | **yes** (proposed, playtest build) | kicker in Spaceballs | Light-blue alien tourist with two antennae and a loud holiday shirt |
 | [Big Tiny](characters/big_tiny/bible.md) | **yes** (proposed, playtest build) | gentle giant in Junk Yard Zap | The widest, tallest Jarling under the smallest beanie; closed-eye smile, enormous white sneakers |
 | [Foreman Dot](characters/foreman_dot/bible.md) | **yes** (proposed, playtest build) | site lead in The Hill | Short, stocky human site lead; yellow hard hat sitting low, orange hi-vis shirt. Not the Gnome Foreman |
 | [Granny Gravel](characters/granny_gravel/bible.md) | **yes** (proposed, playtest build) | steamroller driver in The Hill | White bun with safety goggles pushed up into it, lavender cardigan, long skirt, yellow sneakers |
@@ -19,6 +23,7 @@ recurring character on its own. Rendered in each game's own technique, but alway
 | [The Caveman](characters/caveman/bible.md) | no (resident) | museum keeper in The Hill | Delighted by everything modern, polishes treasures, one ice cube on his head |
 | [The Dragon](characters/dragon/bible.md) | no (resident) | landmark (Dragon Perch) in The Hill | Huge, sleepy, huggable, snores smoke rings |
 
+All ten are `kind: universal`. The four marked *proposed, playtest build* are from Kaden's sheets of 2026-11-10 (Jarlings batch 1): built so he can playtest the chooser, not yet signed off.
 All thirteen are `kind: universal`. The seven marked *proposed, playtest build* are from Kaden's sheets of 2026-11-10 (Jarlings batch 2: Junk Yard Zap and The Hill): built so he can playtest the chooser, not yet signed off.
 
 **Alt forms.** A look.md section `## Alt form: <name>` is an approved per-game variant (listed in
@@ -35,14 +40,20 @@ Players pick who they are in every game's start menu and in the launcher (see
 [`docs/roster.md`](docs/roster.md)). Only **playable** characters can be picked. Each bible's header
 says `**Playable:** true|false`, `**Default for:** none|1|2` and `**Body:** standard|critter|giant` (the body types are in [`avatar/README.md`](avatar/README.md)); the index lists
 the playable ids in display order under `roster` (defaults first). Today: Jeff (P1 default) and
+Chuck (P2 default), then Astro Ana, Coach Whistle, Ribbit and Zorp (batch 1, proposed; lineups
+`characters/batch1_lineup.png`, `characters/batch1_pixel_lineup.png`, read check `characters/batch1_read_check.png`). The Hill residents (Mole, Gnome Foreman, Caveman, Dragon) are not playable.
 Chuck (P2 default), then Big Tiny, Foreman Dot, Granny Gravel, Lampy, Mayor Pip, Professor Fizz and Scrap (batch 2, proposed; lineups
 `characters/batch2_lineup.png`, `characters/batch2_pixel_lineup.png`, read check `characters/batch2_read_check.png`). The Hill residents (Mole, Gnome Foreman, Caveman, Dragon) are not playable.
 
 **3D-first (Kaden, 2026-11-10).** A character is designed as a Jarling first; every other style is
 derived from that 3D master. The four Hill residents were drawn 2D-first, so their 3D masters were
-backfilled (status: proposed). Gnome Foreman and Caveman use the standard body with new kit pieces;
+backfilled and then matched to the approved sprites (status: **approved**, Kaden 2026-11-10, D49 a
+with the Gnome whistle fix); their Hill pixel forms are now traced from the 3D
+(`tools/pixel/retrace.sh`). Gnome Foreman and Caveman use the standard body with new kit pieces;
 the Mole uses the `critter` body type and the Dragon the `giant` body type. All six in 3D:
-`characters/residents_3d_lineup.png`; 3D beside the approved 2D: `characters/residents_3d_compare.png`.
+`characters/residents_3d_lineup.png`; 3D beside the pixel redraw: `characters/residents_3d_compare.png`;
+every prop at game size: `characters/read_check.png`; everyone holding things:
+`avatar/kit/renders/hold_check.png` ([`avatar/README.md`](avatar/README.md) "Holding items").
 
 Rules for every playable character (checked by `godot/run_tests.sh`):
 
@@ -100,6 +111,10 @@ Drafts awaiting Kaden live in `proposals/<id>/` and are listed under `proposed` 
 `git mv proposals/<id> characters/<id>`, set the bible's `## Status` to "Approved by Kaden <date>" (the
 index reads `approved` from it), then run `tools/build_index.py`.
 
+Fifteen of Kaden's 19 sheets (2026-11-10) wait here: `docs/jarlings-19.md`. The four Spaceballs ones (Coach Whistle, Zorp,
+Ribbit, Astro Ana) were moved to `characters/` on 2026-11-10 as a playtest build: Kaden wrote the sheets and asked to playtest
+the chooser with them; their Status stays "Proposed" until he signs off. The four Hill residents were approved by Kaden on
+2026-11-09 (D46 a) and promoted.
 Twelve of Kaden's 19 sheets (2026-11-10) wait here: `docs/jarlings-19.md` (the four Spaceballs ones are with the batch 1 lane on its own branch). The seven Junk Yard Zap and Hill ones (Professor Fizz, Scrap, Big Tiny, Foreman Dot, Granny Gravel,
 Mayor Pip, Lampy) were moved to `characters/` on 2026-11-10 as a playtest build: Kaden wrote the sheets and asked to playtest
 the chooser with them; their Status stays "Proposed" until he signs off. The four Hill residents were approved by Kaden on 2026-11-09 (D46 a) and promoted.

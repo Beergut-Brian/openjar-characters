@@ -25,7 +25,7 @@ Shoes (`outfit.shoes.style`; `color` is per side, `size`/`socks` are the core's)
   wrestling_boots  color "#2A3A8C", lace "#F7F7F5", sole null, height 0.235
   chunky_boots     color "#8B5A2B", sole "#3A3330", cap null (toe cap, default darker color)
 Costume (`costume: [{"piece": name, ...}]`):
-  whistle_cord  color "#FFD23F" (whistle), cord "#2A6FD6", t 0.56 (height on the torso), x 0.0 (turn off centre, radians)
+  whistle_cord  color "#FFD23F" (whistle), cord "#2A6FD6", t 0.56 (height on the torso), x 0.0 (turn off centre, radians), size 1.0 (whistle scale; Coach Whistle uses 1.5)
   sash          color "#C8A2F0", side "L" (the shoulder it goes over), width 0.17 (in torso height)
   cape          (part "cape") color "#7A2E8C", trim "#F2D16B", length 1.0 (1 = knee height), flare 0.3
   back_spikes   color "#2FA88A", count 5, size 1.0
@@ -607,16 +607,17 @@ def whistle_cord(B, piece):
     B.add(tube_bm([tuple(p) for p in pts], 0.0042), cord, "spine")
     p = _tp(B, tw_, front + off, 1.0)
     n = _normal(B, tw_, front + off)
-    p = p + n * 0.02
+    sz = float(piece.get("size", 1.0))              # 1.0 = the original whistle
+    p = p + n * 0.02 * sz
     # whistle: a short barrel pointing sideways-down with a round chamber
     side = Vector((1, 0, 0)) - n * n.x
     side.normalize()
-    a = p + side * 0.03 + Vector((0, 0, -0.004)); b = p - side * 0.012
-    B.add(capsule_bm(tuple(a), tuple(b), 0.012, 0.014, segs=16, hem=4), yel, "spine")
-    B.add(ellipsoid_bm(p - side * 0.012 + Vector((0, 0, -0.004)), (0.021, 0.019, 0.021), segs=18, rings=10), yel, "spine")
-    B.add(tube_bm([tuple(pts[0]), tuple(p + Vector((0, 0, 0.012)))], 0.0042), cord, "spine")
+    a = p + (side * 0.03 + Vector((0, 0, -0.004))) * sz; b = p - side * 0.012 * sz
+    B.add(capsule_bm(tuple(a), tuple(b), 0.012 * sz, 0.014 * sz, segs=16, hem=4), yel, "spine")
+    B.add(ellipsoid_bm(p + (-side * 0.012 + Vector((0, 0, -0.004))) * sz, (0.021 * sz, 0.019 * sz, 0.021 * sz), segs=18, rings=10), yel, "spine")
+    B.add(tube_bm([tuple(pts[0]), tuple(p + Vector((0, 0, 0.012 * sz)))], 0.0042), cord, "spine")
     hole = B.mats.flat("whistle_hole", "#2A2A33", rough=0.6, spec=0.2)
-    B.add(ellipsoid_bm(a + side * 0.011, (0.004, 0.008, 0.006), segs=10, rings=6), hole, "spine")
+    B.add(ellipsoid_bm(a + side * 0.011 * sz, (0.004 * sz, 0.008 * sz, 0.006 * sz), segs=10, rings=6), hole, "spine")
 
 def sash(B, piece):
     mat = B.mats.flat("sash", piece.get("color", "#C8A2F0"), rough=0.7, spec=0.25)

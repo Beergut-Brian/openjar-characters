@@ -22,6 +22,9 @@ extends Resource
 @export var level_up: Dictionary = {}
 ## Optional swinging node: {"node": "cape_pivot", "stiffness", "damping", "gain", "rest_deg", "max_deg"}
 @export var spring: Dictionary = {}
+## Held items only (avatar/README.md "Holding items"): {"style", "grip_r", "grip_l", "axis", "poses", ...}.
+## Empty for gear without grips: it sits at the slot origin as before.
+@export var hold: Dictionary = {}
 
 
 static func load_json(path: String) -> JarlingGear:
@@ -46,6 +49,7 @@ static func load_json(path: String) -> JarlingGear:
 	g.fit = d.get("fit", {})
 	g.level_up = d.get("level_up", {})
 	g.spring = d.get("spring", {})
+	g.hold = d.get("hold", {})
 	if d.has("scene"):
 		g.scene = load(path.get_base_dir().path_join(d["scene"])) as PackedScene
 		if g.scene == null:
