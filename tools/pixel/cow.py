@@ -36,6 +36,7 @@ T3.CANVAS[CID] = (48, 32)
 POSES = [("", "side"), ("", "front"), ("", "back"), ("trot1", "side"), ("trot2", "side"), ("graze", "side"),
          ("tipped", "front"), ("panicked", "front")]
 OUTDIR = os.path.join(ROOT, "proposals", "cow", "refs")
+NAME = json.load(open(os.path.join(ROOT, "proposals", "cow", "jarling.json")))["name"]   # Patience (D53 a)
 
 
 def sprite(rows, pal):
@@ -136,7 +137,7 @@ def main():
     cw = max(c.width for _l, c in cells) + 24; ch = max(c.height for _l, c in cells) + 44
     sheet = Image.new("RGBA", (4 * cw + 24, 2 * ch + 70), (255, 253, 244, 255))
     d = ImageDraw.Draw(sheet)
-    d.text((24, 16), f"Cow (proposal): pixel form traced from the 3D master, {tgt} px tall at The Hill's scale (Jeff = 32 px), x{K}", fill=rgba(OUT), font=fb)
+    d.text((24, 16), f"{NAME} the Cow (proposal): pixel form traced from the 3D master, {tgt} px tall at The Hill's scale (Jeff = 32 px), x{K}", fill=rgba(OUT), font=fb)
     for i, (l, c) in enumerate(cells):
         x, y = 24 + (i % 4) * cw, 60 + (i // 4) * ch
         sheet.alpha_composite(c, (x, y + ch - 44 - c.height))
@@ -150,7 +151,7 @@ def main():
     W = 1900
     rc = Image.new("RGBA", (W, 1500), (255, 253, 244, 255))
     d = ImageDraw.Draw(rc)
-    d.text((24, 14), "Cow (proposal): read check. Does she read as a cow, and as herself, at game size?", fill=rgba(OUT), font=fb)
+    d.text((24, 14), f"{NAME} the Cow (proposal): read check. Does she read as a cow, and as herself, at game size?", fill=rgba(OUT), font=fb)
     y = 56
     d.text((24, y), "1. Sprite at 1x, x2 (The Hill on a 1080p TV) and x4 (4K)", fill=rgba(OUT), font=f); y += 30
     x = 24

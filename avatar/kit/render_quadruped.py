@@ -84,20 +84,22 @@ if "actions" in only:
     code = """
 import sys
 from PIL import Image, ImageDraw, ImageFont
-out, labels, files = sys.argv[1], sys.argv[2].split('|'), sys.argv[3:]
+out, labels, title, files = sys.argv[1], sys.argv[2].split('|'), sys.argv[3], sys.argv[4:]
 ims = [Image.open(f).convert('RGB') for f in files]
-w, h = ims[0].size; bar = 44; cols = 4; rows = (len(ims) + cols - 1) // cols
-sheet = Image.new('RGB', (cols * w, rows * (h + bar)), (255, 255, 255))
+w, h = ims[0].size; bar = 44; top = 52; cols = 4; rows = (len(ims) + cols - 1) // cols
+sheet = Image.new('RGB', (cols * w, top + rows * (h + bar)), (255, 255, 255))
 d = ImageDraw.Draw(sheet)
 try: font = ImageFont.truetype('DejaVuSans-Bold.ttf', 22)
 except OSError: font = ImageFont.load_default()
+d.text((20, 14), title, fill=(60, 70, 90), font=font)
 for i, (im, t) in enumerate(zip(ims, labels)):
-    x, y = (i % cols) * w, (i // cols) * (h + bar)
+    x, y = (i % cols) * w, top + (i // cols) * (h + bar)
     sheet.paste(im, (x, y))
     d.text((x + (w - d.textlength(t, font=font)) / 2, y + h + 9), t, fill=(60, 70, 90), font=font)
 sheet.save(out)
 """
-    subprocess.run(["python3", "-c", code, path, "|".join(p[-1] for p in panels)] + files, check=True)
+    title = f"{P.get('name', pid)} the Cow ({pid}, proposal): actions" if pid == "cow" else f"{P.get('name', pid)} ({pid}): actions"
+    subprocess.run(["python3", "-c", code, path, "|".join(p[-1] for p in panels), title] + files, check=True)
     print("ACTIONS", path)
 
 if "scale" in only:
