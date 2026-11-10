@@ -783,7 +783,8 @@ class Builder:
                 a = abs(phi) if phi <= math.pi else 2 * math.pi - phi
                 return 0.46 - 1.75 * (1 / (1 + math.exp(-(a - 1.12) * 9)))
             sc = lambda el, phi: (1.30 + 0.07 * math.sin(phi * 13) * math.cos(el * 7) + 0.05 * math.sin(phi * 5 + el * 3)
-                                  + 0.12 * max(0, math.sin(el)) ** 1.5 + 0.18 * max(0.0, -math.cos(phi)) * max(0.0, math.cos(el)))
+                                  + 0.04 * max(0, math.sin(el)) ** 1.5 + 0.14 * max(0.0, -math.cos(phi)) * max(0.0, math.cos(el))
+                                  + 0.30 * abs(math.sin(phi)) * max(0.0, math.cos(el)) ** 2)
         elif style == "afro":
             thr = blend(0.42, -0.3, side=0.15)
             sc = lambda el, phi: 1.22 + 0.04 * math.sin(phi * 11) * math.cos(el * 9) + 0.26 * max(0, math.sin(el)) ** 1.5

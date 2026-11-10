@@ -162,15 +162,15 @@ def mane_beard(B, piece):
         phi = -1.5 + 3.0 * k / (n - 1)
         a = abs(phi) / 1.5
         el = -1.12 + 0.62 * a ** 1.6
-        p = B.head_point(el, phi, 1.0 + 0.12 * a)
-        r = R * (0.36 - 0.06 * a) * rnd.uniform(0.92, 1.08)
+        p = B.head_point(el, phi, 1.0 + 0.20 * a)
+        r = R * (0.42 - 0.04 * a) * rnd.uniform(0.92, 1.08)
         B.add(ellipsoid_bm(p + Vector((0, 0.06 * R, -0.04 * R)), (r * 1.15, r * 0.9, r), segs=24, rings=14), mat, "head")
     # under the chin, hanging over the chest, shaggy bottom
     def shag(co):
         if co.z < 0:
             co.z *= 1 + 0.22 * max(0.0, math.cos(math.atan2(co.y, co.x) * 7)) ** 2
         return co
-    B.add(ellipsoid_bm(c + Vector((0, -0.30 * R, -1.18 * R)), (0.86 * R, 0.46 * R, 0.42 * R), segs=36, rings=18, deform=shag),
+    B.add(ellipsoid_bm(c + Vector((0, -0.26 * R, -1.22 * R)), (1.05 * R, 0.52 * R, 0.52 * R), segs=36, rings=18, deform=shag),
           mat, "head")
 
 def ice_cube(B, hw):
@@ -235,19 +235,19 @@ def cloth_club(B, piece):
     string = B.mats.flat("club_string", piece.get("string", "#1E9AA0"), rough=0.6, spec=0.3)
     bone = f"hand.{side}"
     B.cur_part = "prop"
-    p0 = hc + Vector((0, -0.012, -0.075))
-    p1 = hc + Vector((0, -0.04, 0.26))
+    p0 = hc + Vector((-s * 0.025, -0.012, -0.075))
+    p1 = hc + Vector((s * 0.11, -0.06, 0.33))
     B.add(capsule_bm(p0, p1, 0.014, 0.013, segs=14, hem=3), wood, bone)
-    bc = p1 + Vector((0, -0.006, 0.065))
+    bc = p1 + Vector((s * 0.025, -0.008, 0.075))
     def puff(co):
         co.x *= 1 + 0.06 * math.sin(co.z * 120); return co
-    B.add(ellipsoid_bm(bc, (0.068, 0.064, 0.08), segs=28, rings=16, deform=puff), cloth, bone)
+    B.add(ellipsoid_bm(bc, (0.085, 0.08, 0.1), segs=28, rings=16, deform=puff), cloth, bone)
     B.add(ellipsoid_bm(bc + Vector((0.02, -0.02, 0.05)), (0.04, 0.04, 0.035), segs=18, rings=10), cloth, bone)
-    zt = bc.z - 0.05
-    pts = [(bc.x + 0.036 * math.cos(a), bc.y + 0.034 * math.sin(a), zt) for a in [2 * math.pi * i / 28 for i in range(28)]]
+    zt = bc.z - 0.065
+    pts = [(bc.x + 0.05 * math.cos(a), bc.y + 0.047 * math.sin(a), zt) for a in [2 * math.pi * i / 28 for i in range(28)]]
     B.add(tube_bm(pts, 0.007, cyclic=True), string, bone)
     for d in (-1, 1):   # the knot's two ends
-        a = Vector((bc.x + 0.03 * d * s, bc.y - 0.03, zt))
+        a = Vector((bc.x + 0.03 * d * s, bc.y - 0.045, zt))
         B.add(tube_bm([tuple(a), tuple(a + Vector((0.012 * d, -0.012, -0.03)))], 0.005), string, bone)
     B.cur_part = None
 
