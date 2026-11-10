@@ -32,24 +32,23 @@ least ΔE00 20 from P1 green `#3cc24a` and P2 red `#e4393c`. Skin tone is not fi
 
 ## Per-technique notes
 
-### Jarling 3D (master, built by the kit lane from this sheet)
-Standard humanoid Jarling body (`avatar/kit`): only `build`, `height` (0.8-1.3) and `leg_scale` (0.8-1.2) change; same skeleton, actions, ten equipment slots and the same gameplay collision as every playable character.
-- **build:** `slim`
-- **height:** 1.25 (tall)
-- **leg_scale:** 1.15
-- **width / belly:** thin, no belly
-- **head:** `round`, size 1.0
-- **hair:** `short`, under the helmet
-- **headwear:** **new** `miner_helmet` (white dome, front lamp housing with an emissive lens and an optional spot light, light on by default only in dark scenes)
-- **top:** **new** `overalls_top` (bib and straps), dusty teal
-- **bottoms:** `pants`, brown
-- **shoes:** `boots`, grey
-- **face extra:** cheek `smudge` decal on one cheek
-- **gear:** rock in `hand_r` (optional)
-- **pieces needed:** miner_helmet + headlamp light, overalls_top, cheek smudge decal, rock (gear)
+### Jarling 3D (master)
+Built 2026-11-10 from `characters/lampy/jarling.json` (standard humanoid body, kit v2).
+- **body:** `slim`, height 1.25, leg_scale 1.15, width 0.8 (tall and thin)
+- **head:** `round` 1.0; skin `#EFBB90`; `short` hair `#7A4B2A` under the helmet
+- **headwear:** `miner_helmet` `#F1F1EC`, `lamp_size` 1.3 (the "big round headlamp"): dark housing, emissive pale-yellow lens, and a
+  **real spot light** in the glb (`lampy_headlamp`, 30 W, 55 degree cone, on the head bone; Godot imports it as a light a game can toggle)
+- **face:** round eyes (scale 1.15 to 1.3), thin brows, `smile`; `smudge` `#6B5A4A` on one cheek. Expressions: neutral = curious,
+  happy = shy closed-eye smile, surprised = wonder gasp (`o`, brows up), determined = set mouth
+- **top:** `tee` `#3F8A99` with the `bib` pattern (`#35778A`) for the overalls look; **bottoms:** `pants` `#7A5536`; **shoes:** `chunky_boots` `#7B7F86`
+- **ref action:** `cheer` frame 10, wonder face
+- **Not built:** the rock (a held prop; waits for the held-item hold styles from the residents-d49 lane, not on `main` yet)
 
 ### 2D pixel (The Hill)
 32 px tall at Jeff's scale (stage 1), side-on like `characters/residents_lineup.png`; traced from the 3D side view once it exists. Helmet a white dome with a 2x2 pale-yellow lamp pixel at the front; in dark areas a light cone sprite in front of the lamp. Smudge one brown pixel on the cheek. Tallest of the Hillville four at 32 px.
 
 ## Refs
-`refs/`: none yet. The kit lane builds the 3D master and renders after Kaden approves this sheet.
+- `refs/jarling/lampy.glb`: the 3D master
+- `refs/jarling/lampy_turnaround.png`, `lampy_expressions.png`, `lampy_cheer.png`
+- `refs/jarling/lampy_side.png`, `lampy_side_sprite.png`: side view and its sprite-scale tracing base
+- `refs/pixel/lampy_pixel.png`, `lampy_frames.png` (+ `.json`), `lampy_pixel_sheet.png`: The Hill pixel form

@@ -32,23 +32,23 @@ least ΔE00 20 from P1 green `#3cc24a` and P2 red `#e4393c`. Skin tone is not fi
 
 ## Per-technique notes
 
-### Jarling 3D (master, built by the kit lane from this sheet)
-Standard humanoid Jarling body (`avatar/kit`): only `build`, `height` (0.8-1.3) and `leg_scale` (0.8-1.2) change; same skeleton, actions, ten equipment slots and the same gameplay collision as every playable character.
-- **build:** `regular` (soft)
-- **height:** 0.9
-- **leg_scale:** 0.85 (skirt covers them)
-- **width / belly:** soft, no belly
-- **head:** `round`, size 1.0
-- **hair:** `bun`, white (Kaden's "white-bun grandma body type" is hair + skirt on the standard body, see REPORT)
-- **headwear:** **new** `goggles_up` (band + two round lenses), fits over the bun's front; `down` pose for driving
-- **top:** **new** `cardigan` style (open front with a button line), lavender
-- **bottoms:** **new** `long_skirt` (ankle length; must not change collision or leg rig)
-- **shoes:** **new** `sneakers`, yellow
-- **gear:** none
-- **pieces needed:** goggles (up/down), cardigan top, long_skirt, sneakers
+### Jarling 3D (master)
+Built 2026-11-10 from `characters/granny_gravel/jarling.json` (standard humanoid body, kit v2).
+- **body:** `regular`, height 0.9, leg_scale 0.85
+- **head:** `round` 1.0; skin `#F7CFAE`; hair preset `top_bun` `#F2F0EA` (white, bun on the crown)
+- **goggles:** costume piece `goggles`, `safety` style, frame `#4A4F5A`, on the forehead at `height` 0.56 and `size` 0.85: pushed up into the
+  white hair under the bun, well clear of the eyes and mouth
+- **face:** button eyes, thin raised brows, tiny `smile`. Expressions: happy = closed-eye grin, surprised = `o`, determined = the
+  behind-the-wheel cackle (open grin, brows down)
+- **top:** `long` `#B9A3D9` with a `collar` (`#9C84C4`) and one row of `buttons` (cardigan); **bottoms:** `long_skirt` `#8C8F96` (length 0.85)
+  over same-colour pants; **shoes:** `sneaker` `#FFD93B`
+- **ref action:** `cheer` frame 10
 
 ### 2D pixel (The Hill)
 32 px tall at Jeff's scale (stage 1), side-on like `characters/residents_lineup.png`; traced from the 3D side view once it exists. Bun is a 3x3 white blob on top of the head; goggles a 1-px dark band with two light-blue lens pixels. Skirt is a solid grey trapezoid to the ankles; yellow sneakers 2 px.
 
 ## Refs
-`refs/`: none yet. The kit lane builds the 3D master and renders after Kaden approves this sheet.
+- `refs/jarling/granny_gravel.glb`: the 3D master
+- `refs/jarling/granny_gravel_turnaround.png`, `granny_gravel_expressions.png`, `granny_gravel_cheer.png`
+- `refs/jarling/granny_gravel_side.png`, `granny_gravel_side_sprite.png`: side view and its sprite-scale tracing base
+- `refs/pixel/granny_gravel_pixel.png`, `granny_gravel_frames.png` (+ `.json`), `granny_gravel_pixel_sheet.png`: The Hill pixel form

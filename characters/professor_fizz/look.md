@@ -36,24 +36,24 @@ least ΔE00 20 from P1 green `#3cc24a` and P2 red `#e4393c`. Skin tone is not fi
 
 ## Per-technique notes
 
-### Jarling 3D (master, built by the kit lane from this sheet)
-Standard humanoid Jarling body (`avatar/kit`): only `build`, `height` (0.8-1.3) and `leg_scale` (0.8-1.2) change; same skeleton, actions, ten equipment slots and the same gameplay collision as every playable character.
-- **build:** `regular`
-- **height:** 1.0
-- **leg_scale:** 1.0
-- **width / belly:** regular, no belly
-- **head:** `round`, size 1.0
-- **hair:** **new** `upright` (tall vertical spray), white; or `spiky` stretched up if the kit can scale it
-- **headwear:** **new** `goggles_up` (shared with Granny Gravel), brass rims
-- **top:** **new** `lab_coat` (knee-short coat over the top, purple collar)
-- **bottoms:** `pants`, purple
-- **shoes:** **new** `dress_shoes` (shared with Mayor Pip), black, with **new** `socks_mismatch` (one yellow-orange, one blue)
-- **face extra:** scorched-brow decal (one brow)
-- **gear:** zap gun or notebook in `hand_r` (optional)
-- **pieces needed:** upright hair, goggles (shared), lab_coat, dress_shoes (shared), mismatched socks, scorch-brow decal
+### Jarling 3D (master)
+Built 2026-11-10 from `characters/professor_fizz/jarling.json` (standard humanoid body, kit v2).
+- **body:** `regular`, height 1.0
+- **head:** `round` 1.0; skin `#F7CFAE`; hair preset `upright` `#F7F7F2` (a spray of white spikes straight up: the outline)
+- **goggles:** costume piece `goggles` (round, brass rims `#B8862E`, lens `#9FD3E6`) on the forehead at `height` 0.52, clear of the brows
+- **face:** wide eyes, `grin`; her left brow is the `scorch_brow` extra `#3A2E2A` (jagged, with soot), the other a normal grey brow.
+  Expressions: neutral = excited grin, happy = closed-eye grin, surprised = idea strike (`o`), determined = mid-thought blank (`flat`)
+- **top:** `long` `#F4F5F2` with `collar` and `buttons` in `#7B3FB5` (a painted lab coat: no separate hem below the waist)
+- **bottoms:** `pants` `#5E2F94`; **shoes:** `dress` `#1B1B20` with mismatched socks (left `#FFB627`, right `#3FA7D6`, `height` 0.3) worn
+  over the pants cuffs so they show above the shoes
+- **ref action:** `cheer` frame 10 ("For SCIENCE!")
+- **Not built:** a lab coat with a real hem; zap gun / notebook (held props; wait for the held-item hold styles, not on `main` yet)
 
 ### 2D pixel (The Hill)
 32 px tall at Jeff's scale (stage 1), side-on like `characters/residents_lineup.png`; traced from the 3D side view once it exists. Hair a 5-px-tall white spray above the head; goggles a brass row with two light-blue dots. Lab coat white with a purple collar pixel pair; socks one orange and one blue pixel above the black shoes.
 
 ## Refs
-`refs/`: none yet. The kit lane builds the 3D master and renders after Kaden approves this sheet.
+- `refs/jarling/professor_fizz.glb`: the 3D master
+- `refs/jarling/professor_fizz_turnaround.png`, `professor_fizz_expressions.png`, `professor_fizz_cheer.png`
+- `refs/jarling/professor_fizz_side.png`, `professor_fizz_side_sprite.png`: side view and its sprite-scale tracing base
+- `refs/pixel/professor_fizz_pixel.png`, `professor_fizz_frames.png` (+ `.json`), `professor_fizz_pixel_sheet.png`: The Hill pixel form

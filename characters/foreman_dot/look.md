@@ -30,23 +30,25 @@ least ΔE00 20 from P1 green `#3cc24a` and P2 red `#e4393c`. Skin tone is not fi
 
 ## Per-technique notes
 
-### Jarling 3D (master, built by the kit lane from this sheet)
-Standard humanoid Jarling body (`avatar/kit`): only `build`, `height` (0.8-1.3) and `leg_scale` (0.8-1.2) change; same skeleton, actions, ten equipment slots and the same gameplay collision as every playable character.
-- **build:** `stocky`
-- **height:** 0.85 (short)
-- **leg_scale:** 0.85
-- **width / belly:** wide shoulders, flat belly: build stocky, no extra belly
-- **head:** `round`, size 1.0
-- **hair:** `short`, mostly hidden
-- **headwear:** **new** `hard_hat` (dome + brim), with a `sit_low` offset so the brim sits at the brow; same piece Jeff and Chuck's the-hill alt forms use, if the kit lane shares it
-- **top:** `tee` style, orange, with one horizontal white `hivis_stripe` (new costume piece)
-- **bottoms:** `pants`, navy
-- **shoes:** `boots`, chunky variant (new `chunky` size flag)
-- **gear:** clipboard in `hand_l` (optional)
-- **pieces needed:** hard_hat (low fit), hivis_stripe, chunky boots, clipboard
+### Jarling 3D (master)
+Built 2026-11-10 from `characters/foreman_dot/jarling.json` (standard humanoid body, kit v2).
+- **body:** `stocky`, height 0.85, leg_scale 0.85, width 1.1 (short and stocky)
+- **head:** `round` 1.0; skin `#D99E6E`; `bob` hair `#4A2F23`
+- **headwear:** `hard_hat` `#F5C518`, `fit` 0.27, tilted back 12 degrees: it sits low, just above the brows (the first try at `fit` 0.22
+  hid her eyes from a camera above her, so it came up a little; eyes lowered with `eye_y` -0.1)
+- **face:** round eyes, thick brows, `grin_top` (confident open smile). Expressions: happy = closed-eye grin, surprised = `o`, determined = grin, brows down
+- **top:** `tee` `#F28A1E` with one white `hstripe` (hi-vis); **bottoms:** `pants` `#1F2D4F`; **shoes:** `chunky_boots` `#7A4E2A`
+- **ref action:** `cheer` frame 10
+- **Not the Gnome Foreman.** Dot is a clean-shaven human with a round yellow hard hat, dark bob, navy pants, 0.99 m to the hat top; the Gnome
+  Foreman (resident) is about half her height with a teal cone hat and a white beard. Side by side: `characters/batch2_foremen.png`.
+  Both wear orange and both are called "Foreman": flagged for Kaden
+- **Not built:** a clipboard in hand (held props wait for the held-item hold styles, not on `main` yet)
 
 ### 2D pixel (The Hill)
 32 px tall at Jeff's scale (stage 1), side-on like `characters/residents_lineup.png`; traced from the 3D side view once it exists. The hard hat is a 3-px-tall yellow dome with the brim one px above the eye line; the white stripe is a single row across the orange shirt. Must read at 16 px: yellow dome + orange block.
 
 ## Refs
-`refs/`: none yet. The kit lane builds the 3D master and renders after Kaden approves this sheet.
+- `refs/jarling/foreman_dot.glb`: the 3D master
+- `refs/jarling/foreman_dot_turnaround.png`, `foreman_dot_expressions.png`, `foreman_dot_cheer.png`
+- `refs/jarling/foreman_dot_side.png`, `foreman_dot_side_sprite.png`: side view and its sprite-scale tracing base
+- `refs/pixel/foreman_dot_pixel.png`, `foreman_dot_frames.png` (+ `.json`), `foreman_dot_pixel_sheet.png`: The Hill pixel form
