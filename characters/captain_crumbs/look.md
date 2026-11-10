@@ -37,25 +37,37 @@ least ΔE00 20 from P1 green `#3cc24a` and P2 red `#e4393c`. Skin tone is not fi
 
 ## Per-technique notes
 
-### Jarling 3D (master, built by the kit lane from this sheet)
-Standard humanoid Jarling body (`avatar/kit`): only `build`, `height` (0.8-1.3) and `leg_scale` (0.8-1.2) change; same skeleton, actions, ten equipment slots and the same gameplay collision as every playable character.
-- **build:** `round`
-- **height:** 1.2 (tall)
-- **leg_scale:** 1.0
-- **width / belly:** round middle
-- **head:** `round`, size 1.0
-- **hair:** `short`; **new** `curly_moustache` facial hair (dark brown, not fixed by the sheet beyond "big curly")
-- **headwear:** **new** `chef_hat` (tall puffed toque) with **new** `skull_spoon_badge`
-- **face:** **new** `eyepatch` (on the `face` slot)
-- **top:** **new** `chef_jacket` (double-breasted, navy buttons), white
-- **bottoms:** `pants` with **new** `stripes_vertical` (shared with Coach Whistle) navy + white
-- **shoes:** `boots`, black
-- **extra:** flour dusting texture/decal and flour-puff particle
-- **gear:** wooden spoon in `hand_r` (optional)
-- **pieces needed:** chef hat + badge, eyepatch, curly moustache, chef jacket, striped pants, flour decal/particle
+### Jarling 3D (master)
+Built 2026-11-10 from `characters/captain_crumbs/jarling.json` (standard humanoid body, kit v2; costume pieces sit over the standard body, same skeleton, actions, slots and collision as every playable character).
+- **body:** `round`, height 1.2, width 1.15, belly 0.6 (tall with a round middle)
+- **head:** `round` 1.0, skin `#D99E6E`; `short` hair `#4A3324`; thick brows
+- **headwear:** `chef_hat` `#F7F7F2` with a round navy badge `#1F2D55` (a plain badge, not a drawn skull and spoon: kit limit)
+- **costume:** `eyepatch` over his left eye (strap round the head), `moustache` curly `#4A3324` lying on the face over the grin
+- **top:** `long` `#F7F7F2` + `buttons` `#1F2D55` (two rows); **bottoms:** `pants` `#1F2D55` + `vstripes` `#F7F7F2`; **shoes:** `chunky_boots` `#18181C`
+- **face:** Expressions: neutral = hearty grin (`grin_top`), happy = laughing (eyes closed), surprised = `o`, determined = "arrr" growl (`grit`, brow down)
+- **ref action:** `cheer` frame 10, laughing (`captain_crumbs_cheer.png`)
+- **3D size:** 1.58 m with the hat, the tallest playable Jarling
+- **Not built:** the optional wooden spoon; flour dusting (in-game particle on claps)
 
 ### 2D pixel (The Hill)
-32 px tall at Jeff's scale (stage 1), side-on like `characters/residents_lineup.png`; traced from the 3D side view once it exists. Chef hat 6 px tall white puff with a navy badge pixel; black eyepatch pixel and strap line; dark curly moustache 3 px wide; navy/white striped pants.
+See "Alt form: the-hill pixel" below (as built).
 
 ## Refs
-`refs/`: none yet. The kit lane builds the 3D master and renders after Kaden approves this sheet.
+`refs/`: 3D renders in `refs/jarling/` (kit lane).
+- `refs/pixel/captain_crumbs_pixel.png`, `captain_crumbs_frames.png` (+ `.json`), `captain_crumbs_pixel_sheet.png`: The Hill pixel form
+
+## Alt form: the-hill pixel: proposed
+Sprite source: `tools/pixel/captain_crumbs.py` (`captain_crumbs()`)
+
+- **Height:** 32 px with the outline, the tallest of the batch (the 3D is about 42 px at true scale, squeezed to the 32 px
+  frame): chef hat 8 rows (7 puff + band row), face 7, jacket 8, pants 4, boots 3. Round middle: jacket 14 px wide, head 10.
+- **Palette:** hat and jacket `#F7F7F2` (shade `#D9D9D2`), badge and buttons and pants `#1F2D55`, skin `#D99E6E` (+ `#B97F52`),
+  hair and moustache `#4A3324`, eyepatch and boots `#18181C`, eye `#2A1E2C` with `#FFFFFF` highlight, mouth `#6A2232`, outline `#2A1E2C`.
+- **Frames:** front form (40 x 32) and the 128 x 224 player sheet: idle0-1, walk0-3, jump, fall, side0-2, down0-2, ride,
+  sleep0-1 (three-quarter view facing right, feet on row 30; hand at (22, 21) idle).
+- **Should read as:** a pirate-ish chef
+  - chef hat: tall puffy white 7-row puff with a shaded band row and one navy badge pixel
+  - eyepatch (not a bruise): 2 x 2 black patch over his left eye (viewer's right in front, the far eye in the frames) with a strap pixel line up to the hat band; the other eye is open, 2 x 2 dark with a white highlight
+  - curly moustache (not a pipe or cigarette): two symmetric curls under the nose in the front form; in the frames it lies flat on the face, ends inside the face edge with an upturned end, grin below
+  - chef jacket: white, two vertical columns of navy button pixels, belly wider than the head
+  - navy pants with a white vertical stripe on each leg, black boots

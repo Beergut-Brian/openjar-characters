@@ -30,24 +30,39 @@ least ΔE00 20 from P1 green `#3cc24a` and P2 red `#e4393c`. Skin tone is not fi
 
 ## Per-technique notes
 
-### Jarling 3D (master, built by the kit lane from this sheet)
-Standard humanoid Jarling body (`avatar/kit`): only `build`, `height` (0.8-1.3) and `leg_scale` (0.8-1.2) change; same skeleton, actions, ten equipment slots and the same gameplay collision as every playable character.
-- **build:** `round` (small and round in the onesie)
-- **height:** 0.8 (kid)
-- **leg_scale:** 0.8
-- **width / belly:** slightly round
-- **head:** `round`, size 1.05
-- **hair:** `none` (hood up)
-- **headwear:** **new** `dino_hood` with felt-teeth rim
-- **top:** **new** `onesie` (one piece top + bottoms), orange
-- **bottoms:** part of the onesie (same colour)
-- **shoes:** **new** `footies` (onesie feet), orange
-- **costume:** **new** `back_spikes` (yellow row) and **new** `short_tail` (on the `back`/`waist` area; cosmetic, no collision)
-- **gear:** none
-- **pieces needed:** dino hood + teeth, onesie, footies, back spikes, short tail
+### Jarling 3D (master)
+Built 2026-11-10 from `characters/rexy/jarling.json` (standard humanoid body, kit v2; costume pieces sit over the standard body, same skeleton, actions, slots and collision as every playable character).
+- **body:** `round`, height 0.8, leg_scale 0.8 (small kid); the onesie is a costume over the standard body
+- **head:** `round` 1.05, no ears, skin `#F0BE94`; no hair (hood up)
+- **headwear:** `animal_hood` `#F7941D` with white felt teeth `#FFFFFF` round the face opening and a yellow spike `#FFD23F` crest
+- **top:** `costume` `#F7941D`; **bottoms:** `pants` `#F7941D`; **shoes:** `footies` `#F7941D` (one orange onesie)
+- **costume:** `back_spikes` `#FFD23F`, `dino_tail` `#F7941D` with yellow spikes (cosmetic, no collision)
+- **face:** round eyes, `yell` open-mouth grin. Expressions: neutral/happy = grin (`yell`), surprised = roar (brows down, wide mouth), determined = pout (`frown`, brows up)
+- **ref action:** `kick` frame 17, roar face (`rexy_kick.png`)
+- **3D size:** 1.15 m tall with the hood spikes (body h 0.8)
 
 ### 2D pixel (The Hill)
-32 px tall at Jeff's scale (stage 1), side-on like `characters/residents_lineup.png`; traced from the 3D side view once it exists. Orange body, hood edge a row of alternating white tooth pixels around the face; 3 to 4 yellow spike pixels down the back and a 2-px tail. About 25 px tall (kid).
+See "Alt form: the-hill pixel" below (as built).
 
 ## Refs
-`refs/`: none yet. The kit lane builds the 3D master and renders after Kaden approves this sheet.
+- `refs/jarling/rexy.glb`: the 3D master
+- `refs/jarling/rexy_turnaround.png`, `rexy_expressions.png`, `rexy_kick.png`
+- `refs/jarling/rexy_side.png`, `rexy_side_sprite.png`: side view and its sprite-scale tracing base
+- `refs/pixel/rexy_pixel.png`, `rexy_frames.png` (+ `.json`), `rexy_pixel_sheet.png`: The Hill pixel form
+
+## Alt form: the-hill pixel: proposed
+Sprite source: `tools/pixel/rexy.py` (`rexy()`)
+
+- **Height:** 31 px with the outline (the 3D is 1.15 m with the hood spikes, about 31 px at true scale): spikes 2 rows, round hood
+  13 rows with the face opening inside, short torso 9, short legs 5 with footies. Small kid, big head.
+- **Palette:** onesie, hood and footies `#F7941D` (shade `#D2780F`), spikes `#FFD23F`, felt teeth `#F7F7F2`, skin `#F0BE94`
+  (+ `#D09C72`), eyes `#2A1E2C` with a `#FFFFFF` highlight, mouth `#6A2232`, tongue `#E8708A`, outline `#2A1E2C`.
+- **Frames:** front form (40 x 32) and the 128 x 224 player sheet: idle0-1, walk0-3, jump, fall, side0-2, down0-2, ride,
+  sleep0-1 (three-quarter view facing right, feet on row 30; hand at (22, 21) idle, The Hill's dig hand positions).
+- **Should read as:**
+  - a kid in a dinosaur onesie (not a fox or a pumpkin): yellow spikes in a row over the hood and down the back, a short
+    orange tail with yellow spikes sticking out behind at the left (a sliver beside the legs in the front form)
+  - hood up: a big round orange hood with an oval skin face opening, 3 white felt-teeth pixels along its top edge
+  - huge open-mouth grin: `#6A2232` mouth with a pink tongue, nothing else at the mouth
+  - round eyes: 2 x 2 dark eyes with a white highlight pixel (the far eye 1 x 2 in the frames)
+  - small and short-legged: 9 px torso, 5-row legs into orange footies with a shaded sole
