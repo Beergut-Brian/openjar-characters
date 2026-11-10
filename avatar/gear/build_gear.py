@@ -357,7 +357,7 @@ def fishing_rod():
     line, blue, yel = mat("rod_line", "#E8EEF2", 0.5, 0.2), mat("rod_bobber_blue", "#3F8FD8"), mat("rod_bobber_yellow", "#F2C230")
     parts = [(capsule_bm((0, 0, -0.09), (0, 0, 0.10), 0.016, 0.016, segs=16, hem=3), cork)]            # cork handle, fist closes here
     # tapered shaft (thin tube segments), leaning slightly forward (-y)
-    pts = [(0, -0.002 * i, 0.10 + 0.1 * i) for i in range(0, 10)]
+    pts = [(0, -0.002 * i, 0.10 + 0.075 * i) for i in range(0, 10)]
     for i in range(len(pts) - 1):
         r = 0.011 - 0.0095 * (i / (len(pts) - 1))
         parts.append((tube_bm([pts[i], pts[i + 1]], max(r, 0.0018)), rodm))
