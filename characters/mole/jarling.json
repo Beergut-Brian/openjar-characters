@@ -1,0 +1,67 @@
+{
+  "id": "mole",
+  "name": "The Mole",
+  "notes": "Body type critter (avatar/kit/body_critter.py). Colours from characters/mole/look.md 'Fixed colours'. 3D master by the residents-3D build, 2026-11-10.",
+  "body": {
+    "type": "critter",
+    "height": 0.82,
+    "width": 0.8,
+    "depth": 0.92,
+    "widest": 0.27,
+    "head": 0.165,
+    "hunch": 0.05
+  },
+  "skin": "#56607A",
+  "belly": {
+    "color": "#8792AC",
+    "size": 1.0
+  },
+  "snout": {
+    "style": "cone",
+    "color": "#F2A0A8",
+    "length": 0.78,
+    "up_deg": 14,
+    "tip": "#E0607A",
+    "base": 0.55,
+    "tip_r": 0.15
+  },
+  "paws": {
+    "style": "claws",
+    "color": "#F2A0A8",
+    "claws": 3
+  },
+  "feet": {
+    "color": "#F2A0A8",
+    "size": 1.0
+  },
+  "tail": {
+    "style": "nub",
+    "color": "#F2A0A8"
+  },
+  "ears": {
+    "style": "none"
+  },
+  "prop": {
+    "type": "shovel",
+    "wood": "#B07A3C",
+    "steel": "#B8C4D0"
+  },
+  "face": {
+    "eye_color": "#2A1E2C",
+    "eyes": "dash",
+    "mouth": true,
+    "expression_list": [
+      "squint",
+      "happy",
+      "sorry",
+      "hopeful",
+      "startled"
+    ]
+  },
+  "ref_action": {
+    "action": "bow",
+    "frame": 16,
+    "expression": "sorry",
+    "yaw": -28
+  }
+}
