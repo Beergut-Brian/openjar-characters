@@ -1,6 +1,6 @@
 # <Name>
 
-**Kind:** universal | player-locked (P1 green / P2 red). **First appears:** <game>.
+**Kind:** universal. **Playable:** true | false. **Default for:** none | 1 | 2. **Body:** standard. **First appears:** <game>.
 
 ## Who they are
 ## In three sentences

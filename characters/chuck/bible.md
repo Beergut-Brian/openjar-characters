@@ -1,6 +1,6 @@
 # Chuck
 
-**Kind:** player-locked, Player 2 (red). **First appears:** Spaceballs (kicker).
+**Kind:** universal. **Playable:** true. **Default for:** 2 (P2 starts as Chuck). **Body:** standard. **First appears:** Spaceballs (kicker).
 
 ## Who he is
 > **PROPOSED by the maker profile — awaiting Kaden's approval or edits.**
@@ -33,3 +33,4 @@ Best friends with Jeff. Pretends it is a rivalry.
 
 ## Status
 Look approved by Kaden 2026-11-09. Personality and voice: PROPOSED, not yet approved.
+Kind changed from player-locked to universal, playable, P2 default: Kaden 2026-11-10 (character chooser message, his written OK). The player colour now belongs to the player slot, not to the character.

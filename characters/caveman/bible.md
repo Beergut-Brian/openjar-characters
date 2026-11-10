@@ -1,6 +1,6 @@
 # The Caveman
 
-**Kind:** universal. **First appears:** The Hill (the museum keeper).
+**Kind:** universal. **Playable:** false. **Default for:** none. **Body:** standard. **First appears:** The Hill (the museum keeper).
 
 ## Who they are
 The Caveman is delighted and baffled by everything modern, and thrilled to be anywhere at all. He polishes treasures constantly. He has no words, only grunts and enthusiastic pointing. One ice cube is still frozen to the top of his head and it never melts.
