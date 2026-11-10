@@ -10,5 +10,9 @@
 | refs/jarling/mayor_pip_kick.png | Blender 5.2.3 Cycles (CPU) via `avatar/kit/render_refs.py` | `kick` action, frame 17 | Original work, Open Jar Games |
 | refs/jarling/mayor_pip_side.png | Blender 5.2.3 Cycles (CPU) via `avatar/kit/render_refs.py` | Orthographic side view, transparent (tracing base for 2D) | Original work, Open Jar Games |
 | refs/jarling/mayor_pip_side_sprite.png | Python 3 + Pillow, `avatar/kit/sprite_side.py` | The side view at The Hill's sprite scale | Original work, Open Jar Games |
+| refs/pixel/mayor_pip_pixel.png | Python 3 + Pillow, `tools/pixel/mayor_pip.py` (drawn in code, no external assets, no AI image model) | Front pixel form, native 40 x 32 | Original work, Open Jar Games |
+| refs/pixel/mayor_pip_frames.png | Python 3 + Pillow, `tools/pixel/mayor_pip.py` (drawn in code, no external assets, no AI image model) | The Hill player sheet, native 128 x 224 | Original work, Open Jar Games |
+| refs/pixel/mayor_pip_frames.json | Python 3 + Pillow, `tools/pixel/mayor_pip.py` (drawn in code, no external assets, no AI image model) | Frame manifest for the sheet (`jarling_frames.manifest`) | Original work, Open Jar Games |
+| refs/pixel/mayor_pip_pixel_sheet.png | Python 3 + Pillow, `tools/pixel/mayor_pip.py` (drawn in code, no external assets, no AI image model) | Review sheet: front x8, frames x4, front 1x/2x, 16 px silhouette x4 | Original work, Open Jar Games |
 
 No audio in `voice/` yet. Add one row per file when it is made.
