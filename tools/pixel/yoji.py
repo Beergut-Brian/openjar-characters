@@ -5,8 +5,8 @@ frame(name, eyes_shut=False)  unoutlined 32 x 32 three-quarter frame facing righ
 sheet()                       the 128 x 224 player sheet
 
 32 px tall with the outline (1.0 m body plus the tall cowboy hat, traced from refs/jarling/yoji_side_sprite.png, capped
-at the frame): cowboy hat 5 rows (pinched crown 4 rows with the band on the last, 1 brim row much wider than the head, the
-brim tips curled up 1 px), head 9 rows (brown hair at the back and as a fringe under the brim, big grin), navy jersey 7 rows
+at the frame): cowboy hat 5 rows (trapezoid crown 3 rows with a 1 px pinch notch on top, a band row, one long flat brim row,
+the widest thing on the figure, tips turned up 1 px), head 9 rows (brown hair at the back and as a fringe under the brim, big grin), navy jersey 7 rows
 with broad shoulder pads and a gold hem, a gold waistband and 2 rows of white boxers with navy star pixels, 2 rows of bare
 legs, black-and-blue high-tops 4 rows (blue collar above the ankle, white sole).
 White "55" on the front form; a white number fragment on the jersey in the frames. No player colours anywhere.
@@ -83,18 +83,16 @@ def _leg(s, hx, fx, fy, top, back=False):
 
 
 def _hat_side(s, hx, hy):
-    """Cowboy hat, three-quarter: pinched crown (two lobes, dented middle), band, brim much wider than the head
-    with both tips curled up."""
-    # crown lobes with a dent 2 rows deep and 3 px wide between them (it must survive the 16 px reduction)
-    s.r(12 + hx, 1 + hy, 13 + hx, 1 + hy, HAT); s.r(19 + hx, 1 + hy, 20 + hx, 1 + hy, HAT)
-    s.r(12 + hx, 2 + hy, 14 + hx, 2 + hy, HAT); s.r(18 + hx, 2 + hy, 20 + hx, 2 + hy, HAT)
+    """Cowboy hat, three-quarter: trapezoid crown (narrower on top) with a 1 px pinch notch in the top middle, band,
+    then one long flat brim row, much wider than the head on both sides, tips turned up only 1 px."""
+    s.r(14 + hx, 1 + hy, 18 + hx, 1 + hy, HAT); s.cut(16 + hx, 1 + hy, 16 + hx, 1 + hy)       # pinch notch
+    s.r(13 + hx, 2 + hy, 19 + hx, 2 + hy, HAT)
     s.r(12 + hx, 3 + hy, 20 + hx, 3 + hy, HAT)
-    s.px(HAT_D, (15 + hx, 3 + hy), (16 + hx, 3 + hy), (17 + hx, 3 + hy), (20 + hx, 2 + hy), (20 + hx, 3 + hy))
+    s.px(HAT_D, (16 + hx, 2 + hy), (19 + hx, 2 + hy), (20 + hx, 3 + hy))
     s.r(12 + hx, 4 + hy, 20 + hx, 4 + hy, BAND)
-    s.r(7 + hx, 5 + hy, 25 + hx, 5 + hy, HAT)                                                 # brim
+    s.r(6 + hx, 5 + hy, 26 + hx, 5 + hy, HAT)                                                 # flat brim
     s.px(HAT_D, (11 + hx, 5 + hy), (21 + hx, 5 + hy))
-    s.px(HAT, (6 + hx, 4 + hy), (7 + hx, 4 + hy), (25 + hx, 4 + hy), (26 + hx, 4 + hy))     # tips curled up
-    s.px(HAT, (6 + hx, 3 + hy), (26 + hx, 3 + hy))
+    s.px(HAT, (6 + hx, 4 + hy), (26 + hx, 4 + hy))                                           # tips up 1 px
 
 
 def frame(name, eyes_shut=False):
@@ -181,13 +179,12 @@ def yoji(view="front"):
     s.r(15, 6, 24, 12, SKIN); s.r(16, 13, 23, 13, SKIN)
     s.r(14, 6, 14, 10, HAIR); s.r(25, 6, 25, 10, HAIR); s.r(15, 6, 24, 6, HAIR)
     s.px(SKIN_D, (14, 11), (25, 11))                                      # ears
-    # cowboy hat: pinched crown (two lobes, dip in the middle), band, brim wider than the head, tips curled up
-    s.r(15, 1, 16, 1, HAT); s.r(23, 1, 24, 1, HAT)                      # lobes; the dip is 2 rows deep, 4 px wide
-    s.r(15, 2, 17, 2, HAT); s.r(22, 2, 24, 2, HAT)
-    s.r(15, 3, 24, 3, HAT); s.px(HAT_D, (18, 3), (19, 3), (20, 3), (21, 3))
+    # cowboy hat: trapezoid crown with a 1 px pinch notch, band, long flat brim wider than the head, tips up 1 px
+    s.r(17, 1, 22, 1, HAT); s.cut(19, 1, 20, 1)                         # trapezoid crown, 1 px pinch notch
+    s.r(16, 2, 23, 2, HAT); s.r(15, 3, 24, 3, HAT); s.px(HAT_D, (19, 2), (20, 2), (24, 3))
     s.r(15, 4, 24, 4, BAND)
-    s.r(10, 5, 29, 5, HAT); s.px(HAT_D, (14, 5), (25, 5))
-    s.px(HAT, (9, 4), (10, 4), (29, 4), (30, 4), (9, 3), (30, 3))
+    s.r(9, 5, 30, 5, HAT); s.px(HAT_D, (14, 5), (25, 5))                  # long flat brim, the widest thing
+    s.px(HAT, (9, 4), (30, 4))                                            # tips up 1 px
     # face: thick brows, round eyes, big open grin
     s.px(HAIR, (16, 7), (17, 7), (18, 7), (21, 7), (22, 7), (23, 7))
     s.r(17, 8, 17, 9, OUT); s.r(22, 8, 22, 9, OUT)

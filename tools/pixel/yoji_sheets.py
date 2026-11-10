@@ -13,8 +13,8 @@ import yoji as Y
 BG, INK, SOFT = "#F6EFE0", "#2A1E2C", "#6A5E6C"
 SKY, DIRT = "#9FD3F7", "#8A5A3C"
 READS = [
-    "cowboy hat: tan, brim wider than the head both sides, tips curled up, pinched crown with a dip on top "
-    "(not a bucket hat, sombrero or helmet); brown hair under it",
+    "cowboy hat: tan, a long flat brim, the widest thing, tips up 1 px; trapezoid crown with a 1 px pinch on top "
+    "(not horns, bucket hat, sombrero or helmet); brown hair under it",
     "football jersey 55: navy, broad shoulder pads, gold stripes and hem, white 55 on the front",
     "boxer shorts: white with navy stars and a navy-gold waistband, then bare legs",
     "high-tops: black, blue collar above the ankle, white soles",

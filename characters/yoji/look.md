@@ -47,7 +47,7 @@ Checked against the player colours with CIEDE2000 (`avatar/kit/colour_rule.py`, 
 Sprite source: `tools/pixel/yoji.py` (`yoji()`)
 
 - **Height:** 32 px with the outline (1.0 m body plus the tall cowboy hat, traced from `refs/jarling/yoji_side_sprite.png`,
-  capped at the frame): hat 5 rows (pinched crown 3 rows + band row, 1 brim row with the tips curled up 1-2 px), head 8-9
+  capped at the frame): hat 5 rows (trapezoid crown 3 rows with a 1 px pinch notch on top + band row, 1 long flat brim row with the tips turned up 1 px), head 8-9
   rows, jersey 7-8 rows (shoulder pads on the top rows, gold hem), navy-gold waistband + 2 rows of boxers, 2 rows of bare
   legs, high-tops 4 rows (blue collar, 2 black rows, white sole).
 - **Palette:** hat `#C8955A` (+ `#A6763F`), band `#5A3A22`, hair and brows `#6B4A2E`, skin `#E8B48A` (+ `#C8936B`), jersey
@@ -57,9 +57,10 @@ Sprite source: `tools/pixel/yoji.py` (`yoji()`)
 - **Frames:** front form (40 x 32) and the 128 x 224 player sheet: idle0-1, walk0-3, jump, fall, side0-2, down0-2, ride, sleep0-1
   (three-quarter view facing right, feet on row 30, hand at (22, 21) idle).
 - **Should read as:**
-  - a tan cowboy hat (not a bucket hat, not a sombrero, not a helmet): a brim row much wider than the head on both sides
-    with the tips curled up, and a pinched crown, two lobes with a dip in the top middle that survives at 16 px; short
-    brown hair under it at the back and as a fringe
+  - a tan cowboy hat (not horns, not a bucket hat, not a sombrero, not a helmet): one long flat brim row, the widest thing
+    on the figure and clearly wider than the head on both sides, tips turned up only 1 px; a trapezoid crown (narrower on
+    top) with a single 1 px pinch notch in the top middle; the band row; short brown hair under it at the back and as a
+    fringe. At 16 px the silhouette is a flat brim line with a crown on it
   - a navy football jersey 55: broad shoulder pads (the widest part of the body), gold sleeve stripes and hem, a white
     3 x 5 "55" on the front form (a white "5" on the side of the jersey in the frames)
   - boxer shorts: white with navy star pixels and a navy-and-gold waistband, then bare skin legs
