@@ -37,9 +37,12 @@ Status of the 3D form: **approved (Kaden 2026-11-10, D49 a)**: claws out at his 
 - Known limits: his arms are short, so in `dig` the shovel crosses in front of his belly and the off arm stretches to reach the handle; the closed claw is a plain pink fist. Not built: the fall-in-the-pond pose.
 
 ## 2D pixel (The Hill)
-- 32 px tall including a 1 px #2A1E2C outline, on 16 px tiles, drawn on a 40 x 32 canvas.
-- Must still read at 16 px: the pear body, the pink snout and the shovel blade beside his head.
-- Poses: idle shuffle, pop-up from a mound, carry shovel, apologise (small bow), fall in pond.
+- **3D-first redraw, 2026-11-10** (Kaden: the 3D master is the source of truth). Traced from the 3D master: `avatar/kit/render_trace.py` (flat colour, orthographic, 512 px per 1.2 m) -> `tools/pixel/trace3d.py` (palette-snapped, 32 px = 1.2 m) -> hand-clean passes in `tools/pixel/residents.py`; 1 px #2A1E2C outline, fixed colours only. Re-run: `tools/pixel/retrace.sh`. Read check at game size (x2): `characters/read_check.png`.
+- About 24 px tall (true 3D scale: 0.9 m), standing on the bottom row of the same 40 x 32 frame.
+- Traced: body, belly, snout, claws out at his sides, feet; the dig pose with the shovel. Hand-cleaned: nose tip, eyes, mouth, blush, sweat drop, the shovel (handle across him, blade redrawn), the pop-up dirt mound.
+- No shovel at rest (D49 a); the shovel only in `dig`, held across him in both claws.
+- Must still read at 16 px: the pear body, the pink snout and the claws out at his sides.
+- Poses: idle, dig, pop-up from a mound. Views: front, side, back.
 - Expressions: squint (neutral), happy, sorry, hopeful, startled.
 
 ## Refs

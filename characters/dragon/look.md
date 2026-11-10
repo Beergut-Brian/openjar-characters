@@ -36,10 +36,12 @@ Status of the 3D form: **proposed** (Character lane 2026-11-10, awaiting Kaden).
 - Changes from the 2D look and colours not on the fixed list: the muzzle is a shaped bump in the body colour (the sprite tints it lighter); the belly stripes use the sprite's `#F0DAA6`. Size: the 3D master is 3.5 Jarlings tall, the same as the approved Hill sprite (112 px); the side-view sprite sheet is at that scale (96 x 112 sprite px). Not built: the curled-asleep pose (the `sleep` action is a sitting nap), smoke rings and lanterns (game effects and props), the "in pieces on the elevator" pose.
 
 ## 2D pixel (The Hill)
-- Sitting awake: about 128 x 112 px (3.5 players tall), with a 1 px #2A1E2C outline.
-- Curled asleep: about 160 x 72 px.
+- **3D-first redraw, 2026-11-10** (Kaden: the 3D master is the source of truth). Traced from the 3D master: `avatar/kit/render_trace.py` (flat colour, orthographic, 512 px per 1.2 m) -> `tools/pixel/trace3d.py` (palette-snapped, 32 px = 1.2 m) -> hand-clean passes in `tools/pixel/residents.py`; 1 px #2A1E2C outline, fixed colours only. Re-run: `tools/pixel/retrace.sh`. Read check at game size (x2): `characters/read_check.png`.
+- Sitting awake: 112 px tall (3.5 players) on a 128 x 112 frame, with a 1 px #2A1E2C outline. Yawn: traced from the 3D `yawn` and fitted to the same frame.
+- Traced: everything in sit and yawn (body, belly stripes, horns, wings, tail puff, the sleepy face). Hand-cleaned: the eyes and mouth for happy, sorry, hopeful.
+- Curled asleep (about 160 x 72 px): still hand-drawn, because the 3D master has no curled pose (its `sleep` is a sitting nap).
 - Must still read at 16 px: the round purple mass, the cream belly and the peach tail puff.
-- Poses: asleep (curled), awake and sitting, yawn, wing flap, in pieces on the elevator.
+- Poses: asleep (curled), awake and sitting, yawn. Views: front, side, back (sitting).
 - Expressions: sleepy (neutral), yawn, happy, sorry, hopeful.
 
 ## Refs

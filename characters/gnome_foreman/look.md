@@ -39,9 +39,12 @@ Status of the 3D form: **proposed** (Character lane 2026-11-10, awaiting Kaden).
 - Changes from the 2D look and colours not on the fixed list: sleeves and trousers are the vest orange `#F7932F` (as the sprite draws them); the vest stripes and the clipboard clip use the hard-hat cream `#F4F1E6`; the whistle cord is the clipboard wood `#B07A3C`. Not built: the "hard hat off, waiting" pose (detach the hat in the game).
 
 ## 2D pixel (The Hill)
-- 32 px tall including a 1 px #2A1E2C outline, on 16 px tiles, drawn on a 40 x 32 canvas.
+- **3D-first redraw, 2026-11-10** (Kaden: the 3D master is the source of truth). Traced from the 3D master: `avatar/kit/render_trace.py` (flat colour, orthographic, 512 px per 1.2 m) -> `tools/pixel/trace3d.py` (palette-snapped, 32 px = 1.2 m) -> hand-clean passes in `tools/pixel/residents.py`; 1 px #2A1E2C outline, fixed colours only. Re-run: `tools/pixel/retrace.sh`. Read check at game size (x2): `characters/read_check.png`.
+- 32 px tall including the outline (true 3D scale: 1.23 m with the cone), on the 40 x 32 frame.
+- Traced: cone, beard, vest, boots, clipboard, arms; the whistle pose. Hand-cleaned: the tiny hard hat (dome and brim on the cone tip), nose, eyes, brows, cheeks, the clipboard's lines and clip, the whistle.
+- The whistle hangs on its cord on his chest BELOW the beard (yellow barrel, dark ring, wood cord); it is raised to his mouth only in the `whistle` pose/expression, with yellow sound lines. Nothing sits beside his mouth at rest (the old sprite read as a pipe).
 - Must still read at 16 px: the teal cone, the white dot on its tip, the cream beard and the orange vest.
-- Poses: march, stop and write, salute with the clipboard, hard hat off (waiting), whistle.
+- Poses: idle (clipboard), whistle, hat in hands. Views: front, side, back.
 - Expressions: stern (neutral), approving, sorry, hopeful, whistle.
 
 ## Refs

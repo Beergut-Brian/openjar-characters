@@ -35,9 +35,11 @@ Status of the 3D form: **proposed** (Character lane 2026-11-10, awaiting Kaden).
 - Changes from the 2D look: none in colour. The knee equipment slot sits on the straight hip-to-ankle line, about 3 cm inside his bowed knee. Not built: the sneeze (snowflakes are a game effect).
 
 ## 2D pixel (The Hill)
-- 32 px tall including a 1 px #2A1E2C outline, on 16 px tiles, drawn on a 40 x 32 canvas.
+- **3D-first redraw, 2026-11-10** (Kaden: the 3D master is the source of truth). Traced from the 3D master: `avatar/kit/render_trace.py` (flat colour, orthographic, 512 px per 1.2 m) -> `tools/pixel/trace3d.py` (palette-snapped, 32 px = 1.2 m) -> hand-clean passes in `tools/pixel/residents.py`; 1 px #2A1E2C outline, fixed colours only. Re-run: `tools/pixel/retrace.sh`. Read check at game size (x2): `characters/read_check.png`.
+- 32 px tall including the outline (true 3D scale: 1.21 m with the ice cube), on the 40 x 32 frame; broader and heavier, as the 3D master.
+- Traced: hair and beard mass, ice cube, tunic and spots, legs and feet, the cloth club. Hand-cleaned: eyes, brows, mouth, blush, the ice cube's white glint, the club's teal string.
 - Must still read at 16 px: the hair mass, the pale blue ice dot on top and the bowed legs.
-- Poses: bounce, point with the whole arm, polish, wave, sneeze (snowflakes).
+- Poses: idle, polish, wave. Views: front, side, back.
 - Expressions: delighted (neutral), baffled, sorry, hopeful, amazed.
 
 ## Refs
