@@ -132,8 +132,9 @@ func _snap(sk: Skeleton3D, h: Dictionary, rigid: bool) -> void:
 			var d := p.distance_to(c)
 			var k := sqrt(maxf(d * d - perp2, 1e-8)) / maxf(along, 1e-6)
 			var sc := sk.get_bone_pose_scale(h.io)
-			sc.y = clampf(sc.y * k, 0.5, 2.5)
+			sc.y = clampf(sc.y * k, 0.5, 3.2)
 			sk.set_bone_pose_scale(h.io, sc)
+			sk.set_bone_pose_scale(h.ioh, Vector3(1.0, 1.0 / sc.y, 1.0))      # the fist keeps its shape
 			to = sk.get_bone_global_pose(h.io)
 			t0 = (sk.get_bone_global_pose(h.ioh) * h.off_marker.transform).origin
 		to.basis = Basis(_arc(t0 - c, p - c)) * to.basis

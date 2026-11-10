@@ -10,7 +10,8 @@ expression list), `<id>_<action>.png` (params `ref_action`, default the kick) an
 are traced from; `sprite_side.py` makes the sprite-scale sheet from it).
 
 Framing follows the character's real size, so it works for a 0.6 m gnome and a 6 m dragon.
-`ref_action` in the params: {"action": "yawn", "frame": 20, "expression": "yawn", "yaw": -28}.
+`ref_action` in the params: {"action": "yawn", "frame": 20, "expression": "yawn", "yaw": -28}
+(optional "gear": a held item from avatar/gear, e.g. the Mole's "shovel" for `dig`).
 `expression_poses` in the params poses single cells of the expression sheet (default: idle frame 1):
 {"whistle": {"action": "whistle", "frame": 12}}.
 """
@@ -103,9 +104,15 @@ if "action" in only:
     studio("#C9DCE8")
     rc.setup_render(1280, 720, a.samples)
     j = kit.build_jarling(P, prefix="k_")
+    held = None
+    if ra.get("gear"):                               # a held gear item for this pose (the Mole's shovel): avatar/kit/hold.py
+        import hold
+        held = hold.attach_gear(j, ra["gear"])
     kit.pose_at(j, ra["action"], int(ra.get("frame", 1)))
     if ra.get("expression"):
         kit.set_expression(j, ra["expression"])
+    if held:
+        hold.apply(j, [held], ra["action"])
     k = H / STD_H
     if ra["action"] == "kick":
         import render_scenes_ball as rb

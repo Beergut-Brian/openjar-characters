@@ -103,23 +103,27 @@ def vest_stripes(B, piece):
             B.add(solidify_bm(g, 0.006), mat, "spine")
 
 def clipboard(B, piece):
+    """Held piece (hold style one_hand_low): the fist closes on the board's inner edge, the board
+    faces front and sticks out to the side of the hand. Modelled in hand-slot axes (avatar/kit/hold.py)."""
+    import hold
     side = piece.get("hand", "L"); s = 1 if side == "L" else -1
-    hc = B.hand_c[side]
     wood = B.mats.flat("clipboard", piece.get("color", "#B07A3C"), rough=0.6, spec=0.3)
     paper = B.mats.flat("paper", piece.get("paper", "#FFFDF4"), rough=0.8, spec=0.2)
     clip = B.mats.flat("clip", piece.get("clip", "#F4F1E6"), rough=0.35, spec=0.5)
     B.cur_part = "prop"
-    bc = hc + Vector((s * 0.035, -0.055, 0.03))
-    hw_, hh = 0.075, 0.095
+    M = hold.piece_matrix(B, side)
+    hw_, hh = 0.08, 0.10
+    bc = Vector((s * (hw_ - 0.012), 0.0, 0.012))
     bone = f"hand.{side}"
-    B.add(rbox(bc, hw_, 0.008, hh), wood, bone)
+    put = lambda bm, mat: B.add(xform(bm, M), mat, bone)
+    put(rbox(bc, hw_, 0.008, hh), wood)
     pc = bc + Vector((0, -0.007, -0.006))
-    B.add(rbox(pc, hw_ * 0.84, 0.003, hh * 0.86), paper, bone)
-    B.add(rbox(bc + Vector((0, -0.008, hh * 0.95)), 0.03, 0.009, 0.013), clip, bone)
+    put(rbox(pc, hw_ * 0.84, 0.003, hh * 0.86), paper)
+    put(rbox(bc + Vector((0, -0.008, hh * 0.95)), 0.03, 0.009, 0.013), clip)
     for k, ln in enumerate((0.85, 0.6, 0.75, 0.4)):   # scribble lines
         z = pc.z + hh * 0.5 - k * 0.032
         x0 = pc.x - hw_ * 0.62
-        B.add(rbox((x0 + hw_ * 0.62 * ln, pc.y - 0.0035, z), hw_ * 0.62 * ln, 0.0015, 0.0045, power=4, segs=12), wood, bone)
+        put(rbox((x0 + hw_ * 0.62 * ln, pc.y - 0.0035, z), hw_ * 0.62 * ln, 0.0015, 0.0045, power=4, segs=12), wood)
     B.cur_part = None
 
 WHISTLE_R = 0.026        # drum radius (chunky toy referee whistle)
@@ -298,29 +302,33 @@ def fur_tunic(B, piece):
         B.add(ellipsoid_bm(p, (r * 1.2, 0.006, r), rot=rot, segs=14, rings=8), spot, "spine")
 
 def cloth_club(B, piece):
-    side = piece.get("hand", "R"); s = 1 if side == "L" else -1
-    hc = B.hand_c[side]
+    """Held piece (hold style one_hand_raised): modelled upright, the stick passes through the fist
+    and the cloth head is at the top; the hold pose (baked into the actions) carries it upright."""
+    import hold
+    side = piece.get("hand", "R")
     wood = B.mats.flat("club_stick", piece.get("stick", "#B07A3C"), rough=0.6, spec=0.3)
     cloth = B.mats.flat("club_cloth", piece.get("color", "#F3EAD2"), rough=0.9, spec=0.15)
     string = B.mats.flat("club_string", piece.get("string", "#1E9AA0"), rough=0.6, spec=0.3)
     bone = f"hand.{side}"
     B.cur_part = "prop"
-    p0 = hc + Vector((-s * 0.03, -0.012, -0.075))
-    p1 = hc + Vector((s * 0.22, -0.05, 0.27))
-    B.add(capsule_bm(p0, p1, 0.014, 0.013, segs=14, hem=3), wood, bone)
-    bc = p1 + Vector((s * 0.05, -0.008, 0.07))
+    M = hold.piece_matrix(B, side, axis=(0, 0, 1))
+    put = lambda bm, mat: B.add(xform(bm, M), mat, bone)
+    put(capsule_bm((0, 0, -0.07), (0, 0, 0.27), 0.015, 0.014, segs=14, hem=3), wood)
+    bc = Vector((0, 0, 0.34))
     def puff(co):
         co.x *= 1 + 0.06 * math.sin(co.z * 120); return co
-    B.add(ellipsoid_bm(bc, (0.085, 0.08, 0.1), segs=28, rings=16, deform=puff), cloth, bone)
-    B.add(ellipsoid_bm(bc + Vector((0.02, -0.02, 0.05)), (0.04, 0.04, 0.035), segs=18, rings=10), cloth, bone)
+    put(ellipsoid_bm(bc, (0.085, 0.08, 0.1), segs=28, rings=16, deform=puff), cloth)
+    put(ellipsoid_bm(bc + Vector((0.02, -0.02, 0.05)), (0.04, 0.04, 0.035), segs=18, rings=10), cloth)
     zt = bc.z - 0.065
     pts = [(bc.x + 0.05 * math.cos(a), bc.y + 0.047 * math.sin(a), zt) for a in [2 * math.pi * i / 28 for i in range(28)]]
-    B.add(tube_bm(pts, 0.007, cyclic=True), string, bone)
+    put(tube_bm(pts, 0.007, cyclic=True), string)
     for d in (-1, 1):   # the knot's two ends
-        a = Vector((bc.x + 0.03 * d * s, bc.y - 0.045, zt))
-        B.add(tube_bm([tuple(a), tuple(a + Vector((0.012 * d, -0.012, -0.03)))], 0.005), string, bone)
+        a = Vector((bc.x + 0.03 * d, bc.y - 0.045, zt))
+        put(tube_bm([tuple(a), tuple(a + Vector((0.012 * d, -0.012, -0.03)))], 0.005), string)
     B.cur_part = None
 
+kit.HELD["clipboard"] = ("L", "one_hand_low")
+kit.HELD["cloth_club"] = ("R", "one_hand_raised")
 kit.HEADWEAR["cone_hat"] = cone_hat
 kit.HEADWEAR["ice_cube"] = ice_cube
 for _n, _f in (("gnome_beard", gnome_beard), ("vest_stripes", vest_stripes), ("clipboard", clipboard), ("whistle", whistle),

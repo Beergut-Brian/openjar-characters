@@ -508,11 +508,11 @@ class CritterBuilder(kit.Builder):
         def dg(spec, extra):
             q = hold.hold_locals(self.rig_for_holds, spec, "R", "critter")
             return P({b: {"quat": v} for b, v in q.items()}, extra)
-        ready = dg(dict(arm=(0.20, -1.0, 0.40), axis=(0.80, -0.30, -0.45), up=(0, -1, 0.5), off=(-0.15, -1.0, -0.45)),
-                   {"spine": {"lean": 2}, "head": {"lean": 4}})
-        stab = dg(dict(arm=(0.20, -1.0, 0.20), axis=(0.75, -0.25, -0.75), up=(0, -1, 0.4), off=(-0.10, -0.9, -0.9)),
-                  {"spine": {"lean": 10, "tilt": -6}, "head": {"lean": 6}, "root": {"scale": (1.04, 1.04, 0.95)}})
-        toss = dg(dict(arm=(0.10, -1.0, 0.30), axis=(0.90, -0.5, 0.0), up=(0, 0.1, 1), off=(-0.20, -1.0, -0.1)),
+        ready = dg(dict(arm=(0.15, -1.0, 0.40), axis=(0.60, -0.75, -0.40), up=(0, -1, 0.5), off=(-0.15, -1.0, -0.45)),
+                   {"spine": {"lean": 0}, "head": {"lean": 4}})
+        stab = dg(dict(arm=(0.15, -1.0, 0.25), axis=(0.50, -0.80, -0.72), up=(0, -1, 0.4), off=(-0.10, -0.9, -0.9)),
+                  {"spine": {"lean": 4, "tilt": -4}, "head": {"lean": 8}, "root": {"scale": (1.04, 1.04, 0.95)}})
+        toss = dg(dict(arm=(0.10, -1.0, 0.30), axis=(0.80, -0.75, 0.05), up=(0, 0.1, 1), off=(-0.20, -1.0, -0.1)),
                   {"spine": {"lean": -4, "twist": 8}, "head": {"lean": -5}, "root": {"loc": (0, 0, 0.02 * T), "scale": (0.97, 0.97, 1.04)}})
         acts["dig"] = [(1, ready), (9, stab), (13, stab), (19, toss), (25, ready)]
         return acts

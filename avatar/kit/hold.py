@@ -258,7 +258,8 @@ def apply(j, holds, action="idle"):
                 along = (t0 - c).dot(yb); perp2 = max(r * r - along * along, 0.0)
                 D = (p - c).length
                 k = math.sqrt(max(D * D - perp2, 1e-8)) / max(along, 1e-6)
-                pbo.scale.y = min(max(pbo.scale.y * k, 0.5), 2.5)
+                pbo.scale.y = min(max(pbo.scale.y * k, 0.5), 3.2)
+                rig.pose.bones[f"hand.{O}"].scale.y = 1.0 / pbo.scale.y      # the fist keeps its shape
                 bpy.context.view_layer.update()
                 t0 = (inv() @ j.slots[f"hand_{O.lower()}"].matrix_world).translation
             pbo.matrix = _about(c, arc(t0 - c, p - c)) @ pbo.matrix
