@@ -125,6 +125,17 @@ signal both called `equipped`, so the method is `equipped(slot)` and the signal 
 **Exports:** Godot does not export `.json` by default. A game that loads gear from JSON adds
 `*.json` to the export preset's *Filters to export non-resource files*, or converts items to `.tres`.
 
+## 5b. Other body types
+
+Non-standard bodies (`critter`, `giant`; `characters.json` `body_types` lists each type's slots)
+keep the slot names, axes and fit rule above; they just may lack some slots. Today `critter` and
+`giant` have no `knee_l` / `knee_r`. `JarlingEquipment` adds `has_slot(slot)`, `missing_slots()`
+(the SLOTS this body lacks) and `body_type()` (from the rig's `jarling_body_type`, default
+`"standard"`), and the signal `slot_missing(slot, item)`. `equip(item)` on a body lacking ANY of the
+item's slots adds nothing, hides nothing, emits `slot_missing` once per missing slot, warns once and
+returns false; it never crashes and never parents gear to the root. `unequip`, `level_up`,
+`equipped` and `level` on a missing slot are safe no-ops. Behaviour on the standard body is unchanged.
+
 ## 6. Versioning
 
 The slot names, part names, the JSON keys and the API above are the contract. Adding a slot, a part

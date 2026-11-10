@@ -1,0 +1,37 @@
+{
+  "id": "gnome_foreman",
+  "name": "Gnome Foreman",
+  "notes": "From characters/gnome_foreman/look.md and refs/look_sheet.png (approved D46 a). Standard body, tiny and stocky. The tiny hard hat is a separate object (gnome_foreman_hat) on the head bone so a game can knock it off. Sleeves and trousers use the vest orange, as the approved sprite does (vest down to the boots, orange arms). Pieces in avatar/kit/pieces_hill.py.",
+  "head": {"shape": "wide", "size": 0.85, "ears": "round"},
+  "skin": "#E8B48C",
+  "face": {
+    "eyes": "button", "brows": "bushy", "nose": "bump", "mouth": "none",
+    "nose_color": "#E59A86", "nose_size": 2.4,
+    "brow_color": "#EDE6D6", "eye_spacing": 0.34, "eye_y": -0.15,
+    "lid": 0.4, "lid_tilt": 0.0, "brow_tilt": 0.06, "brow_raise": -0.02, "blush": 0.35,
+    "expression_list": ["stern", "approving", "sorry", "hopeful", "whistle"],
+    "expressions": {
+      "approving": {"eye_mode": "arc", "brow_raise": 0.03, "brow_tilt": -0.05, "blush_add": 0.25},
+      "sorry": {"lid": 0.5, "lid_tilt": -0.25, "brow_tilt": -0.32, "brow_raise": -0.01},
+      "hopeful": {"lid": 0.0, "eye_scale": 1.3, "brow_tilt": -0.28, "brow_raise": 0.03},
+      "whistle": {"eye_mode": "shut", "brow_raise": 0.04, "brow_tilt": -0.1, "blush_add": 0.35}
+    }
+  },
+  "hair": {"style": "none"},
+  "headwear": {"type": "cone_hat", "color": "#1E9AA0", "hard_hat": "#F4F1E6", "separate": true, "base": 0.25, "height": 0.56},
+  "body": {"build": "stocky", "height": 0.6},
+  "outfit": {
+    "top": {"style": "long", "color": "#F7932F"},
+    "bottoms": {"style": "pants", "color": "#F7932F"},
+    "shoes": {"style": "boots", "color": "#4A3B3B", "sole": "#4A3B3B", "stitch": "#4A3B3B"}
+  },
+  "costume": [
+    {"piece": "vest_stripes", "color": "#F4F1E6"},
+    {"piece": "gnome_beard", "color": "#EDE6D6"},
+    {"piece": "whistle", "color": "#FFD23F", "cord": "#B07A3C"},
+    {"piece": "clipboard", "hand": "R", "color": "#B07A3C", "paper": "#FFFDF4", "clip": "#F4F1E6"}
+  ],
+  "posture": {"spine_lean": -4, "head_lean": 0, "arm_out": 4},
+  "actions": ["march", "write", "salute"],
+  "ref_action": {"action": "write", "frame": 9, "expression": "stern", "yaw": -28}
+}

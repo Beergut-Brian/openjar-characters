@@ -15,8 +15,8 @@
       "look": "characters/caveman/look.md",
       "refs": "characters/caveman/refs/",
       "voice": "characters/caveman/voice/",
-      "model_3d": null,
-      "jarling_params": null,
+      "model_3d": "characters/caveman/refs/jarling/caveman.glb",
+      "jarling_params": "characters/caveman/jarling.json",
       "pixel": null,
       "barks": [],
       "alt_forms": []
@@ -54,15 +54,15 @@
       "player": null,
       "playable": false,
       "default_for": null,
-      "body_type": "standard",
+      "body_type": "giant",
       "first_appears": "The Hill (the landmark).",
       "approved": true,
       "bible": "characters/dragon/bible.md",
       "look": "characters/dragon/look.md",
       "refs": "characters/dragon/refs/",
       "voice": "characters/dragon/voice/",
-      "model_3d": null,
-      "jarling_params": null,
+      "model_3d": "characters/dragon/refs/jarling/dragon.glb",
+      "jarling_params": "characters/dragon/jarling.json",
       "pixel": null,
       "barks": [],
       "alt_forms": []
@@ -81,8 +81,8 @@
       "look": "characters/gnome_foreman/look.md",
       "refs": "characters/gnome_foreman/refs/",
       "voice": "characters/gnome_foreman/voice/",
-      "model_3d": null,
-      "jarling_params": null,
+      "model_3d": "characters/gnome_foreman/refs/jarling/gnome_foreman.glb",
+      "jarling_params": "characters/gnome_foreman/jarling.json",
       "pixel": null,
       "barks": [],
       "alt_forms": []
@@ -120,15 +120,15 @@
       "player": null,
       "playable": false,
       "default_for": null,
-      "body_type": "standard",
+      "body_type": "critter",
       "first_appears": "The Hill (the shovel thief).",
       "approved": true,
       "bible": "characters/mole/bible.md",
       "look": "characters/mole/look.md",
       "refs": "characters/mole/refs/",
       "voice": "characters/mole/voice/",
-      "model_3d": null,
-      "jarling_params": null,
+      "model_3d": "characters/mole/refs/jarling/mole.glb",
+      "jarling_params": "characters/mole/jarling.json",
       "pixel": null,
       "barks": [],
       "alt_forms": []
@@ -169,7 +169,132 @@
       "leg_scale": [
         0.8,
         1.2
-      ]
+      ],
+      "bones": [
+        "root",
+        "spine",
+        "head",
+        "arm.L",
+        "arm.R",
+        "hand.L",
+        "hand.R",
+        "leg.L",
+        "leg.R",
+        "foot.L",
+        "foot.R"
+      ],
+      "actions": [
+        "idle",
+        "run",
+        "kick",
+        "cheer"
+      ],
+      "loops": [
+        "idle",
+        "run",
+        "cheer"
+      ],
+      "slots": [
+        "head",
+        "face",
+        "back",
+        "hand_l",
+        "hand_r",
+        "waist",
+        "knee_l",
+        "knee_r",
+        "foot_l",
+        "foot_r"
+      ],
+      "playable": true
+    },
+    "critter": {
+      "rig": "avatar/kit/body_critter.py (small no-neck animal)",
+      "bones": [
+        "root",
+        "spine",
+        "head",
+        "arm.L",
+        "arm.R",
+        "hand.L",
+        "hand.R",
+        "leg.L",
+        "leg.R",
+        "foot.L",
+        "foot.R",
+        "prop"
+      ],
+      "actions": [
+        "idle",
+        "run",
+        "cheer",
+        "popup",
+        "bow"
+      ],
+      "loops": [
+        "idle",
+        "run",
+        "cheer"
+      ],
+      "slots": [
+        "head",
+        "face",
+        "back",
+        "hand_l",
+        "hand_r",
+        "waist",
+        "foot_l",
+        "foot_r"
+      ],
+      "playable": false
+    },
+    "giant": {
+      "rig": "avatar/kit/body_giant.py (huge sitting creature)",
+      "bones": [
+        "root",
+        "spine",
+        "head",
+        "arm.L",
+        "arm.R",
+        "hand.L",
+        "hand.R",
+        "leg.L",
+        "leg.R",
+        "foot.L",
+        "foot.R",
+        "tail.1",
+        "tail.2",
+        "tail.3",
+        "wing.L",
+        "wing.R"
+      ],
+      "actions": [
+        "idle",
+        "run",
+        "cheer",
+        "yawn",
+        "wave",
+        "flap",
+        "sleep"
+      ],
+      "loops": [
+        "idle",
+        "run",
+        "cheer",
+        "flap",
+        "sleep"
+      ],
+      "slots": [
+        "head",
+        "face",
+        "back",
+        "hand_l",
+        "hand_r",
+        "waist",
+        "foot_l",
+        "foot_r"
+      ],
+      "playable": false
     }
   },
   "proposed": [

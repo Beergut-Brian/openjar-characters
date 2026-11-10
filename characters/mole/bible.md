@@ -1,6 +1,6 @@
 # The Mole
 
-**Kind:** universal. **Playable:** false. **Default for:** none. **Body:** standard. **First appears:** The Hill (the shovel thief).
+**Kind:** universal. **Playable:** false. **Default for:** none. **Body:** critter. **First appears:** The Hill (the shovel thief).
 
 ## Who they are
 The Mole is nearsighted, polite and mortified by his own kleptomania. He does not mean to take things. His claws just close. Then he pops up somewhere else, squinting, and apologises to everyone, including the boulder he bumped into on the way.

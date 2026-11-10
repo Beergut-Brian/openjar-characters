@@ -1,0 +1,29 @@
+{
+  "id": "dragon",
+  "name": "The Dragon",
+  "notes": "Giant body type (avatar/kit/body_giant.py). Colours from characters/dragon/look.md; belly stripes #F0DAA6 from the 2D sprite.",
+  "skin": "#A88BE0",
+  "face": {
+    "expression_list": ["sleepy", "yawn", "happy", "sorry", "hopeful", "asleep"],
+    "eye_color": "#2A1E2C",
+    "lid_color": "#8C6FC8",
+    "cheek_color": "#F7A6C0",
+    "lid": 0.55,
+    "lid_tilt": -0.1,
+    "blush": 0.6,
+    "eye_spacing": 0.56
+  },
+  "body": {"type": "giant", "height": 6.0, "build": "giant"},
+  "giant": {
+    "shade": "#8C6FC8",
+    "belly": {"on": true, "color": "#FFF0C9", "stripes": 4, "stripe_color": "#F0DAA6"},
+    "horns": {"on": true, "color": "#FFF0C9"},
+    "wings": {"on": true, "color": "#FFB37A"},
+    "spines": {"on": true, "color": "#FFB37A", "count": 5},
+    "tail": {"on": true, "side": "L", "puff": "#FFB37A", "spines": 3},
+    "feet": {"pad": "#FFF0C9"},
+    "muzzle": true
+  },
+  "posture": {"spine_lean": 0, "head_lean": 0},
+  "ref_action": {"action": "yawn", "frame": 34, "expression": "yawn", "yaw": -28}
+}
