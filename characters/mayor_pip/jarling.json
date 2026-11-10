@@ -1,7 +1,7 @@
 {
  "id": "mayor_pip",
  "name": "Mayor Pip",
- "notes": "From characters/mayor_pip/look.md (Kaden's sheet 2026-11-10; proposed, playtest build). The bottom of the playable range (height 0.8, leg_scale 0.8); the top hat is 46% of his own height and its crown stays at the tallest playable bare head (1.43 m). Skin and hair are not fixed by the sheet.",
+ "notes": "From characters/mayor_pip/look.md (Kaden's sheet 2026-11-10; proposed, playtest build). The bottom of the playable range (height 0.8, leg_scale 0.8); the top hat rises 0.53 m above his head (38% of his 1.41 m silhouette) and its crown stays under the tallest playable bare head (1.43 m). Skin and hair are not fixed by the sheet.",
  "head": {
   "shape": "round",
   "size": 1.0,

@@ -36,8 +36,8 @@ least ΔE00 20 from P1 green `#3cc24a` and P2 red `#e4393c`. Skin tone is not fi
 Built 2026-11-10 from `characters/mayor_pip/jarling.json` (standard humanoid body, kit v2).
 - **body:** `slim`, height 0.8, leg_scale 0.8, width 0.9: the bottom of the playable range (the smallest playable Jarling, 0.88 m to the top of his head)
 - **head:** `round` 1.0; skin `#EFBB90`; `short` hair `#4A2F23`
-- **headwear:** `top_hat` `#1C1C22` with a gold band `#D9B23A`, `height` 1.85, `scale` 1.12. The hat is about 0.53 m tall, 46% of his own
-  height ("nearly half"), and its crown is at 1.41 m: no higher than the tallest playable bare head (1.43 m), so his silhouette stays
+- **headwear:** `top_hat` `#1C1C22` with a gold band `#D9B23A`, `height` 1.85, `scale` 1.12. The hat rises 0.53 m above his 0.88 m head top, 38% of his
+  1.41 m silhouette (the example's 2.3 was 42% of 1.53 m), and its crown at 1.41 m is no higher than the tallest playable bare head (1.43 m), so his silhouette stays
   inside the playable range. The sheet example's 2.3 put the crown at 1.53 m, taller than Big Tiny
 - **face:** button eyes, arched raised brows, half lids, `set` mouth (great importance). Expressions: happy = small smile,
   surprised = flustered (`o`, eyes wide), determined = set mouth, brows down
