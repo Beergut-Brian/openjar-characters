@@ -1,0 +1,111 @@
+{
+  "id": "pennant",
+  "name": "Pennant",
+  "slots": [
+    "hand_r"
+  ],
+  "scene": "pennant.glb",
+  "replaces_body_part": [],
+  "fit": {
+    "critter": {
+      "scale": 0.62
+    }
+  },
+  "level_up": {
+    "max": 3,
+    "scale_step": 0.06
+  },
+  "hold": {
+    "style": "one_hand_raised",
+    "grip_r": [
+      0,
+      0,
+      0.0
+    ],
+    "axis": [
+      0,
+      1,
+      0.0
+    ],
+    "poses": {
+      "standard": {
+        "arm": [
+          -0.42,
+          -0.62,
+          1.0
+        ],
+        "axis": [
+          -0.3,
+          1.0,
+          0.22
+        ],
+        "up": [
+          0,
+          0.2,
+          -1.0
+        ],
+        "follow": 0.2
+      },
+      "critter": {
+        "arm": [
+          -0.8,
+          -0.1,
+          1.0
+        ],
+        "axis": [
+          -0.3,
+          1.0,
+          0.22
+        ],
+        "up": [
+          0,
+          0.2,
+          -1.0
+        ],
+        "follow": 0.2
+      },
+      "giant": {
+        "arm": [
+          -0.7,
+          0.0,
+          1.0
+        ],
+        "axis": [
+          -0.3,
+          1.0,
+          0.22
+        ],
+        "up": [
+          0,
+          0.2,
+          -1.0
+        ],
+        "follow": 0.2
+      }
+    },
+    "action_follow": {
+      "cheer": 0.45,
+      "dig": 1.0
+    },
+    "rigid_actions": [
+      "dig"
+    ],
+    "fist": {
+      "radii": [
+        0.04,
+        0.044,
+        0.047
+      ],
+      "thumb": [
+        -0.012,
+        0.004,
+        0.036
+      ],
+      "thumb_radii": [
+        0.02,
+        0.026,
+        0.018
+      ]
+    }
+  }
+}

@@ -250,22 +250,19 @@ class CritterBuilder(kit.Builder):
 
     # ------------------------------------------------------------------ prop, arms, paws
     def plan_grip(self):
-        """Where the held prop stands and where the two paws grab it (rest pose = holding it)."""
+        """Rest pose: claws out at the sides (D49 a). Nothing is held at rest: a tool is a gear item
+        on a hand slot, gripped by the hold system (avatar/kit/hold.py), e.g. the shovel while digging.
+        The `prop` bone stays in the contract as a spare attachment bone on the spine."""
         L = self.L
         T = L["T"]
-        zg = L["zm"] * 0.62
-        hb = Vector((-0.07 * T, self.front_y(zg) - 0.11 * T, zg))       # handle bottom, his right
-        top_z = L["zc"] - 0.02 * T
-        bx = -(self.r_pear(top_z + 0.10 * T) + 0.075 * T)                    # blade beside the head
-        ht = Vector((bx, self.front_y(top_z) - 0.10 * T, top_z))          # handle top (blade starts here)
-        self.prop_axis = (hb, ht)
-        a = (ht - hb).normalized()
-        L_h = (ht - hb).length
-        self.grips = {"R": hb + a * L_h * 0.20, "L": hb + a * L_h * 0.47}
-        sh_z = L["sh_z"]
-        sx = self.r_pear(sh_z) * 0.62
-        sy = self.front_y(sh_z) * 0.75
+        sh_z = L["sh_z"] - 0.02 * T
+        sx = self.r_pear(sh_z) * 0.80
+        sy = self.cy(sh_z) - 0.04 * T
         self.shoulders = {"L": Vector((sx, sy, sh_z)), "R": Vector((-sx, sy, sh_z))}
+        zh = L["zm"] * 1.02
+        hx = self.r_pear(zh) + 0.085 * T
+        self.grips = {"L": Vector((hx, self.cy(zh) - 0.07 * T, zh)), "R": Vector((-hx, self.cy(zh) - 0.07 * T, zh))}
+        self.prop_axis = (Vector((0, self.front_y(zh) - 0.02 * T, zh)), Vector((0, self.front_y(zh) - 0.02 * T, zh + 0.2 * T)))
 
     def build_arms(self):
         L, P = self.L, self.P
@@ -278,7 +275,7 @@ class CritterBuilder(kit.Builder):
         for s, side in ((1, "L"), (-1, "R")):
             sh = self.shoulders[side]
             g = self.grips[side]
-            hc = g + Vector((s * 0.06 * T, 0.03 * T, 0.0))
+            hc = g.copy()
             a = (hc - sh).normalized()
             wr = hc - a * 0.10 * T
             self.arm_pts[side] = (sh, wr)
@@ -287,7 +284,7 @@ class CritterBuilder(kit.Builder):
             # paddle mitt: palm plane holds the arm direction and the vertical
             up = Vector((0, 0, 1)); up = (up - a * up.dot(a)).normalized()
             wv = a.cross(up).normalized()          # broad side: across the arm, tipped to show the front
-            tip = math.radians(-s * float(paws.get("tip_deg", 0)))
+            tip = math.radians(-s * float(paws.get("tip_deg", 78)))     # broad side of the paw faces front
             wv, up = (wv * math.cos(tip) + up * math.sin(tip)).normalized(), (up * math.cos(tip) - wv * math.sin(tip)).normalized()
             rot = Matrix((up, a, wv)).transposed()  # local x = thickness (vertical), y = length, z = width
             self.cur_part = f"hand_{side.lower()}"
@@ -446,21 +443,9 @@ class CritterBuilder(kit.Builder):
 
     # ------------------------------------------------------------------ actions
     def group(self, rx=0.0, rz=0.0, loc=(0, 0, 0)):
-        """Pose entries that move both arms and the prop as one rigid unit (so the paws stay on the
-        handle): rotate by rx (+ tips the top forwards, - lifts the paws) / rz about the shoulder line's centre, then shift."""
-        R = Euler((math.radians(rx), 0, math.radians(rz)), "XYZ").to_matrix()
-        c = (self.shoulders["L"] + self.shoulders["R"]) / 2
-        I = Matrix.Identity(3)
-        out = {}
-        for name, h in (("arm.L", self.shoulders["L"]), ("arm.R", self.shoulders["R"]), ("prop", self.prop_axis[0])):
-            t = (I - R) @ (c - h) + Vector(loc)
-            e = {"loc": tuple(t)}
-            if name == "prop":
-                e.update(lean=rx, twist=rz)
-            else:
-                e.update(swing=-rx, twist=rz)
-            out[name] = e
-        return out
+        """Pose entries for both arms together: rx < 0 lifts the claws out and up, rx > 0 tucks them in."""
+        lift = -rx * 6.0 + loc[2] / self.L["T"] * 60.0
+        return {"arm.L": {"out": lift, "twist": rz}, "arm.R": {"out": lift, "twist": rz}}
 
     def actions(self):
         T = self.L["T"]
@@ -517,6 +502,19 @@ class CritterBuilder(kit.Builder):
             (22, P(g(rx=-2), {"spine": {"lean": -3}, "head": {"lean": -4}})),
             (28, P(g())),
         ]
+        # dig: authored for a two-handed tool on hand_r (the shovel gear). The hold system follows this
+        # action's arms fully (hold.ACTION_FOLLOW) and snaps the off claw onto grip_l.
+        import hold
+        def dg(spec, extra):
+            q = hold.hold_locals(self.rig_for_holds, spec, "R", "critter")
+            return P({b: {"quat": v} for b, v in q.items()}, extra)
+        ready = dg(dict(arm=(0.20, -1.0, 0.40), axis=(0.80, -0.30, -0.45), up=(0, -1, 0.5), off=(-0.15, -1.0, -0.45)),
+                   {"spine": {"lean": 2}, "head": {"lean": 4}})
+        stab = dg(dict(arm=(0.20, -1.0, 0.20), axis=(0.75, -0.25, -0.75), up=(0, -1, 0.4), off=(-0.10, -0.9, -0.9)),
+                  {"spine": {"lean": 10, "tilt": -6}, "head": {"lean": 6}, "root": {"scale": (1.04, 1.04, 0.95)}})
+        toss = dg(dict(arm=(0.10, -1.0, 0.30), axis=(0.90, -0.5, 0.0), up=(0, 0.1, 1), off=(-0.20, -1.0, -0.1)),
+                  {"spine": {"lean": -4, "twist": 8}, "head": {"lean": -5}, "root": {"loc": (0, 0, 0.02 * T), "scale": (0.97, 0.97, 1.04)}})
+        acts["dig"] = [(1, ready), (9, stab), (13, stab), (19, toss), (25, ready)]
         return acts
 
     # ------------------------------------------------------------------ build
@@ -552,6 +550,8 @@ class CritterBuilder(kit.Builder):
         self.rig, self.body, self.hat = rig, body, None
         self.slots = self.add_slots(rig, slot_fit)
         rig["jarling_slots"] = list(self.slots.keys())
+        self.rig_for_holds = rig
+        rig["jarling_loops"] = ["idle", "run", "cheer", "dig"]
         kit.build_actions(rig, {}, self.prefix, acts=self.actions())
         return self
 
