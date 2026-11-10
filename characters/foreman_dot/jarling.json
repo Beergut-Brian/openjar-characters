@@ -1,0 +1,74 @@
+{
+ "id": "foreman_dot",
+ "name": "Foreman Dot",
+ "notes": "From characters/foreman_dot/look.md (Kaden's sheet 2026-11-10; proposed, playtest build). A human site lead; not the Gnome Foreman (resident). Skin and hair are not fixed by the sheet.",
+ "head": {
+  "shape": "round",
+  "size": 1.0,
+  "ears": "round"
+ },
+ "skin": "#D99E6E",
+ "face": {
+  "eyes": "round",
+  "brows": "thick",
+  "brow_color": "#4A2F23",
+  "mouth": "grin_top",
+  "eye_y": -0.1,
+  "expressions": {
+   "happy": {
+    "mouth": "grin_top",
+    "eye_mode": "arc"
+   },
+   "surprised": {
+    "mouth": "o",
+    "brow_raise": 0.08
+   },
+   "determined": {
+    "mouth": "grin_top",
+    "brow_tilt": 0.35
+   }
+  }
+ },
+ "hair": {
+  "style": "bob",
+  "color": "#4A2F23"
+ },
+ "headwear": {
+  "type": "hard_hat",
+  "color": "#F5C518",
+  "fit": 0.27,
+  "tilt_deg": 12
+ },
+ "body": {
+  "build": "stocky",
+  "height": 0.85,
+  "leg_scale": 0.85,
+  "width": 1.1
+ },
+ "outfit": {
+  "top": {
+   "style": "tee",
+   "color": "#F28A1E",
+   "pattern": {
+    "type": "hstripe",
+    "accent": "#FFFFFF",
+    "edge": "#C9CED4"
+   }
+  },
+  "bottoms": {
+   "style": "pants",
+   "color": "#1F2D4F"
+  },
+  "shoes": {
+   "style": "chunky_boots",
+   "color": "#7A4E2A"
+  }
+ },
+ "costume": [],
+ "ref_action": {
+  "action": "cheer",
+  "frame": 10,
+  "expression": "happy",
+  "yaw": -28
+ }
+}

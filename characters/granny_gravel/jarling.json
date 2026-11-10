@@ -1,0 +1,93 @@
+{
+ "id": "granny_gravel",
+ "name": "Granny Gravel",
+ "notes": "From characters/granny_gravel/look.md (Kaden's sheet 2026-11-10; proposed, playtest build). Safety goggles sit pushed up into the white hair under the bun. Skin is not fixed by the sheet.",
+ "head": {
+  "shape": "round",
+  "size": 1.0,
+  "ears": "round"
+ },
+ "skin": "#F7CFAE",
+ "face": {
+  "eyes": "button",
+  "brows": "thin",
+  "brow_color": "#B9B4AE",
+  "brow_raise": 0.05,
+  "mouth": "smile",
+  "mouth_width": 0.6,
+  "expressions": {
+   "happy": {
+    "mouth": "grin",
+    "eye_mode": "arc",
+    "brow_raise": 0.1
+   },
+   "surprised": {
+    "mouth": "o",
+    "brow_raise": 0.12
+   },
+   "determined": {
+    "mouth": "grin_top",
+    "brow_tilt": 0.4,
+    "lid": 0.25
+   }
+  }
+ },
+ "hair": {
+  "style": "top_bun",
+  "color": "#F2F0EA"
+ },
+ "headwear": {
+  "type": "none"
+ },
+ "body": {
+  "build": "regular",
+  "height": 0.9,
+  "leg_scale": 0.85
+ },
+ "outfit": {
+  "top": {
+   "style": "long",
+   "color": "#B9A3D9",
+   "pattern": [
+    {
+     "type": "collar",
+     "accent": "#9C84C4"
+    },
+    {
+     "type": "buttons",
+     "accent": "#F2F0EA",
+     "rows": 1
+    }
+   ]
+  },
+  "bottoms": {
+   "style": "pants",
+   "color": "#8C8F96"
+  },
+  "shoes": {
+   "style": "sneaker",
+   "color": "#FFD93B"
+  }
+ },
+ "costume": [
+  {
+   "piece": "long_skirt",
+   "color": "#8C8F96",
+   "length": 0.85
+  },
+  {
+   "piece": "goggles",
+   "pos": "forehead",
+   "style": "safety",
+   "color": "#4A4F5A",
+   "height": 0.56,
+   "size": 0.85
+  }
+ ],
+ "ref_action": {
+  "action": "cheer",
+  "frame": 10,
+  "expression": "happy",
+  "yaw": -28
+ }
+}
