@@ -1068,6 +1068,13 @@ class Builder:
             w = smooth_interp(t, widths) * envelope(t, b["n"]) * 1.018 + 0.002
             rings.append((z0 + (z1 - z0) * t, w, w * b["depth"], 0, -self.chest_at(t) if chest else 0))
         self.add(lathe(rings, 40, b["power"]), hem_mat, "spine")
+        if bot["style"] == "boxers":   # boxers: an elastic waistband peeking out under the shirt hem
+            band = self.mats.flat("waistband", bot.get("band", "#1F3A6B"), rough=0.7, spec=0.25)
+            rings = []
+            for t in np.linspace(0.165, 0.215, 3):
+                w = smooth_interp(t, widths) * envelope(t, b["n"]) * 1.03 + 0.003
+                rings.append((z0 + (z1 - z0) * t, w, w * b["depth"], 0, -self.chest_at(t) if chest else 0))
+            self.add(lathe(rings, 40, b["power"]), band, "spine")
         if bot["style"] == "skirt":
             rings = [(L["hip_z"] - 0.13, 0.0, 0.0, 0, 0)]
             for t in np.linspace(0, 1, 8):
@@ -1086,15 +1093,18 @@ class Builder:
             bone = f"leg.{side}"
             n_leg0 = len(self.parts)
             bow = float(P.get("posture", {}).get("leg_bow", 0.0))
-            if bot["style"] in ("shorts", "skirt", "none") and bow > 0:   # bowed legs: knees out
+            if bot["style"] in ("shorts", "boxers", "skirt", "none") and bow > 0:   # bowed legs: knees out
                 knee = hip + (ank - hip) * 0.5 + Vector((s * bow, 0, 0))
                 self.add(capsule_bm(hip, knee, leg_r * 0.95, leg_r * 0.92), self.skin, bone)
                 self.add(capsule_bm(knee, ank, leg_r * 0.92, leg_r * 0.85), self.skin, bone)
-            elif bot["style"] in ("shorts", "skirt", "none"):
+            elif bot["style"] in ("shorts", "boxers", "skirt", "none"):
                 self.add(capsule_bm(hip, ank, leg_r * 0.92, leg_r * 0.85), self.skin, bone)
                 if bot["style"] == "shorts":
                     mid = hip + (ank - hip) * 0.42
                     self.add(capsule_bm(hip, mid, leg_r * 1.22, leg_r * 1.18), pants, bone)
+                elif bot["style"] == "boxers":   # cartoon boxer shorts: shorter and puffier than shorts
+                    mid = hip + (ank - hip) * 0.28
+                    self.add(capsule_bm(hip, mid, leg_r * 1.42, leg_r * 1.36), pants, bone)
             else:
                 r1 = leg_r * (1.55 if flare else 1.0)
                 if flare:

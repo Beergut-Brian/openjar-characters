@@ -272,6 +272,18 @@ def hat():
     obj("trim_hat_star", [(oriented((0, -0.28, 0.12), (0.03, 0.01, 0.03), (0, -1, 0), segs=5 * 4, rings=8), mat("trim_gold", GOLD, 0.3, 0.7))], node)
     return root
 
+
+def cowboy_hat():
+    """The kit's cowboy_hat (avatar/kit/pieces_headwear.py cowboy_bms) as head-slot gear: tan felt,
+    dark band, wide brim curled up at the sides, pinched crown with a centre crease."""
+    import pieces_headwear as ph
+    root = empty("cowboy_hat")
+    node = empty("head", root)
+    g = ph.cowboy_bms(0.235, fit=0.40, crown_height=1.05, grow=1.07)
+    felt, band = mat("cowboy_hat", "#C8955A", 0.8, 0.25), mat("cowboy_hat_band", "#5A3A22", 0.6, 0.3)
+    obj("cowboy_hat_crown", [(g["crown"], felt), (g["brim"], felt), (g["band"], band)], node)
+    return root
+
 # ------------------------------------------------------------------------------------------ face
 # Face slot: origin on the face at eye level; the head centre is 0.235 behind (+Y here).
 
@@ -434,6 +446,7 @@ ITEMS = {
                  spring={"node": "cape_pivot", "stiffness": 45.0, "damping": 7.0, "gain": 0.25, "rest_deg": 4.0, "max_deg": 65.0}),
     "jetpack": dict(name="Jetpack", slots=["back"], replaces_body_part=["tail"], fn=jetpack),
     "hat": dict(name="Bucket Hat", slots=["head"], replaces_body_part=["headwear"], fn=hat),
+    "cowboy_hat": dict(name="Cowboy Hat", slots=["head"], replaces_body_part=["headwear"], fn=cowboy_hat),
     "sunglasses": dict(name="Sunglasses", slots=["face"], fn=sunglasses),
     "gloves": dict(name="Gloves", slots=["hand_l", "hand_r"], replaces_body_part=["hand_l", "hand_r"], fn=gloves),
     "belt": dict(name="Belt", slots=["waist"], fn=belt, fit={"boxy": {"scale": [1.03, 1.0, 1.05]}}),

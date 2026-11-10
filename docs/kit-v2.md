@@ -203,6 +203,7 @@ Headwear (`headwear.type`; hair mode in HEADWEAR_OPTS):
 | `chef_hat` | color="#FBFBF7", band=<color>, badge=None (colour), height=1.0, fit=0.32, tilt_deg=0, separate=False; hair tuck |
 | `bucket_hat` | color="#C9B48A", band=<color darker>, brim=0.55 (R), lure=None (colour), lure_deg=50, fit=0.40, tilt_deg=0, separate=False; hair tuck |
 | `sun_hat` | color="#E9C97A", band="#E86FA6", brim=1.3 (R), waves=7, flower=None (colour), flower_mid="#FFD23F", flower_deg=40, fit=0.40, tilt_deg=0, separate=False; hair tuck |
+| `cowboy_hat` | color="#C8955A", band="#5A3A22", brim_width=0.80 (R), curl=1.0 (side curl-up), crown_height=1.0 (R), pinch=1.0, crease=1.0, fit=0.45, tilt_deg=0, separate=False; hair tuck |
 | `box_head` | color="#C49A6C", tape="#E6CFA0", scale=1.0, hole_w=0.64 (R), tilt_deg=0, separate=False; hair hide |
 
 Costume pieces on the head (`costume[]`, each its own separable part named after the piece):
@@ -238,6 +239,7 @@ a layer inherits `color`/`accent` from the top/bottoms dict):
 | `bib` | accent "#3E6FB0", top 0.66 (V), width 0.22 (half width in U), button "#F2D16B" |
 | `belly_panel` | accent "#FFE38A", v 0.42, width 0.22 (half width in U), height 0.34 (half height in V), soft 0.02 |
 | `dials` | accent "#FF9F1C", line "#2A2A33", size 1.35 |
+| `jersey` | accent "#F2B632" (collar band), number "55" (digits), number_color "#F7F7F5", outline null (thin number edge colour; null = accent), front true, back true, size 0.36 (number height in V), v 0.56, v_back 0.50, text null (block letters across the upper back, A-Z 0-9 and space), text_v 0.83, text_size 0.065, aspect 0.62 (glyph width squash: the torso texture is wider than tall) |
 
 Shoes (`outfit.shoes.style`; `color` is per side, `size`/`socks` are the core's):
 
@@ -252,6 +254,7 @@ Shoes (`outfit.shoes.style`; `color` is per side, `size`/`socks` are the core's)
 | `footies` | color = the shoes colour (match the onesie) |
 | `wrestling_boots` | color "#2A3A8C", lace "#F7F7F5", sole null, height 0.235 |
 | `chunky_boots` | color "#8B5A2B", sole "#3A3330", cap null (toe cap, default darker color) |
+| `high_tops` | color "#1A1A1E" (upper), accent "#2A6FD6" (side panel, collar, heel stripe), sole "#F7F7F5", lace "#F7F7F5", height 0.15 (top of the collar, m above ground) |
 
 Costume (`costume: [{"piece": name, ...}]`):
 
@@ -264,6 +267,7 @@ Costume (`costume: [{"piece": name, ...}]`):
 | `dino_tail` | (part "tail") color "#5FB85A", spikes null (colour: adds soft spikes along the top), length 1.0 |
 | `box_torso` | color "#C49A6C", accent "#FF9F1C" (dial fills), line "#3A2A1E" (marker) |
 | `hose_arms` | color "#B8BCC4", rings 9 |
+| `shoulder_pads` | color <top colour> (the pads under the shirt), size 1.0, stripes null (colour: two rings round each short sleeve), hem null (colour: sleeve hem ring); part of the top, on the spine bone, so raised arms swing out from under them |
 | `long_skirt` | color "#6A5ACD", length 1.0 (0 = just below the hips, 1 = the ankles), flare 1.0, mud null (colour) |
 
 The `whistle` piece in pieces_hill.py sits at a fixed depth (made for the beard), use `whistle_cord` on other bodies.
@@ -284,7 +288,7 @@ Costume:  `gnome_beard`, `vest_stripes`, `clipboard` (part `prop`), `whistle`,
 `mane_beard`, `fur_tunic`, `cloth_club` (part `prop`).
 
 
-Actions:  `march`, `write`, `salute` (gnome); `polish`, `point`, `wave` (caveman).
+Actions:  `march`, `write`, `salute`, `whistle` (gnome); `polish`, `point`, `wave` (caveman).
 
 
 <!-- PIECES:END -->
