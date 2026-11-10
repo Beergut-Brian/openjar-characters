@@ -19,7 +19,7 @@ its bone, so it moves with the animation.
 | `back` | `spine` | middle of the back surface, at shoulder height | torso width / 0.152 m, uniform | capes, jetpacks, wings |
 | `waist` | `spine` | torso axis at belt height (the shirt/trouser hem) | torso half-width / 0.155 m on X, half-depth / 0.127 m on Z, 1 on Y | belts, floaties |
 | `hand_l`, `hand_r` | `hand.L/R` | centre of the mitten hand | limb thickness, uniform | gloves, foam fingers |
-| `knee_l`, `knee_r` | `leg.L/R` | on the leg axis, halfway hip to ankle | leg radius at the knee / 0.049 m, uniform | kneepads |
+| `knee_l`, `knee_r` | `leg.L/R` | on the leg axis, 45% of the way from hip to ankle | leg radius at the knee / 0.049 m, uniform | kneepads |
 | `foot_l`, `foot_r` | `foot.L/R` | on the ground, under the ankle | limb thickness, uniform | shoes, boots, skates |
 
 - **Axes** are the model's at rest: +Y up, **+Z front** (the way the Jarling faces), +X the
@@ -39,7 +39,7 @@ Parts a piece of gear may hide are their own skinned meshes on the same skeleton
 | --- | --- |
 | `foot_l`, `foot_r` | bare foot, or the character's own shoes (Chuck's boots, including the boot shafts) |
 | `hand_l`, `hand_r` | the mitten hand |
-| `headwear` | Chuck's trucker hat (`chuck_hat`, still detachable as before); Jeff's comb |
+| `headwear` | Chuck's trucker hat (`chuck_hat`, still detachable as before); Jeff's comb; a generic's cap, beanie or headband |
 | `tail` | Jeff's tail feathers |
 
 A part only exists if that Jarling has it; hiding a missing part is a no-op. The rest of the body

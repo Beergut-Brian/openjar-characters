@@ -988,7 +988,9 @@ class Builder:
             return
         if t == "chicken_hood":
             self.build_hood(hw)
-        elif t in ("trucker", "cap"):
+            return
+        self.cur_part = "headwear"   # caps, beanies, headbands: an equipped hat hides them
+        if t in ("trucker", "cap"):
             self.build_cap(hw, trucker=(t == "trucker"))
         elif t == "beanie":
             mat = self.mats.flat("beanie", hw["color"], rough=0.85, spec=0.2)
@@ -1004,6 +1006,7 @@ class Builder:
             self.add(ellipsoid_bm(c + Vector((0, 0.05 * R, R * L["hsz"] * 1.2)), (0.24 * R,) * 3, segs=20, rings=12), cuff, "head")
         elif t == "headband":
             self.add_headband(hw["color"])
+        self.cur_part = None
 
     def add_headband(self, color, el=0.50, s=1.0):
         mat = self.mats.flat("headband", color, rough=0.6)
@@ -1261,12 +1264,12 @@ class Builder:
         for side, sg in (("L", 1), ("R", -1)):
             hip = Vector((sg * L["hip_x"], 0, L["hip_z"] + 0.02))
             ank = Vector((sg * L["hip_x"] * 1.05, 0, L["ankle_z"]))
-            k = hip + (ank - hip) * 0.5
+            k = hip + (ank - hip) * 0.45
             d = ank - hip; dl = d.length; d = d / dl
             rk = 0.0   # leg radius around the knee: perpendicular distance from the hip-ankle axis
             for co in self._cos({f"leg.{side}"}):
                 t = (co - hip).dot(d) / dl
-                if -0.02 < t < 0.55:
+                if -0.02 < t < 0.5:
                     rk = max(rk, ((co - hip) - d * (co - hip).dot(d)).length)
             out[f"knee_{side.lower()}"] = (f"leg.{side}", k, (rk / SLOT_REF["knee_r"],) * 3)
             lb = L["limb"]
@@ -1288,6 +1291,7 @@ class Builder:
             e.matrix_basis = Matrix.LocRotScale(pos, None, Vector(scale))
             e["jarling_slot"] = name
             e["jarling_build"] = self.P["body"]["build"]
+            e["jarling_id"] = self.P["id"]
             obs[name] = e
         bpy.context.view_layer.update()
         return obs
