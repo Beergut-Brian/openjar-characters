@@ -2,6 +2,20 @@
   "version": 1,
   "characters": [
     {
+      "id": "caveman",
+      "name": "The Caveman",
+      "kind": "universal",
+      "player": null,
+      "first_appears": "The Hill (the museum keeper).",
+      "approved": true,
+      "bible": "characters/caveman/bible.md",
+      "look": "characters/caveman/look.md",
+      "refs": "characters/caveman/refs/",
+      "voice": "characters/caveman/voice/",
+      "barks": [],
+      "alt_forms": []
+    },
+    {
       "id": "chuck",
       "name": "Chuck",
       "kind": "player_locked",
@@ -12,7 +26,38 @@
       "look": "characters/chuck/look.md",
       "refs": "characters/chuck/refs/",
       "voice": "characters/chuck/voice/",
-      "barks": []
+      "barks": [],
+      "alt_forms": [
+        "the-hill pixel"
+      ]
+    },
+    {
+      "id": "dragon",
+      "name": "The Dragon",
+      "kind": "universal",
+      "player": null,
+      "first_appears": "The Hill (the landmark).",
+      "approved": true,
+      "bible": "characters/dragon/bible.md",
+      "look": "characters/dragon/look.md",
+      "refs": "characters/dragon/refs/",
+      "voice": "characters/dragon/voice/",
+      "barks": [],
+      "alt_forms": []
+    },
+    {
+      "id": "gnome_foreman",
+      "name": "The Gnome Foreman",
+      "kind": "universal",
+      "player": null,
+      "first_appears": "The Hill (the foreman).",
+      "approved": true,
+      "bible": "characters/gnome_foreman/bible.md",
+      "look": "characters/gnome_foreman/look.md",
+      "refs": "characters/gnome_foreman/refs/",
+      "voice": "characters/gnome_foreman/voice/",
+      "barks": [],
+      "alt_forms": []
     },
     {
       "id": "jeff",
@@ -25,7 +70,25 @@
       "look": "characters/jeff/look.md",
       "refs": "characters/jeff/refs/",
       "voice": "characters/jeff/voice/",
-      "barks": []
+      "barks": [],
+      "alt_forms": [
+        "the-hill pixel"
+      ]
+    },
+    {
+      "id": "mole",
+      "name": "The Mole",
+      "kind": "universal",
+      "player": null,
+      "first_appears": "The Hill (the shovel thief).",
+      "approved": true,
+      "bible": "characters/mole/bible.md",
+      "look": "characters/mole/look.md",
+      "refs": "characters/mole/refs/",
+      "voice": "characters/mole/voice/",
+      "barks": [],
+      "alt_forms": []
     }
-  ]
+  ],
+  "proposed": []
 }

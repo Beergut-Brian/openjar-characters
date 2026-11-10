@@ -27,3 +27,6 @@ Thick eyebrows, squint, determined mouth. Expressions: smug, outraged, grudging 
 
 ## Refs
 `refs/` — to be produced by the Character lane after approval.
+
+## Alt form: the-hill pixel (hard hat): approved
+Approved by Kaden 2026-11-09 (D46 a, as drafted); an alt form only, nothing above changes. Sprite source: `tools/pixel/residents.py` (`chuck()`); shown in `characters/residents_lineup.png`. 32 px tall. The hard hat uses his hat colours: dome #2B2B33, brim and ridge #E4393C, and a yellow #FFD84D T-Rex sticker on the front. The trucker hat hangs from his back pocket (side and back views). Shirt #1E1E26 with a red swirl, jeans, brown boots #8A5A2B. Kaden kept the hat colours as drafted (the all-red dome was not taken).
