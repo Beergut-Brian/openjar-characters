@@ -1,0 +1,6 @@
+{"id": "v2_skinniest", "name": "Kit v2 skinniest", "skin": "#B79BE8",
+ "head": {"shape": "egg", "ears": "none", "features": [{"type": "horns", "style": "curved"}, {"type": "pointy_ears"}]},
+ "hair": {"style": "upright", "color": "#F7F7F2"},
+ "body": {"build": "slim", "height": 0.8, "width": 0.75, "leg_scale": 0.8},
+ "outfit": {"top": {"style": "long", "color": "#F4F5F2"}, "bottoms": {"style": "shorts", "color": "#5E2F94"},
+            "shoes": {"style": "sneaker", "color": "#1B1B20", "socks": {"color_l": "#FF9A2E", "color_r": "#5CC6F2", "height": 0.4}}}}

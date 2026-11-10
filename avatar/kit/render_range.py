@@ -74,7 +74,7 @@ if a.proof:
 else:
     studio()
     n = len(WIDTHS) * len(HEIGHTS)
-    rc.setup_render(2640, 720, a.samples)
+    rc.setup_render(2640, 560, a.samples)
     step = 0.80; gap = 0.35
     x = -((n - 1) * step + (len(HEIGHTS) - 1) * gap) / 2
     i = 0
@@ -103,5 +103,6 @@ else:
             x += step + (gap if wi == len(WIDTHS) - 1 else 0)
             i += 1
     total = (n - 1) * step + (len(HEIGHTS) - 1) * gap + 1.2
-    rc.camera((0, -16, 1.6), (0, 0, total * 720 / 2640 / 2 - 0.12), ortho=total)
+    view_h = total * 560 / 2640
+    rc.camera((0, -16, view_h / 2 + 0.75), (0, 0, view_h / 2 - 0.16), ortho=total)
     rc.render(os.path.abspath(a.out))

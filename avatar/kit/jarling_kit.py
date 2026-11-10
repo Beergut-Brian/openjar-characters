@@ -871,6 +871,7 @@ class Builder:
         if hw_t == "chicken_hood" or mode == "hide":
             return
         self._hair_cap(style, mode == "tuck")
+        n0 = len(self.parts)
         for pc in pieces:
             if hw_t != "none" and mode == "tuck" and not pc.get("keep"):
                 continue
@@ -879,6 +880,7 @@ class Builder:
             col = pc.get("color") or hair.get("color", "#5A3A28")
             mat = self.mats.flat("hair" if col == hair.get("color") else f"hair_{col.lstrip('#')}", col, rough=0.5, spec=0.4)
             HAIR_PIECES[pc["type"]](self, pc, mat)
+        self.crown_skip = set(range(n0, len(self.parts)))   # hat fit follows the scalp, not buns and spikes
 
     def build_features(self):
         """`head.features`: antennae, horns, pointy ears, fins... Body features of the species, not
@@ -1555,7 +1557,9 @@ class Builder:
         L, P = self.L, self.P
         c, R = L["head_c"], L["R"]
         out = {}
-        crown = max(co.z for co in self._cos({"head"})) - c.z
+        skip = getattr(self, "crown_skip", ())
+        crown = max(v.co.z for i, ((bm, _m, bone), tag) in enumerate(zip(self.parts, self.part_tags))
+                    if bone == "head" and tag is None and i not in skip for v in bm.verts) - c.z
         out["head"] = ("head", c.copy(), (crown / SLOT_REF["head_crown"],) * 3)
         fs = float(P["face"].get("scale", 1.3))
         ez = EYE_Y * fs

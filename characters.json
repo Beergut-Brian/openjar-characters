@@ -146,13 +146,16 @@
     "P1": "#3cc24a",
     "P2": "#e4393c"
   },
+  "player_colour_min_delta_e": 20.0,
   "body_types": {
     "standard": {
       "rig": "avatar/kit (Jarling humanoid)",
       "params": [
         "build",
         "height",
-        "leg_scale"
+        "leg_scale",
+        "width",
+        "belly"
       ],
       "builds": [
         "slim",
@@ -169,6 +172,20 @@
       "leg_scale": [
         0.8,
         1.2
+      ],
+      "width": [
+        0.75,
+        1.5
+      ],
+      "belly": [
+        0.0,
+        1.0
+      ],
+      "features": [
+        "antennae",
+        "horns",
+        "pointy_ears",
+        "fins"
       ],
       "bones": [
         "root",

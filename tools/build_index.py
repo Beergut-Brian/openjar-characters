@@ -79,14 +79,17 @@ out["roster"] = roster(out["characters"])
 out["defaults"] = {f"P{c['default_for']}": c["id"] for c in sorted(out["characters"], key=lambda c: c["default_for"] or 9) if c["default_for"]}
 # The rules every playable character follows (README "Playable characters"); tests and games read these.
 out["player_colours"] = {"P1": "#3cc24a", "P2": "#e4393c"}
+# Main colours (skin, hair, headwear, top, bottoms, shoes) must be at least this far (CIE Delta E 2000) from both.
+out["player_colour_min_delta_e"] = 20.0
 SLOTS = ["head", "face", "back", "hand_l", "hand_r", "waist", "knee_l", "knee_r", "foot_l", "foot_r"]
 BONES = ["root", "spine", "head", "arm.L", "arm.R", "hand.L", "hand.R", "leg.L", "leg.R", "foot.L", "foot.R"]
 NO_KNEES = [s for s in SLOTS if not s.startswith("knee_")]
 out["body_types"] = {
     "standard": {
-        "rig": "avatar/kit (Jarling humanoid)", "params": ["build", "height", "leg_scale"],
+        "rig": "avatar/kit (Jarling humanoid)", "params": ["build", "height", "leg_scale", "width", "belly"],
         "builds": ["slim", "regular", "stocky", "round", "boxy", "puffy"],
-        "height": [0.8, 1.3], "leg_scale": [0.8, 1.2],
+        "height": [0.8, 1.3], "leg_scale": [0.8, 1.2], "width": [0.75, 1.5], "belly": [0.0, 1.0],
+        "features": ["antennae", "horns", "pointy_ears", "fins"],
         "bones": BONES, "actions": ["idle", "run", "kick", "cheer"], "loops": ["idle", "run", "cheer"],
         "slots": SLOTS, "playable": True},
     "critter": {

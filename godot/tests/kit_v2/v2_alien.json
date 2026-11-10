@@ -1,0 +1,6 @@
+{"id": "v2_alien", "name": "Kit v2 alien", "skin": "#9FD6F0",
+ "head": {"shape": "tall", "size": 1.05, "ears": "none", "features": [{"type": "antennae", "count": 2, "tip": "#FFD23F"}, {"type": "fins", "count": 1}]},
+ "face": {"eyes": "round", "brows": "thin", "nose": "none", "mouth": "o"},
+ "hair": {"style": "puffs", "color": "#3B2A6B"},
+ "body": {"build": "slim", "height": 1.05, "width": 0.85},
+ "outfit": {"top": {"style": "tee", "color": "#FFD23F"}, "bottoms": {"style": "shorts", "color": "#F5F5F2"}, "shoes": {"style": "barefoot"}}}
