@@ -10,5 +10,6 @@ for c in jeff chuck; do
   python3 $K/label_sheet.py $out/${c}_turnaround.png front "3/4" side back
   python3 $K/label_sheet.py $out/${c}_expressions.png neutral happy surprised determined
 done
+$B -P avatar/gear/build_gear.py
 $B -P $K/render_scenes.py -- --outdir $K/renders --only lineup --samples ${REF_SAMPLES:-64}
 $B -P $K/render_scenes.py -- --outdir $K/renders --only mock --samples ${MOCK_SAMPLES:-128}

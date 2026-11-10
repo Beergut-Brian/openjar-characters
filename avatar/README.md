@@ -37,6 +37,9 @@ avatar/kit/render_scenes_ball.py  the six-panel ball used in renders
 avatar/kit/label_sheet.py      Pillow: caption bar under the sheets
 avatar/kit/make_all.sh         rebuilds every deliverable (about 7 minutes on 6 CPU cores)
 avatar/kit/renders/            style_mock.png, generic_lineup.png
+avatar/gear/build_gear.py      the starter gear set -> avatar/gear/<id>.glb + <id>.json (equipment)
+godot/jarling_equipment.gd     Godot runtime that puts gear on a Jarling (+ jarling_gear.gd, the item)
+godot/run_tests.sh             headless tests for it; godot/tools/shots.gd renders real frames
 characters/<name>/jarling.json the character's parameters
 characters/<name>/refs/jarling/<name>.glb + turnaround / expressions / kick PNGs
 ```
@@ -51,6 +54,8 @@ blender -b --factory-startup -P avatar/kit/build_jarling.py -- \
 blender -b --factory-startup -P avatar/kit/build_jarling.py -- --seed 42 --out /tmp/generic42.glb
 # everything (glbs, sheets, mock, lineup)
 ./avatar/kit/make_all.sh            # REF_SAMPLES=64 MOCK_SAMPLES=128 by default
+# the gear set
+blender -b --factory-startup -P avatar/gear/build_gear.py      # [-- --only cape,hat]
 ```
 
 Tested with Blender 5.2.3 in background mode. Renders use Cycles on the CPU, because EEVEE needs a GPU.
@@ -111,6 +116,8 @@ were not tuned per character.
 | Materials | Principled / StandardMaterial3D, flat base colours. Textures only for the face atlas, Chuck's tie-dye and his T-Rex patch. |
 | Face | material `<id>_face`: a 2048² atlas of four expressions (2×2 cells) |
 | Extras | body node `jarling_expressions` = UV offsets; rig node `jarling_actions`, `jarling_loops`; Chuck's hat node `jarling_detachable` |
+| Equipment slots | ten `slot_<name>` nodes on bones: `head`, `face`, `back`, `waist`, `hand_l/r`, `knee_l/r`, `foot_l/r`, fit scale baked in; extras `jarling_slot`, `jarling_build`, `jarling_id` |
+| Body parts | `<id>_part_<name>` skinned meshes gear can hide: `foot_l/r` (bare feet or the character's shoes), `hand_l/r`, `headwear` (Jeff's comb, a generic's cap; Chuck's `chuck_hat` also counts), `tail` (Jeff). Extras `jarling_part`. |
 | Size | about 30k triangles, 1.2–1.5 MB per character |
 
 ## Using it in Godot 4.7.2
@@ -143,6 +150,31 @@ were not tuned per character.
    soft shadows plus a sky-coloured ambient. The `.glb` materials hold colours only.
 6. **Squash and stretch.** The animations already scale `root`, `spine`, `leg.L` and `foot.L`.
    Game-side juice can scale those bones further. Rigid skinning keeps that clean.
+
+## Equipment (gear that goes *on* the Jarling)
+
+Full contract: [`docs/equipment.md`](../docs/equipment.md). In short:
+
+- Every Jarling has **ten slots** that follow their bones. One item per slot; a pair (shoes,
+  gloves, kneepads) fills both sides together.
+- A gear item is `avatar/gear/<id>.glb` (modelled in slot space for the reference Jarling; the slot
+  marker's scale fits it to each build) plus `<id>.json` (`id`, `slots`, `replaces_body_part`,
+  `fit`, `level_up`, `spring`).
+- Shoes and gloves **replace** the feet/hands (the body part meshes are hidden), kneepads, belts,
+  capes and jetpacks **wrap**. Capes swing on a small spring.
+- `godot/jarling_equipment.gd`: `equip(item)` (swaps a filled slot; a repeat item levels up
+  instead of stacking), `unequip(slot)`, `equipped(slot)`, `has_item(id)`, `level_up(slot)`,
+  signals `item_equipped`, `item_unequipped`, `item_leveled_up`, `poof`.
+
+```gdscript
+var eq := JarlingEquipment.new()
+jeff.add_child(eq)                               # jeff = the instanced jeff.glb
+eq.poof.connect(func(slot, at): Fx.puff(at))     # your puff
+eq.equip(JarlingGear.load_json("res://addons/openjar/characters/avatar/gear/sneakers.json"))
+```
+
+Starter set (proof art, a later Art lane redoes it): `sneakers`, `boots`, `rocket_boots`,
+`kneepads`, `cape`, `jetpack`, `hat`, `sunglasses`, `gloves`, `belt`.
 
 ## Verified vs not
 
