@@ -1,7 +1,10 @@
-# Voice
+# yoji voice
 
-- `profile.json` — Chatterbox voice settings and seed clip reference
-- `barks.md` — the 20 to 30 stock lines, one per file
-- `*.ogg` — pre-rendered barks, normalised to -16 LUFS
+No audio yet: Gary generates it from `../voice.md` (Southern US male, 30s; 8 barks; catchphrase "YEEHAW! TOUCHDOWN!" is the `win` bark).
+Layout when it lands, same as the other characters:
 
-Status: lines drafted in `../voice.md`; audio not generated yet (Gary generates it from voice.md).
+- `*.ogg` (top level): stock barks, one per cue in `../voice.md`. `Audio.bark("yoji", "<cue>")` plays them.
+- `lib/`: non-verbal sounds and extras (laughs, gasps, effort, catchphrase big and calm).
+- `source/master.ogg`: a ~1 min varied read, the clone reference for later lines.
+
+Every `.ogg` gets a row in `../CREDITS.md`.
