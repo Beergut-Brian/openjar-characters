@@ -45,10 +45,29 @@ Built 2026-11-10 from `characters/foreman_dot/jarling.json` (standard humanoid b
 - **Not built:** a clipboard in hand (held props wait for the held-item hold styles, not on `main` yet)
 
 ### 2D pixel (The Hill)
-32 px tall at Jeff's scale (stage 1), side-on like `characters/residents_lineup.png`; traced from the 3D side view once it exists. The hard hat is a 3-px-tall yellow dome with the brim one px above the eye line; the white stripe is a single row across the orange shirt. Must read at 16 px: yellow dome + orange block.
+See "Alt form: the-hill pixel" below (as built).
 
 ## Refs
 - `refs/jarling/foreman_dot.glb`: the 3D master
 - `refs/jarling/foreman_dot_turnaround.png`, `foreman_dot_expressions.png`, `foreman_dot_cheer.png`
 - `refs/jarling/foreman_dot_side.png`, `foreman_dot_side_sprite.png`: side view and its sprite-scale tracing base
 - `refs/pixel/foreman_dot_pixel.png`, `foreman_dot_frames.png` (+ `.json`), `foreman_dot_pixel_sheet.png`: The Hill pixel form
+
+## Alt form: the-hill pixel: proposed
+Sprite source: `tools/pixel/foreman_dot.py` (`foreman_dot()`)
+
+- **Height:** 28 px with the outline (0.85 m stocky body plus the hat, traced from `foreman_dot_side_sprite.png`): hard hat 5 rows
+  (ridge row, 3 dome rows, brim row on the brow line), face 7, torso 7, pants 3, boots 4. Short and stocky: a 13 px torso.
+- **Palette:** hard hat `#F5C518` (ridge and highlight `#FFE066`, shade `#C99A0E`), bob `#4A2F23`, skin `#D99E6E` (+ `#B97F55`),
+  eyes `#2A1E2C`, mouth `#6A2232` with a `#FFFFFF` top row, tee `#F28A1E` (shade `#D0700F`), hi-vis stripe `#FFFFFF`, pants
+  `#1F2D4F`, boots `#7A4E2A` (sole `#4A3020`), outline `#2A1E2C`.
+- **Frames:** front form (40 x 32) and the 128 x 224 player sheet: idle0-1, walk0-3, jump, fall, side0-2, down0-2, ride,
+  sleep0-1 (three-quarter view facing right, feet on row 30; hand at (22, 21) idle, The Hill's dig hand positions).
+- **Should read as:**
+  - a yellow hard hat sitting low (not a gnome cone, not a cap): a round dome with a pale centre ridge column, shaded at the back,
+    its brim row directly on the brow line with the eyes just under it, the brim 2 px past the face at the right in the frames
+  - a human site lead, not the Gnome Foreman (`residents.py` `foreman()`): clean chin and jaw, dark bob at the sides and back down
+    to the jaw, round hat, no clipboard, no whistle
+  - confident open smile: a 4 px white row over a 4 px dark row and a 2 px dark row, nothing poking out of it
+  - hi-vis tee: orange with exactly one full-width white stripe row across the chest
+  - chunky boots: brown, 5-6 px long, 3 rows plus a dark sole
