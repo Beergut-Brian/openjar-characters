@@ -1,0 +1,78 @@
+{
+ "id": "boxbot",
+ "name": "Boxbot",
+ "notes": "From characters/boxbot/look.md (Kaden's sheet 2026-11-10; proposed, playtest build).",
+ "head": {
+  "shape": "soft_square",
+  "size": 0.8,
+  "ears": "none"
+ },
+ "skin": "#EFBB90",
+ "face": {
+  "eyes": "button",
+  "brows": "none",
+  "nose": "none",
+  "mouth": "flat",
+  "blush": 0.2,
+  "expressions": {
+   "neutral": {
+    "mouth": "flat"
+   },
+   "happy": {
+    "mouth": "grin_top"
+   },
+   "surprised": {
+    "mouth": "flat",
+    "eye_scale": 1.15
+   },
+   "determined": {
+    "mouth": "flat",
+    "lid": 0.3
+   }
+  }
+ },
+ "hair": {
+  "style": "none"
+ },
+ "headwear": {
+  "type": "box_head",
+  "color": "#C49A6C",
+  "scale": 0.92
+ },
+ "body": {
+  "build": "boxy",
+  "height": 0.9,
+  "leg_scale": 0.9
+ },
+ "outfit": {
+  "top": {
+   "style": "long",
+   "color": "#C0C4CA"
+  },
+  "bottoms": {
+   "style": "pants",
+   "color": "#80848C"
+  },
+  "shoes": {
+   "style": "sneaker",
+   "color": "#3B6FD1"
+  }
+ },
+ "costume": [
+  {
+   "piece": "box_torso",
+   "color": "#C49A6C",
+   "accent": "#3B6FD1"
+  },
+  {
+   "piece": "hose_arms",
+   "color": "#C0C4CA"
+  }
+ ],
+ "ref_action": {
+  "action": "cheer",
+  "frame": 10,
+  "expression": "happy",
+  "yaw": -28
+ }
+}
