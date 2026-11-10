@@ -351,6 +351,40 @@ def shovel():
     obj("shovel_body", parts, root)
     return root
 
+def fishing_rod():
+    root = empty("hand_r")
+    cork, rodm, reelm = mat("rod_cork", "#C9A27A", 0.8, 0.1), mat("rod_shaft", "#4A4033", 0.4, 0.4), mat("rod_reel", STEEL, 0.3, 0.7)
+    line, blue, yel = mat("rod_line", "#E8EEF2", 0.5, 0.2), mat("rod_bobber_blue", "#3F8FD8"), mat("rod_bobber_yellow", "#F2C230")
+    parts = [(capsule_bm((0, 0, -0.09), (0, 0, 0.10), 0.016, 0.016, segs=16, hem=3), cork)]            # cork handle, fist closes here
+    # tapered shaft (thin tube segments), leaning slightly forward (-y)
+    pts = [(0, -0.002 * i, 0.10 + 0.075 * i) for i in range(0, 10)]
+    for i in range(len(pts) - 1):
+        r = 0.011 - 0.0095 * (i / (len(pts) - 1))
+        parts.append((tube_bm([pts[i], pts[i + 1]], max(r, 0.0018)), rodm))
+    parts.append((lathe([(-0.012, 0, 0, 0.0, -0.045), (-0.012, 0.016, 0.012, 0.0, -0.045), (0.012, 0.016, 0.012, 0.0, -0.045), (0.012, 0, 0, 0.0, -0.045)], 18), reelm))
+    tip = pts[-1]
+    parts.append((tube_bm([tip, (tip[0], tip[1] - 0.03, tip[2] - 0.20), (tip[0], tip[1] - 0.045, tip[2] - 0.40)], 0.003), line))
+    b = (tip[0], tip[1] - 0.045, tip[2] - 0.43)
+    parts.append((ellipsoid_bm((b[0], b[1], b[2] + 0.013), (0.015, 0.015, 0.014), segs=14, rings=8), yel))
+    parts.append((ellipsoid_bm((b[0], b[1], b[2] - 0.013), (0.015, 0.015, 0.014), segs=14, rings=8), blue))
+    obj("fishing_rod_body", parts, root)
+    return root
+
+def watering_can():
+    root = empty("hand_r")
+    body, trim = mat("can_body", "#7FA3B8", 0.45, 0.5), mat("can_trim", "#5D8296", 0.45, 0.5)
+    parts = [(capsule_bm((0, -0.05, 0), (0, 0.05, 0), 0.011, 0.011, segs=12, hem=3), trim)]            # handle bar in the fist
+    for y in (-0.05, 0.05):
+        parts.append((tube_bm([(0, y, 0), (0, y * 1.05, -0.03), (0, y * 0.9, -0.06)], 0.007), trim))
+    parts.append((lathe([(-0.15, 0, 0, 0, 0), (-0.15, 0.062, 0.062, 0, 0), (-0.14, 0.07, 0.07, 0, 0), (-0.09, 0.072, 0.072, 0, 0),
+                         (-0.06, 0.066, 0.066, 0, 0), (-0.055, 0.04, 0.04, 0, 0), (-0.055, 0, 0, 0, 0)], 28), body))
+    parts.append((tube_bm(ring(0, 0, -0.06, 0.068, 0.068, 28), 0.005, cyclic=True), trim))
+    parts.append((tube_bm([(0, -0.06, -0.125), (0, -0.12, -0.10), (0, -0.17, -0.075)], 0.012), trim))    # spout forward and up
+    parts.append((lathe([(-0.07, 0, 0, 0, 0), (-0.07, 0.03, 0.03, 0, 0), (-0.065, 0.034, 0.034, 0, 0), (-0.065, 0, 0, 0, 0)], 16), trim))
+    parts[-1] = (parts[-1][0], trim)
+    obj("watering_can_body", parts, root)
+    return root
+
 def crate():
     root = empty("hand_r")
     wood, band = mat("crate_wood", TAN, 0.7, 0.2), mat("crate_band", DARK, 0.5, 0.4)
@@ -408,6 +442,10 @@ ITEMS = {
     "pennant": dict(name="Pennant", slots=["hand_r"], fn=pennant, fit={"critter": {"scale": 0.62}}, hold=dict(style="one_hand_raised", grip_r=(0, 0, 0), axis=(0, 0, 1))),
     "shovel": dict(name="Shovel", slots=["hand_r"], fn=shovel, fit={"critter": {"scale": 0.62}},
                    hold=dict(style="two_hand_diagonal", grip_r=(0, 0, 0), grip_l=(0, 0, 0.27), axis=(0, 0, 1))),
+    "fishing_rod": dict(name="Fishing Rod", slots=["hand_r"], fn=fishing_rod, fit={"critter": {"scale": 0.62}},
+                        hold=dict(style="one_hand_raised", grip_r=(0, 0, 0), axis=(0, 0, 1))),
+    "watering_can": dict(name="Watering Can", slots=["hand_r"], fn=watering_can, fit={"critter": {"scale": 0.62}},
+                         hold=dict(style="one_hand_low", grip_r=(0, 0, 0))),
     "crate": dict(name="Crate", slots=["hand_r"], fn=crate, hold=dict(style="two_hand_front", grip_r=(-0.125, 0, 0), grip_l=(0.125, 0, 0))),
     "parcel": dict(name="Parcel", slots=["hand_r"], fn=parcel, hold=dict(style="chest_clutch", grip_r=(-0.078, 0, 0), grip_l=(0.078, 0, 0))),
     # carried in the mouth (quadruped): no fist, no limb pose (avatar/kit/hold.py "mouth carry")

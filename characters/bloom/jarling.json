@@ -1,0 +1,97 @@
+{
+ "id": "bloom",
+ "name": "Bloom",
+ "notes": "From characters/bloom/look.md (Kaden's sheet 2026-11-10; proposed, playtest build). Skin and hair are not fixed by the sheet. Skirt is the kit's long_skirt costume piece (length 0.22, knees show below, mud decals).",
+ "head": {
+  "shape": "round",
+  "size": 1.0,
+  "ears": "round"
+ },
+ "skin": "#BF8150",
+ "face": {
+  "eyes": "round",
+  "brows": "soft",
+  "brow_color": "#3A2418",
+  "mouth": "smile",
+  "blush": 0.9,
+  "eye_y": -0.09,
+  "blush_color": "#F4A3B4",
+  "expression_list": [
+   "neutral",
+   "encouraging",
+   "humming",
+   "surprised"
+  ],
+  "expressions": {
+   "neutral": {
+    "mouth": "smile"
+   },
+   "encouraging": {
+    "eye_mode": "arc",
+    "mouth": "grin_top",
+    "brow_raise": 0.03,
+    "blush_add": 0.1
+   },
+   "humming": {
+    "eye_mode": "arc",
+    "mouth": "o",
+    "eye_scale": 0.9,
+    "brow_raise": 0.02
+   },
+   "surprised": {
+    "mouth": "o",
+    "eye_scale": 1.25,
+    "brow_raise": 0.12
+   }
+  }
+ },
+ "hair": {
+  "style": "bob",
+  "color": "#3A2418"
+ },
+ "headwear": {
+  "type": "sun_hat",
+  "color": "#E3C27A",
+  "band": "#F7A8CB",
+  "flower": "#8E9BF0",
+  "flower_mid": "#FFD23F",
+  "flower_deg": 50,
+  "fit": 0.55
+ },
+ "body": {
+  "build": "puffy",
+  "height": 0.85,
+  "leg_scale": 0.85,
+  "width": 1.1,
+  "belly": 0.2
+ },
+ "outfit": {
+  "top": {
+   "style": "tee",
+   "color": "#F7A8CB"
+  },
+  "bottoms": {
+   "style": "shorts",
+   "color": "#5B7FB8"
+  },
+  "shoes": {
+   "style": "clogs",
+   "color": "#8A4FC4"
+  }
+ },
+ "costume": [
+  {
+   "piece": "long_skirt",
+   "color": "#5B7FB8",
+   "length": 0.22,
+   "mud": "#6B4A33"
+  }
+ ],
+ "ref_action": {
+  "action": "idle",
+  "frame": 1,
+  "expression": "neutral",
+  "yaw": -28,
+  "gear": "watering_can"
+ }
+}

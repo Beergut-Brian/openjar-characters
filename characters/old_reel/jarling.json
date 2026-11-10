@@ -1,0 +1,83 @@
+{
+ "id": "old_reel",
+ "name": "Old Reel",
+ "notes": "From characters/old_reel/look.md (Kaden's sheet 2026-11-10; proposed, playtest build). Skin and hair are not fixed by the sheet. The kit lure takes one colour (blue); the sheet's yellow is not modelled in 3D.",
+ "head": {
+  "shape": "round",
+  "size": 1.0,
+  "ears": "round"
+ },
+ "skin": "#E0A882",
+ "face": {
+  "eyes": "drop",
+  "brows": "bushy",
+  "brow_color": "#F2F0EA",
+  "mouth": "smile",
+  "lid": 0.45,
+  "eye_y": -0.08,
+  "expressions": {
+   "neutral": {
+    "lid": 0.45,
+    "mouth": "smile"
+   },
+   "happy": {
+    "lid": 1.0,
+    "mouth": "grin"
+   },
+   "surprised": {
+    "lid": 0.2,
+    "mouth": "o",
+    "brow_raise": 0.14
+   },
+   "determined": {
+    "lid": 0.3,
+    "mouth": "set",
+    "brow_tilt": 0.2
+   }
+  }
+ },
+ "hair": {
+  "style": "buzz",
+  "color": "#F2F0EA"
+ },
+ "headwear": {
+  "type": "bucket_hat",
+  "color": "#C8A97A",
+  "lure": "#3F8FD8",
+  "fit": 0.55
+ },
+ "body": {
+  "build": "round",
+  "height": 1.2,
+  "leg_scale": 1.05,
+  "width": 1.1,
+  "belly": 0.7
+ },
+ "outfit": {
+  "top": {
+   "style": "long",
+   "color": "#F1E7CF",
+   "pattern": {
+    "type": "vest",
+    "accent": "#A89B6E"
+   }
+  },
+  "bottoms": {
+   "style": "shorts",
+   "color": "#6E4B30"
+  },
+  "shoes": {
+   "style": "rain_boots",
+   "color": "#F6C833",
+   "height": 0.3
+  }
+ },
+ "costume": [],
+ "ref_action": {
+  "action": "idle",
+  "frame": 1,
+  "expression": "neutral",
+  "yaw": 28,
+  "gear": "fishing_rod"
+ }
+}

@@ -54,6 +54,32 @@
       ]
     },
     {
+      "id": "bloom",
+      "name": "Bloom",
+      "kind": "universal",
+      "player": null,
+      "playable": true,
+      "default_for": null,
+      "body_type": "standard",
+      "first_appears": "Life of a Worm.",
+      "approved": false,
+      "bible": "characters/bloom/bible.md",
+      "look": "characters/bloom/look.md",
+      "refs": "characters/bloom/refs/",
+      "voice": "characters/bloom/voice/",
+      "model_3d": "characters/bloom/refs/jarling/bloom.glb",
+      "jarling_params": "characters/bloom/jarling.json",
+      "pixel": {
+        "alt_form": "the-hill pixel",
+        "source": "tools/pixel/bloom.py",
+        "function": "bloom"
+      },
+      "barks": [],
+      "alt_forms": [
+        "the-hill pixel: proposed"
+      ]
+    },
+    {
       "id": "boxbot",
       "name": "Boxbot",
       "kind": "universal",
@@ -394,6 +420,32 @@
       "alt_forms": []
     },
     {
+      "id": "old_reel",
+      "name": "Old Reel",
+      "kind": "universal",
+      "player": null,
+      "playable": true,
+      "default_for": null,
+      "body_type": "standard",
+      "first_appears": "Life of a Worm.",
+      "approved": false,
+      "bible": "characters/old_reel/bible.md",
+      "look": "characters/old_reel/look.md",
+      "refs": "characters/old_reel/refs/",
+      "voice": "characters/old_reel/voice/",
+      "model_3d": "characters/old_reel/refs/jarling/old_reel.glb",
+      "jarling_params": "characters/old_reel/jarling.json",
+      "pixel": {
+        "alt_form": "the-hill pixel",
+        "source": "tools/pixel/old_reel.py",
+        "function": "old_reel"
+      },
+      "barks": [],
+      "alt_forms": [
+        "the-hill pixel: proposed"
+      ]
+    },
+    {
       "id": "professor_fizz",
       "name": "Professor Fizz",
       "kind": "universal",
@@ -581,6 +633,7 @@
     "chuck",
     "astro_ana",
     "big_tiny",
+    "bloom",
     "boxbot",
     "captain_crumbs",
     "coach_whistle",
@@ -589,6 +642,7 @@
     "granny_gravel",
     "lampy",
     "mayor_pip",
+    "old_reel",
     "professor_fizz",
     "rexy",
     "ribbit",
@@ -832,27 +886,6 @@
   },
   "proposed": [
     {
-      "id": "bloom",
-      "name": "Bloom",
-      "kind": "universal",
-      "player": null,
-      "playable": false,
-      "default_for": null,
-      "body_type": "standard",
-      "first_appears": "Life of a Worm.",
-      "approved": false,
-      "bible": "proposals/bloom/bible.md",
-      "look": "proposals/bloom/look.md",
-      "refs": "proposals/bloom/refs/",
-      "voice": "proposals/bloom/voice/",
-      "model_3d": null,
-      "jarling_params": null,
-      "pixel": null,
-      "barks": [],
-      "alt_forms": [],
-      "status": "proposed"
-    },
-    {
       "id": "cow",
       "name": "Patience the Cow",
       "kind": "universal",
@@ -868,27 +901,6 @@
       "voice": "proposals/cow/voice/",
       "model_3d": "proposals/cow/refs/jarling/cow.glb",
       "jarling_params": "proposals/cow/jarling.json",
-      "pixel": null,
-      "barks": [],
-      "alt_forms": [],
-      "status": "proposed"
-    },
-    {
-      "id": "old_reel",
-      "name": "Old Reel",
-      "kind": "universal",
-      "player": null,
-      "playable": false,
-      "default_for": null,
-      "body_type": "standard",
-      "first_appears": "Life of a Worm.",
-      "approved": false,
-      "bible": "proposals/old_reel/bible.md",
-      "look": "proposals/old_reel/look.md",
-      "refs": "proposals/old_reel/refs/",
-      "voice": "proposals/old_reel/voice/",
-      "model_3d": null,
-      "jarling_params": null,
       "pixel": null,
       "barks": [],
       "alt_forms": [],

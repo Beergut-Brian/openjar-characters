@@ -15,6 +15,8 @@ recurring character on its own. Rendered in each game's own technique, but alway
 | [Foreman Dot](characters/foreman_dot/bible.md) | **yes** (proposed, playtest build) | site lead in The Hill | Short, stocky human site lead; yellow hard hat sitting low, orange hi-vis shirt. Not the Gnome Foreman |
 | [Granny Gravel](characters/granny_gravel/bible.md) | **yes** (proposed, playtest build) | steamroller driver in The Hill | White bun with safety goggles pushed up into it, lavender cardigan, long skirt, yellow sneakers |
 | [Lampy](characters/lampy/bible.md) | **yes** (proposed, playtest build) | tunnel guide in The Hill | Tall and thin under a white miner's helmet whose headlamp is a real light |
+| [Bloom](characters/bloom/bible.md) | **yes** (proposed, playtest build) | gardener in Life of a Worm | Short and soft under a huge floppy straw sun hat with one flower; pink tee, muddy knees, purple clogs |
+| [Old Reel](characters/old_reel/bible.md) | **yes** (proposed, playtest build) | the worm's fisherman nemesis in Life of a Worm | Tall and round under a tan bucket hat with one lure; bushy white brows, khaki vest, tall yellow rain boots |
 | [Mayor Pip](characters/mayor_pip/bible.md) | **yes** (proposed, playtest build) | mayor of Hillville in The Hill | The smallest Jarling under a top hat nearly half his height; gold sash |
 | [Professor Fizz](characters/professor_fizz/bible.md) | **yes** (proposed, playtest build) | inventor in Junk Yard Zap | Wild white hair straight up, goggles on her forehead, lab coat, one scorch-mark eyebrow |
 | [Scrap](characters/scrap/bible.md) | **yes** (proposed, playtest build) | junkyard kid in Junk Yard Zap | Small kid in a colander helmet, patched yellow shirt, one orange shoe and one purple |
@@ -29,7 +31,7 @@ recurring character on its own. Rendered in each game's own technique, but alway
 | [The Caveman](characters/caveman/bible.md) | no (resident) | museum keeper in The Hill | Delighted by everything modern, polishes treasures, one ice cube on his head |
 | [The Dragon](characters/dragon/bible.md) | no (resident) | landmark (Dragon Perch) in The Hill | Huge, sleepy, huggable, snores smoke rings |
 
-All twenty-three are `kind: universal`. The seventeen marked *proposed, playtest build* are from Kaden's sheets of 2026-11-10 (Jarlings batch 1: Spaceballs; batch 2: Junk Yard Zap and The Hill; batch 3: the universal sillies): built so he can playtest the chooser, not yet signed off.
+The nineteen marked *proposed, playtest build* are from Kaden's sheets of 2026-11-10 (Jarlings batch 1: Spaceballs; batch 2: Junk Yard Zap and The Hill; batch 3: the universal sillies; batch 4: Life of a Worm, Bloom and Old Reel): built so he can playtest the chooser, not yet signed off.
 
 **Alt forms.** A look.md section `## Alt form: <name>` is an approved per-game variant (listed in
 `characters.json` as `alt_forms`). Jeff and Chuck have `the-hill pixel` (hard hat, 32 px), shown in
@@ -50,7 +52,8 @@ Chuck (P2 default), then Astro Ana, Coach Whistle, Ribbit and Zorp (batch 1, pro
 then Big Tiny, Foreman Dot, Granny Gravel, Lampy, Mayor Pip, Professor Fizz and Scrap (batch 2, proposed; lineups
 `characters/batch2_lineup.png`, `characters/batch2_pixel_lineup.png`, read check `characters/batch2_read_check.png`),
 then Boxbot, Captain Crumbs, El Burrito, Rexy, Sir Clank and Snooze (batch 3, the universal sillies, proposed; lineups
-`characters/batch3_lineup.png`, `characters/batch3_pixel_lineup.png`, read check `characters/batch3_read_check.png`).
+`characters/batch3_lineup.png`, `characters/batch3_pixel_lineup.png`, read check `characters/batch3_read_check.png`), then Bloom and Old Reel (batch 4, proposed; lineups `characters/batch4_lineup.png`,
+`characters/batch4_pixel_lineup.png`, read check `characters/batch4_read_check.png`). The index sorts the non-default playables by id, so batch order is not kept in `roster`.
 The Hill residents (Mole, Gnome Foreman, Caveman, Dragon) are not playable.
 
 **3D-first (Kaden, 2026-11-10).** A character is designed as a Jarling first; every other style is
