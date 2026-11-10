@@ -59,8 +59,8 @@ def lineup():
     x = 40
     for k in (1, 2, 3):
         for n, s in sp:
-            b = up(s, k); im.alpha_composite(b, (x, 720 - b.height)); x += b.width + 4
-        x += 40
+            b = up(s, k); im.alpha_composite(b, (x, 720 - b.height)); x += b.width - 10 * k
+        x += 60
     d.text((40, 760), "silhouettes, 16 px tall, x4 and x1", fill=SOFT, font=font(18)); x = 40
     for n, s in sp:
         b = up(sil16(s), 4); im.alpha_composite(b, (x, 870 - b.height)); x += b.width + 40

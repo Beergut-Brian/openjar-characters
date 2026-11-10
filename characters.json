@@ -2,6 +2,32 @@
   "version": 1,
   "characters": [
     {
+      "id": "big_tiny",
+      "name": "Big Tiny",
+      "kind": "universal",
+      "player": null,
+      "playable": true,
+      "default_for": null,
+      "body_type": "standard",
+      "first_appears": "Junk Yard Zap.",
+      "approved": false,
+      "bible": "characters/big_tiny/bible.md",
+      "look": "characters/big_tiny/look.md",
+      "refs": "characters/big_tiny/refs/",
+      "voice": "characters/big_tiny/voice/",
+      "model_3d": "characters/big_tiny/refs/jarling/big_tiny.glb",
+      "jarling_params": "characters/big_tiny/jarling.json",
+      "pixel": {
+        "alt_form": "the-hill pixel",
+        "source": "tools/pixel/big_tiny.py",
+        "function": "big_tiny"
+      },
+      "barks": [],
+      "alt_forms": [
+        "the-hill pixel: proposed"
+      ]
+    },
+    {
       "id": "caveman",
       "name": "The Caveman",
       "kind": "universal",
@@ -68,6 +94,32 @@
       "alt_forms": []
     },
     {
+      "id": "foreman_dot",
+      "name": "Foreman Dot",
+      "kind": "universal",
+      "player": null,
+      "playable": true,
+      "default_for": null,
+      "body_type": "standard",
+      "first_appears": "The Hill / Hillville.",
+      "approved": false,
+      "bible": "characters/foreman_dot/bible.md",
+      "look": "characters/foreman_dot/look.md",
+      "refs": "characters/foreman_dot/refs/",
+      "voice": "characters/foreman_dot/voice/",
+      "model_3d": "characters/foreman_dot/refs/jarling/foreman_dot.glb",
+      "jarling_params": "characters/foreman_dot/jarling.json",
+      "pixel": {
+        "alt_form": "the-hill pixel",
+        "source": "tools/pixel/foreman_dot.py",
+        "function": "foreman_dot"
+      },
+      "barks": [],
+      "alt_forms": [
+        "the-hill pixel: proposed"
+      ]
+    },
+    {
       "id": "gnome_foreman",
       "name": "The Gnome Foreman",
       "kind": "universal",
@@ -86,6 +138,32 @@
       "pixel": null,
       "barks": [],
       "alt_forms": []
+    },
+    {
+      "id": "granny_gravel",
+      "name": "Granny Gravel",
+      "kind": "universal",
+      "player": null,
+      "playable": true,
+      "default_for": null,
+      "body_type": "standard",
+      "first_appears": "The Hill / Hillville.",
+      "approved": false,
+      "bible": "characters/granny_gravel/bible.md",
+      "look": "characters/granny_gravel/look.md",
+      "refs": "characters/granny_gravel/refs/",
+      "voice": "characters/granny_gravel/voice/",
+      "model_3d": "characters/granny_gravel/refs/jarling/granny_gravel.glb",
+      "jarling_params": "characters/granny_gravel/jarling.json",
+      "pixel": {
+        "alt_form": "the-hill pixel",
+        "source": "tools/pixel/granny_gravel.py",
+        "function": "granny_gravel"
+      },
+      "barks": [],
+      "alt_forms": [
+        "the-hill pixel: proposed"
+      ]
     },
     {
       "id": "jeff",
@@ -114,6 +192,58 @@
       ]
     },
     {
+      "id": "lampy",
+      "name": "Lampy",
+      "kind": "universal",
+      "player": null,
+      "playable": true,
+      "default_for": null,
+      "body_type": "standard",
+      "first_appears": "The Hill / Hillville.",
+      "approved": false,
+      "bible": "characters/lampy/bible.md",
+      "look": "characters/lampy/look.md",
+      "refs": "characters/lampy/refs/",
+      "voice": "characters/lampy/voice/",
+      "model_3d": "characters/lampy/refs/jarling/lampy.glb",
+      "jarling_params": "characters/lampy/jarling.json",
+      "pixel": {
+        "alt_form": "the-hill pixel",
+        "source": "tools/pixel/lampy.py",
+        "function": "lampy"
+      },
+      "barks": [],
+      "alt_forms": [
+        "the-hill pixel: proposed"
+      ]
+    },
+    {
+      "id": "mayor_pip",
+      "name": "Mayor Pip",
+      "kind": "universal",
+      "player": null,
+      "playable": true,
+      "default_for": null,
+      "body_type": "standard",
+      "first_appears": "The Hill / Hillville.",
+      "approved": false,
+      "bible": "characters/mayor_pip/bible.md",
+      "look": "characters/mayor_pip/look.md",
+      "refs": "characters/mayor_pip/refs/",
+      "voice": "characters/mayor_pip/voice/",
+      "model_3d": "characters/mayor_pip/refs/jarling/mayor_pip.glb",
+      "jarling_params": "characters/mayor_pip/jarling.json",
+      "pixel": {
+        "alt_form": "the-hill pixel",
+        "source": "tools/pixel/mayor_pip.py",
+        "function": "mayor_pip"
+      },
+      "barks": [],
+      "alt_forms": [
+        "the-hill pixel: proposed"
+      ]
+    },
+    {
       "id": "mole",
       "name": "The Mole",
       "kind": "universal",
@@ -132,11 +262,70 @@
       "pixel": null,
       "barks": [],
       "alt_forms": []
+    },
+    {
+      "id": "professor_fizz",
+      "name": "Professor Fizz",
+      "kind": "universal",
+      "player": null,
+      "playable": true,
+      "default_for": null,
+      "body_type": "standard",
+      "first_appears": "Junk Yard Zap.",
+      "approved": false,
+      "bible": "characters/professor_fizz/bible.md",
+      "look": "characters/professor_fizz/look.md",
+      "refs": "characters/professor_fizz/refs/",
+      "voice": "characters/professor_fizz/voice/",
+      "model_3d": "characters/professor_fizz/refs/jarling/professor_fizz.glb",
+      "jarling_params": "characters/professor_fizz/jarling.json",
+      "pixel": {
+        "alt_form": "the-hill pixel",
+        "source": "tools/pixel/professor_fizz.py",
+        "function": "professor_fizz"
+      },
+      "barks": [],
+      "alt_forms": [
+        "the-hill pixel: proposed"
+      ]
+    },
+    {
+      "id": "scrap",
+      "name": "Scrap",
+      "kind": "universal",
+      "player": null,
+      "playable": true,
+      "default_for": null,
+      "body_type": "standard",
+      "first_appears": "Junk Yard Zap.",
+      "approved": false,
+      "bible": "characters/scrap/bible.md",
+      "look": "characters/scrap/look.md",
+      "refs": "characters/scrap/refs/",
+      "voice": "characters/scrap/voice/",
+      "model_3d": "characters/scrap/refs/jarling/scrap.glb",
+      "jarling_params": "characters/scrap/jarling.json",
+      "pixel": {
+        "alt_form": "the-hill pixel",
+        "source": "tools/pixel/scrap.py",
+        "function": "scrap"
+      },
+      "barks": [],
+      "alt_forms": [
+        "the-hill pixel: proposed"
+      ]
     }
   ],
   "roster": [
     "jeff",
-    "chuck"
+    "chuck",
+    "big_tiny",
+    "foreman_dot",
+    "granny_gravel",
+    "lampy",
+    "mayor_pip",
+    "professor_fizz",
+    "scrap"
   ],
   "defaults": {
     "P1": "jeff",
@@ -147,6 +336,7 @@
     "P2": "#e4393c"
   },
   "player_colour_min_delta_e": 20.0,
+  "player_colour_min_delta_e_skin_hair": 10.0,
   "body_types": {
     "standard": {
       "rig": "avatar/kit (Jarling humanoid)",
@@ -337,27 +527,6 @@
       "status": "proposed"
     },
     {
-      "id": "big_tiny",
-      "name": "Big Tiny",
-      "kind": "universal",
-      "player": null,
-      "playable": false,
-      "default_for": null,
-      "body_type": "standard",
-      "first_appears": "Junk Yard Zap.",
-      "approved": false,
-      "bible": "proposals/big_tiny/bible.md",
-      "look": "proposals/big_tiny/look.md",
-      "refs": "proposals/big_tiny/refs/",
-      "voice": "proposals/big_tiny/voice/",
-      "model_3d": null,
-      "jarling_params": null,
-      "pixel": null,
-      "barks": [],
-      "alt_forms": [],
-      "status": "proposed"
-    },
-    {
       "id": "bloom",
       "name": "Bloom",
       "kind": "universal",
@@ -463,90 +632,6 @@
       "status": "proposed"
     },
     {
-      "id": "foreman_dot",
-      "name": "Foreman Dot",
-      "kind": "universal",
-      "player": null,
-      "playable": false,
-      "default_for": null,
-      "body_type": "standard",
-      "first_appears": "The Hill / Hillville.",
-      "approved": false,
-      "bible": "proposals/foreman_dot/bible.md",
-      "look": "proposals/foreman_dot/look.md",
-      "refs": "proposals/foreman_dot/refs/",
-      "voice": "proposals/foreman_dot/voice/",
-      "model_3d": null,
-      "jarling_params": null,
-      "pixel": null,
-      "barks": [],
-      "alt_forms": [],
-      "status": "proposed"
-    },
-    {
-      "id": "granny_gravel",
-      "name": "Granny Gravel",
-      "kind": "universal",
-      "player": null,
-      "playable": false,
-      "default_for": null,
-      "body_type": "standard",
-      "first_appears": "The Hill / Hillville.",
-      "approved": false,
-      "bible": "proposals/granny_gravel/bible.md",
-      "look": "proposals/granny_gravel/look.md",
-      "refs": "proposals/granny_gravel/refs/",
-      "voice": "proposals/granny_gravel/voice/",
-      "model_3d": null,
-      "jarling_params": null,
-      "pixel": null,
-      "barks": [],
-      "alt_forms": [],
-      "status": "proposed"
-    },
-    {
-      "id": "lampy",
-      "name": "Lampy",
-      "kind": "universal",
-      "player": null,
-      "playable": false,
-      "default_for": null,
-      "body_type": "standard",
-      "first_appears": "The Hill / Hillville.",
-      "approved": false,
-      "bible": "proposals/lampy/bible.md",
-      "look": "proposals/lampy/look.md",
-      "refs": "proposals/lampy/refs/",
-      "voice": "proposals/lampy/voice/",
-      "model_3d": null,
-      "jarling_params": null,
-      "pixel": null,
-      "barks": [],
-      "alt_forms": [],
-      "status": "proposed"
-    },
-    {
-      "id": "mayor_pip",
-      "name": "Mayor Pip",
-      "kind": "universal",
-      "player": null,
-      "playable": false,
-      "default_for": null,
-      "body_type": "standard",
-      "first_appears": "The Hill / Hillville.",
-      "approved": false,
-      "bible": "proposals/mayor_pip/bible.md",
-      "look": "proposals/mayor_pip/look.md",
-      "refs": "proposals/mayor_pip/refs/",
-      "voice": "proposals/mayor_pip/voice/",
-      "model_3d": null,
-      "jarling_params": null,
-      "pixel": null,
-      "barks": [],
-      "alt_forms": [],
-      "status": "proposed"
-    },
-    {
       "id": "old_reel",
       "name": "Old Reel",
       "kind": "universal",
@@ -560,27 +645,6 @@
       "look": "proposals/old_reel/look.md",
       "refs": "proposals/old_reel/refs/",
       "voice": "proposals/old_reel/voice/",
-      "model_3d": null,
-      "jarling_params": null,
-      "pixel": null,
-      "barks": [],
-      "alt_forms": [],
-      "status": "proposed"
-    },
-    {
-      "id": "professor_fizz",
-      "name": "Professor Fizz",
-      "kind": "universal",
-      "player": null,
-      "playable": false,
-      "default_for": null,
-      "body_type": "standard",
-      "first_appears": "Junk Yard Zap.",
-      "approved": false,
-      "bible": "proposals/professor_fizz/bible.md",
-      "look": "proposals/professor_fizz/look.md",
-      "refs": "proposals/professor_fizz/refs/",
-      "voice": "proposals/professor_fizz/voice/",
       "model_3d": null,
       "jarling_params": null,
       "pixel": null,
@@ -623,27 +687,6 @@
       "look": "proposals/ribbit/look.md",
       "refs": "proposals/ribbit/refs/",
       "voice": "proposals/ribbit/voice/",
-      "model_3d": null,
-      "jarling_params": null,
-      "pixel": null,
-      "barks": [],
-      "alt_forms": [],
-      "status": "proposed"
-    },
-    {
-      "id": "scrap",
-      "name": "Scrap",
-      "kind": "universal",
-      "player": null,
-      "playable": false,
-      "default_for": null,
-      "body_type": "standard",
-      "first_appears": "Junk Yard Zap.",
-      "approved": false,
-      "bible": "proposals/scrap/bible.md",
-      "look": "proposals/scrap/look.md",
-      "refs": "proposals/scrap/refs/",
-      "voice": "proposals/scrap/voice/",
       "model_3d": null,
       "jarling_params": null,
       "pixel": null,
