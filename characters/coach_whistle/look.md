@@ -70,7 +70,7 @@ Sprite source: `tools/pixel/coach_whistle.py` (`coach_whistle()`)
 - **Frames:** front form (40 x 32) and the 128 x 224 player sheet: idle0-1, walk0-3, jump, fall, side0-2, down0-2, ride,
   sleep0-1 (three-quarter view facing right, feet on row 30; hand at (22, 21) idle, The Hill's dig hand positions).
 - **Should read as:**
-  - a referee's whistle hanging on a yellow cord at the chest (not a pipe, not a medal): a 2 x 2 silver block with a darker
+  - a referee's whistle hanging on a yellow cord at the chest (not a pipe, not a medal): a 2 x 2 silver barrel plus a 1 px mouthpiece to its left with a darker
     mouthpiece pixel on a dark patch at the bottom of a yellow cord V, 6 rows below the mouth, in every frame
   - navy baseball cap: navy dome with a 2 px brim to the right (a brim to both sides in the front form)
   - referee stripes: alternating 1 px black / white columns on the torso
