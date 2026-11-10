@@ -111,8 +111,8 @@ def frame(name, eyes_shut=False):
     s.r(10 + hx, 8 + hy, 21 + hx, 10 + hy, HAIR)
     s.r(9 + hx, 8 + hy, 13 + hx, 14 + hy, HAIR)
     s.px(HAIR_D, (9 + hx, 12 + hy), (9 + hx, 13 + hy), (9 + hx, 14 + hy), (10 + hx, 14 + hy), (10 + hx, 7 + hy))
-    s.r(12 + hx, 4 + hy, 15 + hx, 6 + hy, HAIR); s.cut(15 + hx, 4 + hy, 15 + hx, 4 + hy)
-    s.px(HAIR_D, (15 + hx, 6 + hy))                                             # bun shade, low on one side
+    s.r(11 + hx, 5 + hy, 16 + hx, 6 + hy, HAIR); s.r(12 + hx, 4 + hy, 15 + hx, 4 + hy, HAIR)   # bun: 4 px top, 6 px wide ball
+    s.px(HAIR_D, (11 + hx, 6 + hy), (12 + hx, 6 + hy))                                             # bun shade, low on one side
     s.px(SKIN_D, (12 + hx, 12 + hy), (12 + hx, 13 + hy), (13 + hx, 13 + hy))     # ear
     s.px(HAIR, (12 + hx, 11 + hy))
     # safety goggles pushed up into the hair: strap row 9 back through the hair, two lenses on the hairline
@@ -160,8 +160,8 @@ def granny_gravel(view="front"):
     s.px(SKIN_D, (13, 12), (13, 13), (26, 12), (26, 13))                          # ears
     s.r(14, 7, 25, 7, HAIR); s.r(14, 8, 25, 10, HAIR); s.r(13, 8, 14, 11, HAIR); s.r(25, 8, 26, 11, HAIR)
     s.px(HAIR_D, (13, 10), (13, 11), (26, 10), (26, 11), (14, 7), (25, 7))
-    s.r(18, 4, 21, 6, HAIR); s.cut(21, 4, 21, 4)
-    s.px(HAIR_D, (21, 6))                                                         # bun shade, low on one side
+    s.r(17, 5, 22, 6, HAIR); s.r(18, 4, 21, 4, HAIR)                                 # bun: 4 px top, 6 px wide ball
+    s.px(HAIR_D, (21, 6), (22, 6))                                                         # bun shade, low on one side
     # safety goggles up in the hair: strap row, two framed lenses on the hairline
     s.r(13, 9, 26, 9, GOG)
     for lx in (16, 22):

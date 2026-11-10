@@ -91,10 +91,17 @@ skipped.
 1. Approved `bible.md` and `look.md` (README "Process for a new character"). Header:
    `**Kind:** universal. **Playable:** false. **Default for:** none. **Body:** standard.`
 2. **3D master first**: `jarling.json` on the standard body (only `build`, `height` 0.8-1.3,
-   `leg_scale` 0.8-1.2, `width` 0.75-1.5, `belly` 0-1; main colours ΔE2000 >= 20 from both player colours (`tools/check_colours.py <file>`); no player green/red anywhere), built to `refs/jarling/<id>.glb`, with
+   `leg_scale` 0.8-1.2, `width` 0.75-1.5, `belly` 0-1; outfit main colours ΔE2000 >= 20 from both player colours, skin and hair >= 10 (`tools/check_colours.py <file>`); no player green/red anywhere), built to `refs/jarling/<id>.glb`, with
    turnaround and expression renders. Credits in `CREDITS.md`.
 3. **Pixel form** for The Hill, traced from the 3D side view: a `## Alt form: the-hill pixel`
    section in `look.md` with `Sprite source: \`tools/pixel/<file>.py\` (\`<id>()\`)`.
+   From batch 1 on, each playable character has its own `tools/pixel/<id>.py` following
+   `tools/pixel/jarling_frames.py`: `<id>()` is the front form (40 x 32 canvas, 32 px = 1.2 m, feet on
+   the bottom row, 1 px `#2A1E2C` outline; this is what a game's `sync_characters.sh` vendors as
+   `pixel.png`), and `sheet()` is a 128 x 224 sheet of 32 x 32 frames facing right in The Hill's
+   player layout (rows idle, walk, air, dig_side, dig_down, ride, sleep; pivot 16,32), also saved as
+   `refs/pixel/<id>_frames.png` + `<id>_frames.json`. Check that every prop still reads at game size
+   (`tools/pixel/batch1_sheets.py read` is the pattern).
 4. **Voice set** in `voice/` (bark `.ogg`s, each credited).
 5. Once Kaden approves: set `**Playable:** true`, run `tools/build_index.py`, run
    `godot/run_tests.sh` (must end `RESULT: PASS`), PR, tag a release. Games see the new character

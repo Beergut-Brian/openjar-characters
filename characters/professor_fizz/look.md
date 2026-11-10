@@ -62,7 +62,7 @@ See "Alt form: the-hill pixel" below (as built).
 Sprite source: `tools/pixel/professor_fizz.py` (`professor_fizz()`)
 
 - **Height:** 32 px with the outline (the 3D at true scale is 36 px with the hair, squeezed to the 32 px frame): hair
-  mass 5 rows (3 rows of tufts over 2 solid rows), goggles 4, then a skin row, scorched brow 2, eyes 2, a skin row,
+  5 rows (four pointed locks, 2 to 4 rows tall, on one solid row), goggles 4, then a skin row, scorched brow 2, eyes 2, a skin row,
   grin 2 (the lower row is the chin row), lab coat 7, pants 3 (waist band + 2), sock 1, shoes 2.
 - **Palette:** hair `#F7F7F2` (+ `#D9D9D2`), goggle rims and bridge `#B8862E`, strap `#8A6420`, lenses `#9FD3E6`
   (+ glint `#E6F5FA`), skin `#F7CFAE` (+ `#DDAE8C`), scorched brow `#3A2E2A`, eyes `#2A1E2C` with a `#FFFFFF`
@@ -73,9 +73,10 @@ Sprite source: `tools/pixel/professor_fizz.py` (`professor_fizz()`)
   sleep0-1 (three-quarter view facing right, feet on row 30; hand at (22, 21) idle, The Hill's dig hand positions; jump
   tucks the feet without lifting the body, since the hair already reaches row 1).
 - **Should read as:**
-  - mad-scientist hair straight up (not a crown, not a chef hat): a white mass, 2 solid rows across the full head width,
-    then a flame-like clump of tufts 2-4 px wide merged at the base (gaps only in the top 2 rows), one tall tuft off-centre,
-    the outer tufts flicking out past the head; vertical `#D9D9D2` streaks run up through the mass; white hair runs down
+  - mad-scientist hair straight up (not a crown, not a chef hat): four pointed white locks of uneven height
+    (tips off-centre) on one solid row, with 1 px gaps between them that the outline turns dark; `#D9D9D2` on the left edge
+    of each lock (director's redraw after the read check: the first version read as a crown over the brass goggle band, the
+    second as a chef hat; this one reads as spiky white hair, shorter than the 3D's spray because of the 32 px frame); white hair runs down
     both sides of the face to the ears (front) and down the back of the head (frames)
   - round goggles pushed up on the forehead (not glasses, not a crown band): two 2 x 2 light-blue lenses, each with a 1 px
     brass rim (corners open, so they read round), a 1 px brass bridge, and a darker brass strap row only from the rims to

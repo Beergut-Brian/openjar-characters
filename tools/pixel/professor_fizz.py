@@ -58,21 +58,22 @@ LEGS = {
     "crouch": ((11, 8, 30), (17, 20, 30)),
 }
 
-# hair masses: rows of (W hair, S shade, . empty) from column X0, top row 1. Flame-like tufts merged at the
-# base (gaps only in the top 2 rows), then solid rows across the full head width.
+# hair: rows of (W hair, S shade, . empty) from column X0, top row 1. Four pointed locks of uneven height
+# (tips off-centre, notches down to the last row, which the outline turns into dark gaps between the locks): spiky hair, not a crown (no band, uneven
+# points) and not a chef hat (no flat puffy top). Director's redraw after the read check.
 FRONT_HAIR = (10, [
-    "..........SWW......W",
-    "SW..SWW...SWWW..SWW.",
-    ".SWWSWWWWSWWWWSWWW..",
-    "...WSWWWWSWWWWSW....",
-    "...WSWWWWSWWWWSW....",
+    "........W......W....",
+    "........WW..W.SW....",
+    "....W..SWW.SW.SWW...",
+    "...SWW.SWW.SWWSWW...",
+    "...SWWWWWWWWWWWWW...",
 ])
 FRAME_HAIR = (7, [
-    ".........SWW....W.",
-    "SW..SWW..SWWW..SW.",
-    ".SWWSWWWWSWWWWSW..",
-    "..WSWWWWSWWWWSWW..",
-    "..WSWWWWSWWWWSW...",
+    ".......W......W...",
+    ".......WW..W.SW...",
+    "...W..SWW.SW.SWW..",
+    "..SWW.SWW.SWWSWW..",
+    "..SWWWWWWWWWWWWW..",
 ])
 
 

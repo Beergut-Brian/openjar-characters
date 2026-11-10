@@ -13,7 +13,7 @@
   "brows": "thick",
   "brow_color": "#4A2F23",
   "mouth": "grin_top",
-  "eye_y": -0.1,
+  "eye_y": -0.13,
   "expressions": {
    "happy": {
     "mouth": "grin_top",
@@ -36,7 +36,7 @@
  "headwear": {
   "type": "hard_hat",
   "color": "#F5C518",
-  "fit": 0.27,
+  "fit": 0.34,
   "tilt_deg": 12
  },
  "body": {

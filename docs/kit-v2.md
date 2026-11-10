@@ -43,8 +43,12 @@ skin so the face still reads. Human skins keep the original colours exactly (Jef
 unchanged). Overrides: `face.blush_color`, `face.line_color`, `face.brow_color`.
 
 **The rule** (`avatar/kit/colour_rule.py`, `tools/check_colours.py`, run by `godot/run_tests.sh`):
-a playable character's main colours (skin, hair, headwear, top, bottoms, shoes) must be at least
-**CIE ΔE2000 20** from P1 green `#3cc24a` and P2 red `#e4393c`. A green alien uses a clearly
+a playable character's main **outfit** colours (headwear, top, bottoms, shoes) must be at least
+**CIE ΔE2000 20** from P1 green `#3cc24a` and P2 red `#e4393c`; **skin and hair need ΔE2000 10**
+(Gary's call, 2026-11-10: Kaden's sheet rule is about the main outfit colour; at 20 the check refused
+natural tones such as sienna skin `#A0522D` and auburn hair `#A34E25`, both 16.3 from P2 red. At 10
+every natural tone passes and a skin near P1 green, e.g. `#4FCB5C` at 2.9, still fails). The
+distances below are against the outfit limit of 20; as a skin, anything from 10 up passes. A green alien uses a clearly
 different green. Greens that pass: lime `#D4F25A` (20.8), mint `#A8F0D0` (21.7), pale mint
 `#B8F5D8` (23.3), sea `#7FD9C4` (21.5), olive `#7C8A2E` (20.5), dark olive `#6E7A2A` (24.8), teal
 `#2A9DB0` (37.2). Greens that fail: `#B6E33B` (17.0), `#8FE3B0` (15.8), forest `#2E8B3A` (16.9).

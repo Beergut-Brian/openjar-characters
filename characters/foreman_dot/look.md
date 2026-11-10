@@ -34,14 +34,15 @@ least ΔE00 20 from P1 green `#3cc24a` and P2 red `#e4393c`. Skin tone is not fi
 Built 2026-11-10 from `characters/foreman_dot/jarling.json` (standard humanoid body, kit v2).
 - **body:** `stocky`, height 0.85, leg_scale 0.85, width 1.1 (short and stocky)
 - **head:** `round` 1.0; skin `#D99E6E`; `bob` hair `#4A2F23`
-- **headwear:** `hard_hat` `#F5C518`, `fit` 0.27, tilted back 12 degrees: it sits low, just above the brows (the first try at `fit` 0.22
-  hid her eyes from a camera above her, so it came up a little; eyes lowered with `eye_y` -0.1)
+- **headwear:** `hard_hat` `#F5C518`, `fit` 0.34, tilted back 12 degrees: it sits low, on her brows (they are hidden; the eyes are
+  lowered with `eye_y` -0.13 so they stay visible, also from a camera above her. The example's `fit` 0.22 hid her eyes)
 - **face:** round eyes, thick brows, `grin_top` (confident open smile). Expressions: happy = closed-eye grin, surprised = `o`, determined = grin, brows down
 - **top:** `tee` `#F28A1E` with one white `hstripe` (hi-vis); **bottoms:** `pants` `#1F2D4F`; **shoes:** `chunky_boots` `#7A4E2A`
 - **ref action:** `cheer` frame 10
-- **Not the Gnome Foreman.** Dot is a clean-shaven human with a round yellow hard hat, dark bob, navy pants, 0.99 m to the hat top; the Gnome
-  Foreman (resident) is about half her height with a teal cone hat and a white beard. Side by side: `characters/batch2_foremen.png`.
-  Both wear orange and both are called "Foreman": flagged for Kaden
+- **Not the Gnome Foreman.** Dot is a clean-shaven human with a round yellow hard hat, dark bob, navy pants, 1.11 m to the hat top; the Gnome
+  Foreman (resident) has a tall teal cone hat, a big white beard, suspenders and a clipboard (1.23 m to the cone tip, so they are about the same size). Side by side: `characters/batch2_foremen.png`.
+  Their shirts are the same orange (Dot `#F28A1E`, the Gnome's vest `#F7932F`, ΔE2000 2.3) and both are called "Foreman": flagged for Kaden.
+  Told apart by hat (round yellow vs teal cone), beard, and navy pants
 - **Not built:** a clipboard in hand (held props wait for the held-item hold styles, not on `main` yet)
 
 ### 2D pixel (The Hill)

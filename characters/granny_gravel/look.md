@@ -67,8 +67,8 @@ Sprite source: `tools/pixel/granny_gravel.py` (`granny_gravel()`)
   skirt hides the legs: only the sneakers step (a lifted foot shows just its sole row under the hem) and the hem band
   sways 1 px (walk0 +1, walk2 -1, side1 +1, down1 -1).
 - **Should read as:**
-  - a round white bun on the crown (not a hat tip, not a spire): rows of 3, 4, 4 px (flat-ish top, one top corner cut),
-    sitting directly on a flat-topped hair dome, one `#CFCBC2` shade pixel low on one side; one px back from centre in
+  - a round white bun on the crown (not a hat tip, not a spire): rows of 4, 6, 6 px (half the head's width, as in the 3D),
+    sitting directly on the hair dome, two `#CFCBC2` shade pixels low on one side (director's redraw: the 4 px bun read as a peak); one px back from centre in
     the frames
   - safety goggles pushed up into the hair (not glasses over the eyes, not a hairband): a dark `#4A4F5A` strap row with two
     4 x 3 dark frames each holding a 2 x 2 light-blue lens, on the hairline with white hair above and at the sides, two skin
