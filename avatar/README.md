@@ -51,11 +51,11 @@ for non-playable residents only (README "Playable characters").
 
 - **Bones.** All types share `root`, `spine`, `head`, `arm.L/R`, `hand.L/R`, `leg.L/R`, `foot.L/R`
   with the same meaning and parenting, so game code that nods a head or squashes `root` works on
-  anyone. `critter` adds `prop` (a held item, child of `spine`); its leg bones are short stubs
+  anyone. `critter` adds `prop` (a spare attachment bone, child of `spine`; held items go on the hand slots); its leg bones are short stubs
   inside the body. `giant` adds `tail.1` > `tail.2` > `tail.3` (from `root`) and `wing.L/R` (from `spine`).
 - **Actions.** Every type has `idle` (loop), `run` (loop: that body's way of getting about, a
   shuffle for a critter, a slow waddle for a giant) and `cheer` (loop). `standard` also has `kick`.
-  `critter` adds `popup` and `bow`; `giant` adds `yawn`, `wave`, `flap` (loop) and `sleep` (loop).
+  `critter` adds `popup`, `bow` and `dig` (loop, for a two-handed tool); `giant` adds `yawn`, `wave`, `flap` (loop) and `sleep` (loop).
   A standard character lists extra actions its bible needs in `"actions"` (registered in a
   `pieces_*.py` module, e.g. `march`, `write`, `polish`).
 - **Equipment slots** wherever the body has the matching part, with the same names, axes and fit
@@ -87,6 +87,8 @@ avatar/kit/render_refs.py      turnaround / expressions / action / side renders 
 avatar/kit/sprite_side.py      Pillow: the side render at The Hill's sprite scale (tracing base for 2D)
 avatar/kit/pieces_*.py         kit pieces for the standard body (hats, beards, tunics, props, extra actions)
 avatar/kit/body_*.py           non-standard body types (critter, giant)
+avatar/kit/hold.py             held items: grips, hold styles, fists (see "Holding items")
+avatar/kit/render_hold.py      the hold sheet (renders/hold_check.png) and the fist-to-grip check (--check)
 avatar/kit/render_scenes.py    style_mock.png and generic_lineup.png
 avatar/kit/render_common.py    shared lights / sky / camera
 avatar/kit/render_scenes_ball.py  the six-panel ball used in renders
@@ -252,6 +254,54 @@ eq.equip(JarlingGear.load_json("res://addons/openjar/characters/avatar/gear/snea
 
 Starter set (proof art, a later Art lane redoes it): `sneakers`, `boots`, `rocket_boots`,
 `kneepads`, `cape`, `jetpack`, `hat`, `sunglasses`, `gloves`, `belt`.
+
+## Holding items (hold styles)
+
+Kaden, 2026-11-10: *"Can we make sure the Jarlings can hold items correctly?"* Every body type
+(standard, critter, giant) holds things the same way. Code: `avatar/kit/hold.py` (Blender: renders,
+checks, baking) and `godot/jarling_hold.gd` (runtime). Proof: `kit/renders/hold_check.png`.
+
+- **A held item defines grips.** In its gear `.json`: `"hold": {"style", "grip_r", "grip_l", "axis"}`
+  (item space, glTF axes: y up, +z front). `grip_r` is where the main hand closes (the hand whose
+  slot the item is in), `grip_l` (optional) where the off hand closes, `axis` (optional) the
+  handle's direction at `grip_r`, pointing at the item's top. `build_gear.py` also writes the
+  resolved poses per body type into the JSON, so the runtime has no table of its own.
+- **The hand closes.** The open mitten (`hand_l/r` part) is hidden and a closed fist sits on the
+  hand slot, in the hand's own material. The item is turned so `axis` runs through the fist and
+  `grip_r` is at the fist's centre, so a handle always passes through the fist.
+- **Five hold styles**, each a body-independent arm pose (directions in character space):
+  `one_hand_low` (hangs from the fist: lantern, bucket, a zapper at the hip), `one_hand_raised`
+  (upright in front: pennant, torch, club), `two_hand_diagonal` (across the body: shovel, broom),
+  `two_hand_front` (out front between both fists: crate, tray), `chest_clutch` (hugged: parcel).
+- **Layered on the actions.** The holding arm keeps the hold pose and lets a little of the
+  action's own arm motion through (`follow`, more in `cheer`); legs, spine and head animate as
+  usual. For two-handed items the main hand turns about its wrist and the off arm aims so the off
+  fist is exactly on `grip_l` (no elbows: the reach is fixed, so it is a sphere-sphere solve; an
+  arm stretches a little when a grip is out of reach). In `dig` the action aims the tool itself.
+- **A character's own held pieces** (the Gnome's `clipboard`, the Caveman's `cloth_club`:
+  `kit.HELD`) are built in a fist and their hold pose is baked into `idle`, `run`, `kick`, `cheer`
+  in the glb (rig extras `jarling_holds`), so they need no code at all.
+
+**How a game uses hold styles.**
+
+```gdscript
+var eq := JarlingEquipment.new()
+jeff.add_child(eq)
+eq.equip(JarlingGear.load_json(GEAR + "shovel.json"))   # two_hand_diagonal: both fists on the handle
+eq.hold_style(&"hand_r")                                 # "two_hand_diagonal"
+eq.unequip(&"hand_r")                                    # hands open again
+```
+
+That is all: keep playing `idle` / `run` / `cheer` as before. To make your own held item, model it
+upright with the handle on its Y axis, export the `.glb`, and give its JSON a `hold` block (copy one
+from `avatar/gear/`, or add the item to `build_gear.py` so the poses are written for you).
+**Nothing changes for gear without grips:** an item with no `hold` block (the Junk Yard Zap guns on
+`hand_r`, all Spaceballs gear) sits at the slot origin exactly as before, with the open hand and
+no arm pose (`godot/tests/test_hold.gd` checks this). Give a gun a `hold` block with
+`one_hand_low` or `one_hand_raised` when you want the fist and the arm pose.
+
+Limits: the fist is a plain closed mitten on every body (the Mole's claws curl out of sight);
+two-handed items cross the belly of very wide bodies (Dragon, Mole) because their arms are short.
 
 ## Verified vs not
 

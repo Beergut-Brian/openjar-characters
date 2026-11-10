@@ -147,6 +147,10 @@ item's slots adds nothing, hides nothing, emits `slot_missing` once per missing 
 returns false; it never crashes and never parents gear to the root. `unequip`, `level_up`,
 `equipped` and `level` on a missing slot are safe no-ops. Behaviour on the standard body is unchanged.
 
+## 5c. Held items
+
+A hand-slot item with a `hold` block in its JSON (`style`, `grip_r`, optional `grip_l` and `axis`) is *held*: the fist closes on `grip_r`, the arm takes the hold style's pose and the off hand goes to `grip_l`. Items without `hold` behave exactly as before. API: `hold_style(slot)`, `grip_error(slot)`. Full description and the five styles: [`avatar/README.md`](../avatar/README.md) "Holding items".
+
 ## 6. Versioning
 
 The slot names, part names, the JSON keys and the API above are the contract. Adding a slot, a part
