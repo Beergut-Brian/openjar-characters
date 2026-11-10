@@ -482,7 +482,7 @@ class Mats:
 
     def glass(self, key, hexcol, alpha=0.22, rough=0.08):
         """See-through material (fishbowl helmet, lenses): exports as glTF alpha blend."""
-        m = self.flat(key, hexcol, rough=rough, spec=0.6)
+        m = self.flat(key, hexcol, rough=rough, spec=0.25)
         m.node_tree.nodes.get("Principled BSDF").inputs["Alpha"].default_value = alpha
         m.diffuse_color = (*srgb_to_lin(hex_rgb(hexcol)), alpha)
         if hasattr(m, "surface_render_method"):

@@ -1,6 +1,7 @@
 """Kit v2 sheets: the fat/skinny range lineup and gear-fit proofs.
 
     blender -b --factory-startup -P avatar/kit/render_range.py -- --out avatar/kit/renders/kit_v2_range.png [--samples 48]
+    blender -b --factory-startup -P avatar/kit/render_range.py -- --lineup a.json,b.json --out .scratch/x.png   (x_front.png, x_back.png)
     blender -b --factory-startup -P avatar/kit/render_range.py -- --proof a.json,b.json --out .scratch/proof.png \
         [--gear sneakers,kneepads,cape,hat,sunglasses,gloves,belt] [--action kick --frame 17]
 
@@ -21,6 +22,7 @@ argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
 ap = argparse.ArgumentParser()
 ap.add_argument("--out", required=True); ap.add_argument("--samples", type=int, default=48)
 ap.add_argument("--proof", default=""); ap.add_argument("--gear", default="sneakers,kneepads,cape,hat,sunglasses,gloves,belt")
+ap.add_argument("--lineup", default="")    # params files: each once, front and 3/4 back views, no gear
 ap.add_argument("--action", default="kick"); ap.add_argument("--frame", type=int, default=17)
 a = ap.parse_args(argv)
 
@@ -55,7 +57,24 @@ def wear(j, gear_ids):
             if tag == "headwear" and j.hat:
                 j.hat.hide_render = True
 
-if a.proof:
+if a.lineup:
+    files = a.lineup.split(",")
+    studio()
+    n = len(files)
+    rc.setup_render(min(520 * n, 3640), 1100, a.samples)
+    for row, (yaw, y) in enumerate(((-18, 0.0), (155, 0.0))):
+        for i, f in enumerate(files):
+            j = kit.build_jarling(json.load(open(f)), prefix=f"l{row}{i}_")
+            rc.place(j, ((i - (n - 1) / 2) * 1.05, 0, 0), yaw)
+            kit.pose_at(j, "idle", 1)
+        sc = bpy.context.scene
+        sc.render.resolution_y = int(sc.render.resolution_x * 1.75 / (1.05 * n))    # 1.75 m tall view
+        rc.camera((0, -14, 1.75), (0, 0, 0.80), ortho=1.05 * n)
+        rc.render(os.path.abspath(a.out).replace(".png", f"_{'front' if row == 0 else 'back'}.png"))
+        for ob in list(bpy.data.objects):
+            if ob.name.startswith("l0"):
+                bpy.data.objects.remove(ob, do_unlink=True)
+elif a.proof:
     files = a.proof.split(",")
     gear = [g for g in a.gear.split(",") if g]
     studio()
