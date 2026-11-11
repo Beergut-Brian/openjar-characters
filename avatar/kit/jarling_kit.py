@@ -241,6 +241,11 @@ def draw_eye(cv, cx, cy, kind, spec, col):
         sl, X, Y = cv.grid(cx - rx * 1.6, cy - ry * 1.2, cx + rx * 1.6, cy + ry * 1.2)
         cv.paint(sl, sd_stroke(X, Y, pts, 0.05, 0.05), col)
         return
+    if spec["eye_mode"] == "wink":    # one eye closed in a squint / wink: a lid line sagging a little
+        pts = bez((cx - rx * 1.2, cy + ry * 0.05), (cx, cy - ry * 0.55), (cx + rx * 1.2, cy + ry * 0.05))
+        sl, X, Y = cv.grid(cx - rx * 1.6, cy - ry * 1.2, cx + rx * 1.6, cy + ry * 1.0)
+        cv.paint(sl, sd_stroke(X, Y, pts, 0.05, 0.05), col)
+        return
     if spec["eye_mode"] == "arc":     # closed happy eye: an upward arch
         pts = bez((cx - rx * 1.15, cy - ry * 0.25), (cx, cy + ry * 1.25), (cx + rx * 1.15, cy - ry * 0.25))
         sl, X, Y = cv.grid(cx - rx * 1.5, cy - ry, cx + rx * 1.5, cy + ry * 1.2)
@@ -378,7 +383,9 @@ def draw_face_cell(face, expr, skin):
     ex = face["eye_spacing"]
     ey = float(face.get("eye_y", EYE_Y))   # lower eyes (and brows) for a face under a low hat brim
     for sx in (-1, 1):
-        draw_eye(cv, sx * ex, ey, face["eyes"], spec, face["eye_color"])
+        wink = spec.get("wink")          # "L"/"R": that eye (the character's side) is closed, the other as spec
+        draw_eye(cv, sx * ex, ey, face["eyes"], dict(spec, eye_mode="wink") if wink == ("L" if sx > 0 else "R") else spec,
+                 face["eye_color"])
         bry = ey + EYES[face["eyes"]]["ry"] * spec["eye_scale"] + 0.11 + spec["brow_raise"]
         if sx > 0:   # one brow up (baffled): the character's left brow
             bry += spec.get("brow_raise_left", 0.0)
@@ -1102,6 +1109,10 @@ class Builder:
                 if bot["style"] == "shorts":
                     mid = hip + (ank - hip) * 0.42
                     self.add(capsule_bm(hip, mid, leg_r * 1.22, leg_r * 1.18), pants, bone)
+                    if bot.get("cuff"):   # rolled-up shorts: a lighter turned-up cuff band at the hem
+                        cuffm = self.mats.flat("pants_cuff", bot["cuff"], rough=0.8, spec=0.2)
+                        c0 = hip + (ank - hip) * 0.34
+                        self.add(capsule_bm(c0, mid + (ank - hip) * 0.015, leg_r * 1.30, leg_r * 1.27), cuffm, bone)
                 elif bot["style"] == "boxers":   # cartoon boxer shorts: shorter and puffier than shorts
                     mid = hip + (ank - hip) * 0.28
                     self.add(capsule_bm(hip, mid, leg_r * 1.42, leg_r * 1.36), pants, bone)

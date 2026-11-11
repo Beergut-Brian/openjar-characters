@@ -1,0 +1,95 @@
+{
+ "id": "bobber",
+ "name": "Bobber",
+ "notes": "From characters/bobber/bible.md (Kaden's Life of a Worm brief 2026-11-10, bible D89; proposed). Kid build; the rain hat is a size too big on purpose (a hand-me-down matching Grandpa's boots).",
+ "head": {
+  "shape": "round",
+  "size": 1.05,
+  "ears": "round"
+ },
+ "skin": "#F0B488",
+ "face": {
+  "eyes": "round",
+  "brows": "thin",
+  "brow_color": "#8A5A34",
+  "nose": "button",
+  "mouth": "grin_gap",
+  "lid": 0.0,
+  "blush": 0.25,
+  "extras": [
+   "freckles_big"
+  ],
+  "expressions": {
+   "neutral": {
+    "mouth": "grin_gap"
+   },
+   "happy": {
+    "eye_mode": "arc",
+    "mouth": "yell",
+    "brow_raise": 0.06,
+    "blush_add": 0.25
+   },
+   "surprised": {
+    "mouth": "o",
+    "brow_raise": 0.1
+   },
+   "determined": {
+    "wink": "R",
+    "lid": 0.42,
+    "lid_tilt": 0.0,
+    "brow_tilt": 0.25,
+    "brow_raise": -0.03,
+    "mouth": "set"
+   }
+  }
+ },
+ "hair": {
+  "style": "short",
+  "color": "#8A5A34"
+ },
+ "headwear": {
+  "type": "rain_hat",
+  "color": "#F6C833",
+  "size": 1.12,
+  "fit": 0.32,
+  "brim_front": 0.28,
+  "brim_back": 0.95,
+  "tie": "#C99A22"
+ },
+ "body": {
+  "build": "regular",
+  "height": 0.85,
+  "leg_scale": 0.85,
+  "width": 0.9,
+  "belly": 0.15
+ },
+ "outfit": {
+  "top": {
+   "style": "tee",
+   "color": "#2FA7A0",
+   "pattern": {
+    "type": "hstripes",
+    "accent": "#F1E7CF",
+    "count": 5,
+    "width": 0.45
+   }
+  },
+  "bottoms": {
+   "style": "shorts",
+   "color": "#3D5A88",
+   "cuff": "#5873A0"
+  },
+  "shoes": {
+   "style": "sandals",
+   "color": "#9A6A3C"
+  }
+ },
+ "costume": [],
+ "ref_action": {
+  "action": "cheer",
+  "frame": 13,
+  "expression": "happy",
+  "yaw": -50,
+  "gear": "kid_rod"
+ }
+}

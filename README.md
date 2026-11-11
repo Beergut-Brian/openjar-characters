@@ -27,6 +27,7 @@ recurring character on its own. Rendered in each game's own technique, but alway
 | [Sir Clank](characters/sir_clank/bible.md) | **yes** (proposed, playtest build) | universal silly, any game | Very upright boy knight with a saucepan helmet (handle out the back) and a yellow shield on his shirt |
 | [Snooze](characters/snooze/bible.md) | **yes** (proposed, playtest build) | universal silly, any game | Slouchy sleepyhead in star pyjamas and a long floppy nightcap; eyes always closed |
 | [Yoji](characters/yoji/bible.md) | **yes** (proposed, playtest build) | universal, any game | Southern football fanatic: tan cowboy hat, navy jersey number 55, star boxer shorts, black-and-blue high-tops |
+| [Bobber](characters/bobber/bible.md) | **yes** (proposed; look pending Kaden's pick) | Old Reel's grandson, the sceptic on the dock in Life of a Worm | Small kid in a too-big yellow rain hat, teal-and-cream striped tee, rolled denim shorts; freckles, gap-toothed grin; kid's rod with a sandwich on the hook |
 | [The Mole](characters/mole/bible.md) | no (resident) | shovel thief, then Lost & Found, in The Hill | Nearsighted, polite shovel thief who apologises to boulders |
 | [The Gnome Foreman](characters/gnome_foreman/bible.md) | no (resident) | foreman, then Gnome Village, in The Hill | Tiny, serious, clipboard in hand; passes everything |
 | [The Caveman](characters/caveman/bible.md) | no (resident) | museum keeper in The Hill | Delighted by everything modern, polishes treasures, one ice cube on his head |

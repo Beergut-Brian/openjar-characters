@@ -1,8 +1,10 @@
 # Bobber
 
-**Kind:** universal. **Playable:** false until his 3D master, pixel form and voice exist and Kaden approves (then true: a kid-build Jarling on the standard body fits the chooser). **Default for:** none. **Body:** standard, kid build. **Home game:** Life of a Worm. **First appears:** Life of a Worm (every dock scene).
+**Kind:** universal. **Playable:** true (proposed: standard body, kid build; look pending Kaden's pick). **Default for:** none. **Body:** standard (kid build). **Home game:** Life of a Worm. **First appears:** Life of a Worm (every dock scene).
 
-From the Life of a Worm brief, 2026-11-10 ("The grandson is named Bobber. He is a new Jarling"). Bible approved by Kaden (Docket D89); look and voice are proposals for the character lane.
+**Status:** proposed (bible approved D89; look pending Kaden's pick).
+
+Design: Kaden's Life of a Worm brief 2026-11-10 ("The grandson is named Bobber. He is a new Jarling"). Bible approved by Kaden (Docket D89); look and voice are proposals for the character lane.
 
 ## Who they are
 Old Reel's grandson. He sits on the end of the dock with his feet dangling, a sandwich on his hook, and listens to every one of Reel's tall tales while pretending not to believe a word.
@@ -33,7 +35,7 @@ Nothing, he says. (The dark under the dock, a bit.)
 ## Relationships
 Old Reel's grandson and his only reliable audience. He calls him "Grandpa". He'd like the Mole, who apologises a lot, because Bobber is the opposite.
 
-## Look (proposal, for the 3D master)
+## Look (proposal, for the 3D master; as built see `look.md`)
 - Kid build, short (height 0.85), standard body.
 - Too-big yellow rain hat, a hand-me-down that matches Grandpa's boots (`#F6C833`, ties him visually to Old Reel).
 - Striped teal-and-cream t-shirt (`#2FA7A0` / `#F1E7CF`), rolled-up denim shorts (`#3D5A88`), bare feet or tiny sandals on the dock.
@@ -42,4 +44,4 @@ Old Reel's grandson and his only reliable audience. He calls him "Grandpa". He'd
 - Colours to be checked against P1 green `#3cc24a` and P2 red `#e4393c` at ΔE00 20 or more by the character lane; teal is the one to watch against P1.
 
 ## Status
-Bible approved 2026-11-10 (Docket D89). Nothing visual is made yet; next is the 3D master, pixel form and voice.
+Proposed (bible approved D89; look pending Kaden's pick). Bible approved 2026-11-10 (Docket D89). 3D master, pixel form, read check and lineup built 2026-11-11 by the character lane (see `look.md`); voice drafted in `voice.md`, audio not generated yet.

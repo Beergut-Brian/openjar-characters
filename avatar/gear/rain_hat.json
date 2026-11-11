@@ -1,0 +1,16 @@
+{
+  "id": "rain_hat",
+  "name": "Rain Hat",
+  "slots": [
+    "head"
+  ],
+  "scene": "rain_hat.glb",
+  "replaces_body_part": [
+    "headwear"
+  ],
+  "fit": {},
+  "level_up": {
+    "max": 3,
+    "scale_step": 0.06
+  }
+}
