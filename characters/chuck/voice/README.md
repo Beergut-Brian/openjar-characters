@@ -1,7 +1,7 @@
-# Voice
+# chuck voice
 
-- `profile.json` — Chatterbox voice settings and seed clip reference
-- `barks.md` — the 20 to 30 stock lines, one per file
-- `*.ogg` — pre-rendered barks, normalised to -16 LUFS
+- `*.ogg` (top level): stock barks, one per cue in `../voice.md`. `Audio.bark("chuck", "<cue>")` plays them.
+- `lib/`: non-verbal sounds and extras (laughs, sighs, gasps, yawn, effort, catchphrase big and calm). `Audio.bark("chuck", "lib/<name>")`-style lookups or direct loads.
+- `source/master.ogg`: a ~1 min varied read. New lines later come from Chatterbox with this as the clone reference (or a temporary ElevenLabs instant clone of it), so the voice never depends on a saved ElevenLabs voice.
 
-Status: to be drafted after the bible is approved.
+Picked by Kaden 2026-11-10 (v3 design take 1).

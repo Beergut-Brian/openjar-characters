@@ -205,7 +205,7 @@
       "default_for": 2,
       "body_type": "standard",
       "first_appears": "Spaceballs (kicker).",
-      "approved": false,
+      "approved": true,
       "bible": "characters/chuck/bible.md",
       "look": "characters/chuck/look.md",
       "refs": "characters/chuck/refs/",
@@ -217,7 +217,16 @@
         "source": "tools/pixel/residents.py",
         "function": "chuck"
       },
-      "barks": [],
+      "barks": [
+        "cheer",
+        "join",
+        "lose",
+        "oops",
+        "ready",
+        "swap_in",
+        "wait",
+        "win"
+      ],
       "alt_forms": [
         "the-hill pixel"
       ]
@@ -423,7 +432,16 @@
         "source": "tools/pixel/residents.py",
         "function": "jeff"
       },
-      "barks": [],
+      "barks": [
+        "cheer",
+        "join",
+        "lose",
+        "oops",
+        "ready",
+        "swap_in",
+        "wait",
+        "win"
+      ],
       "alt_forms": [
         "the-hill pixel"
       ]
