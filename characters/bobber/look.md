@@ -54,3 +54,30 @@ See "Jarling 3D (as built)" below.
 
 ### 2D pixel (The Hill / Life of a Worm)
 See "Alt form: the-hill pixel" below.
+
+## Alt form: the-hill pixel: proposed
+Sprite source: `tools/pixel/bobber.py` (`bobber()`)
+
+- **Height:** 31 px with the outline (0.85 m kid body, 22 rows to the top of the head, plus the oversized sou'wester, traced
+  from `refs/jarling/bobber_side_sprite.png`): rain hat 7 rows (round dome crown 6 rows + 1 brim row much wider than the
+  head, the back brim drooping 4 rows lower behind the neck), head 7 rows (sandy hair under the brim, big round dark eyes,
+  freckles, gap-toothed grin), striped tee 7 rows, denim shorts 2 rows + a light cuff row, bare legs, little sandals 2 rows
+  (strap over the foot, sole).
+- **Palette:** hat `#F6C833` (+ `#C79F1E`, white shine `#F7F7F5`), hair and freckles `#8A5A34`, skin `#F0B488`
+  (+ `#D0926A`), tee `#2FA7A0` (+ `#23807B`), stripes `#F1E7CF` (+ `#D3C7AA`), shorts `#3D5A88` (+ `#2E4670`), cuffs
+  `#5873A0`, sandals `#9A6A3C` (+ `#7A5230`), teeth `#F7F7F5`, mouth `#6A2232`, outline `#2A1E2C`. Every pixel colour is at
+  least ΔE00 22.9 from P2 `#e4393c` and 25.4 from P1 `#3cc24a` (the teal; its shade is darker, not greener).
+- **Frames:** front form (40 x 32) and the 128 x 224 player sheet: idle0-1, walk0-3, jump, fall, side0-2, down0-2, ride, sleep0-1
+  (three-quarter view facing right, feet on row 30, hand at (19, 21) idle). Life of a Worm cutscene: `sit_dock(0|1)`, 32 x 48,
+  sitting on the dock edge facing right, seat line on row 24 (mid-height), dock edge at x 21 (seat point (21, 24)), knees bent
+  over the edge, shins and sandals dangling below the seat, the feet swinging between the two frames
+  (`refs/pixel/bobber_sit_dock.png`, both frames side by side). No rod in the pixel frames (the kid rod is 3D gear only).
+- **Should read as:**
+  - an oversized yellow sou'wester rain hat (not a helmet, a bowl or a straw hat): a round dome crown with a shine, one brim
+    row clearly wider than the head on both sides, the back brim long and drooping down behind the neck; the biggest shape on
+    the figure. Sandy brown hair peeks out under it at the back and as a fringe. No chin tie
+  - big round dark eyes (with a white glint) under the brim, freckle pixels, a gap-toothed grin (white teeth with a 1 px gap);
+    nothing at the mouth that could read as a pipe or cigarette
+  - a teal t-shirt with cream stripes on alternate rows (striped sleeves too)
+  - denim shorts with a lighter cuff row, bare legs, little brown sandals
+  - a small kid: at 16 px the silhouette is a big hat on a short body
