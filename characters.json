@@ -766,7 +766,16 @@
         "source": "tools/pixel/yoji.py",
         "function": "yoji"
       },
-      "barks": [],
+      "barks": [
+        "cheer",
+        "join",
+        "lose",
+        "oops",
+        "ready",
+        "swap_in",
+        "wait",
+        "win"
+      ],
       "alt_forms": [
         "the-hill pixel: proposed"
       ]
