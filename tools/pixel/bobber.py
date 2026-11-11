@@ -115,11 +115,10 @@ def _head_side(s, hx, hy, eyes_shut=False):
     else:                                                                             # big round dark eyes, glints
         s.r(15 + hx, 10 + hy, 16 + hx, 11 + hy, OUT); s.px(WHITE, (16 + hx, 10 + hy))
         s.r(19 + hx, 10 + hy, 20 + hx, 11 + hy, OUT); s.px(WHITE, (20 + hx, 10 + hy))
-    s.px(FRECKLE, (14 + hx, 11 + hy), (18 + hx, 12 + hy), (21 + hx, 11 + hy))         # freckles
+    s.px(FRECKLE, (16 + hx, 12 + hy), (18 + hx, 12 + hy), (21 + hx, 12 + hy))         # freckles, nose and cheeks
     s.px(SKIN_D, (22 + hx, 11 + hy), (22 + hx, 12 + hy))                              # button nose
-    s.px(MOUTH, (16 + hx, 12 + hy), (20 + hx, 12 + hy))                               # grin corners, turned up
-    s.px(WHITE, (16 + hx, 13 + hy), (17 + hx, 13 + hy), (19 + hx, 13 + hy))           # teeth with a 1 px gap
-    s.px(MOUTH, (18 + hx, 13 + hy), (20 + hx, 13 + hy))
+    s.px(MOUTH, (16 + hx, 13 + hy), (19 + hx, 13 + hy))                               # grin: corner, the gap
+    s.px(WHITE, (17 + hx, 13 + hy), (18 + hx, 13 + hy), (20 + hx, 13 + hy))           # teeth with a 1 px gap
     s.r(17 + hx, 14 + hy, 19 + hx, 14 + hy, MOUTH)
 
 
