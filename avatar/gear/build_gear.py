@@ -284,6 +284,18 @@ def cowboy_hat():
     obj("cowboy_hat_crown", [(g["crown"], felt), (g["brim"], felt), (g["band"], band)], node)
     return root
 
+
+def rain_hat():
+    """The kit's rain_hat (avatar/kit/pieces_headwear.py rain_hat_bms) as head-slot gear: a yellow
+    sou'wester, rounded crown, brim short at the front and long and drooping at the back."""
+    import pieces_headwear as ph
+    root = empty("rain_hat")
+    node = empty("head", root)
+    g = ph.rain_hat_bms(0.235 * 1.07, fit=0.36 / 1.07, brim_front=0.30, brim_back=0.90)
+    oil = mat("rain_hat", "#F6C833", 0.35, 0.5)
+    obj("rain_hat_crown", [(g["crown"], oil), (g["brim"], oil)], node)
+    return root
+
 # ------------------------------------------------------------------------------------------ face
 # Face slot: origin on the face at eye level; the head centre is 0.235 behind (+Y here).
 
@@ -382,6 +394,97 @@ def fishing_rod():
     obj("fishing_rod_body", parts, root)
     return root
 
+def _slice(outline, z0, z1):
+    """A flat prism through the closed XZ outline, from y=z0 to y=z1 (bmesh)."""
+    bm = bmesh.new()
+    a = [bm.verts.new((x, z0, z)) for x, z in outline]
+    b = [bm.verts.new((x, z1, z)) for x, z in outline]
+    bm.faces.new(a[::-1]); bm.faces.new(b)
+    n = len(outline)
+    for i in range(n):
+        j = (i + 1) % n
+        bm.faces.new([a[i], a[j], b[j], b[i]])
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    return bm
+
+def _sandwich_outline(size, bite=None, n=60, round_r=0.18, scale=1.0):
+    """Rounded triangle (one corner up) in XZ, centred on the origin; `bite` = (corner index, radius)."""
+    import math as m
+    corners = [(m.cos(a) * size, m.sin(a) * size) for a in (m.pi / 2, m.pi / 2 + 2.0944, m.pi / 2 + 4.1888)]   # CCW, top first
+    pts = []
+    rr = round_r * size
+    for i in range(3):
+        cx, cz = corners[i]
+        # pull the corner in by rr and sweep an arc round it
+        k = 1 - rr / size * 2.0
+        ccx, ccz = cx * k, cz * k
+        base = m.atan2(cz, cx)
+        for t in np.linspace(-1.047, 1.047, n // 3):
+            pts.append((ccx + rr * m.cos(base + t), ccz + rr * m.sin(base + t)))
+    pts = [(x * scale, z * scale) for x, z in pts]
+    if bite:                                            # a round bite out of the edge at that corner: the
+        ci, br = bite                                   # points inside the bite circle become its inner arc
+        bx, bz = corners[ci][0] * 0.92 * scale, corners[ci][1] * 0.92 * scale
+        inside = [i for i, (x, z) in enumerate(pts) if m.hypot(x - bx, z - bz) < br]
+        if inside:
+            i0, i1 = inside[0], inside[-1]
+            a1 = m.atan2(pts[i0][1] - bz, pts[i0][0] - bx)
+            a2 = m.atan2(pts[i1][1] - bz, pts[i1][0] - bx)
+            cang = m.atan2(-bz, -bx)                    # toward the sandwich centre
+            d1 = m.atan2(m.sin(a1 - cang), m.cos(a1 - cang)); d2 = m.atan2(m.sin(a2 - cang), m.cos(a2 - cang))
+            arc = [(bx + br * m.cos(cang + d1 + (d2 - d1) * t), bz + br * m.sin(cang + d1 + (d2 - d1) * t))
+                   for t in np.linspace(0, 1, i1 - i0 + 1)]
+            pts = pts[:i0] + arc + pts[i1 + 1:]
+    return pts
+
+def kid_rod():
+    """A kid's fishing rod (shorter than fishing_rod): light blue rod, cream reel, a short line and a
+    small hook with a triangle-cut cheese sandwich on it (a bite out of one corner)."""
+    root = empty("hand_r")
+    blue, grip = mat("kid_rod_shaft", "#6FA8DC", 0.4, 0.4), mat("kid_rod_grip", "#4F86BC", 0.7, 0.2)
+    cream, line = mat("kid_rod_reel", "#F1E7CF", 0.5, 0.3), mat("kid_rod_line", "#E8EEF2", 0.5, 0.2)
+    hookm = mat("kid_rod_hook", STEEL, 0.3, 0.7)
+    bread, crust, cheese = mat("sandwich_bread", "#E8C48A", 0.85, 0.1), mat("sandwich_crust", "#C08A4E", 0.8, 0.1), mat("sandwich_cheese", "#F2C94C", 0.6, 0.25)
+    parts = [(capsule_bm((0, 0, -0.07), (0, 0, 0.07), 0.017, 0.017, segs=16, hem=3), grip),        # grip, the fist closes here
+             (ellipsoid_bm((0, 0, -0.075), (0.02, 0.02, 0.014), segs=14, rings=8), cream)]          # butt knob
+    pts = [(0, -0.0002 * i * i * 12 - 0.004 * i, 0.07 + 0.056 * i) for i in range(0, 10)]             # shaft ~0.5 m, bending forward
+    for i in range(len(pts) - 1):
+        r = 0.012 - 0.008 * (i / (len(pts) - 1))
+        parts.append((tube_bm([pts[i], pts[i + 1]], max(r, 0.003)), blue))
+    parts.append((ellipsoid_bm(pts[-1], (0.0055, 0.0055, 0.0055), segs=10, rings=6), cream))            # tip ring
+    # reel: a cream drum under the rod just above the grip, with a little crank
+    parts.append((lathe([(-0.013, 0, 0, 0.0, -0.03), (-0.013, 0.024, 0.024, 0.0, -0.03), (0.013, 0.024, 0.024, 0.0, -0.03),
+                         (0.013, 0, 0, 0.0, -0.03)], 22), cream))
+    parts.append((tube_bm([(0.0, -0.012, 0.085), (0.0, -0.03, 0.085)], 0.005), cream))
+    parts.append((tube_bm([(0.016, -0.03, 0.085), (0.026, -0.03, 0.10)], 0.004), grip))
+    tip = pts[-1]
+    hk = (tip[0], tip[1] - 0.10, tip[2] - 0.17)                                                      # hook eye: the line hangs out in front
+    parts.append((tube_bm([tip, (tip[0], tip[1] - 0.06, tip[2] - 0.07), hk], 0.0028), line))
+    # small J hook through the top corner of the sandwich
+    hook = [hk] + [(hk[0] + 0.011 * math.sin(t), hk[1], hk[2] - 0.016 - 0.011 * (1 - math.cos(t)) + 0.002 * t) for t in np.linspace(0, 1.25 * math.pi, 8)]
+    parts.append((tube_bm(hook, 0.0022), hookm))
+    # the sandwich: triangle half, one corner up on the hook, slices stacked across y, turned 35 deg
+    size = 0.10                                                                                        # centre-to-corner (about 17 cm a side: reads at sprite size)
+    cz = hk[2] - 0.022 - size * 0.92
+    th_b, th_c = 0.018, 0.009
+    outl = _sandwich_outline(size, bite=(1, 0.042))
+    sw = []
+    for y0, y1 in ((-th_c / 2 - th_b, -th_c / 2), (th_c / 2, th_c / 2 + th_b)):
+        sw.append((_slice(outl, y0, y1), crust))
+        inner = _sandwich_outline(size * 0.86, bite=(1, 0.042 * 1.05))
+        face_y = y0 - 0.0012 if y0 < 0 else y1
+        sw.append((_slice(inner, face_y, face_y + 0.0012), bread))
+    ch = _sandwich_outline(size * 1.07, round_r=0.06)
+    rot = Matrix.Rotation(math.radians(9), 3, "Y")
+    ch = [tuple((rot @ Vector((x, 0, z)))[i] for i in (0, 2)) for x, z in ch]
+    sw.append((_slice(ch, -th_c / 2, th_c / 2), cheese))
+    M_sw = Matrix.Translation((hk[0], hk[1], cz)) @ Matrix.Rotation(math.radians(130), 4, "Z")
+    for bm_, m_ in sw:
+        bmesh.ops.transform(bm_, matrix=M_sw, verts=bm_.verts)
+        parts.append((bm_, m_))
+    obj("kid_rod_body", parts, root)
+    return root
+
 def watering_can():
     root = empty("hand_r")
     body, trim = mat("can_body", "#7FA3B8", 0.45, 0.5), mat("can_trim", "#5D8296", 0.45, 0.5)
@@ -447,6 +550,7 @@ ITEMS = {
     "jetpack": dict(name="Jetpack", slots=["back"], replaces_body_part=["tail"], fn=jetpack),
     "hat": dict(name="Bucket Hat", slots=["head"], replaces_body_part=["headwear"], fn=hat),
     "cowboy_hat": dict(name="Cowboy Hat", slots=["head"], replaces_body_part=["headwear"], fn=cowboy_hat),
+    "rain_hat": dict(name="Rain Hat", slots=["head"], replaces_body_part=["headwear"], fn=rain_hat),
     "sunglasses": dict(name="Sunglasses", slots=["face"], fn=sunglasses),
     "gloves": dict(name="Gloves", slots=["hand_l", "hand_r"], replaces_body_part=["hand_l", "hand_r"], fn=gloves),
     "belt": dict(name="Belt", slots=["waist"], fn=belt, fit={"boxy": {"scale": [1.03, 1.0, 1.05]}}),
@@ -457,6 +561,8 @@ ITEMS = {
                    hold=dict(style="two_hand_diagonal", grip_r=(0, 0, 0), grip_l=(0, 0, 0.27), axis=(0, 0, 1))),
     "fishing_rod": dict(name="Fishing Rod", slots=["hand_r"], fn=fishing_rod, fit={"critter": {"scale": 0.62}},
                         hold=dict(style="one_hand_raised", grip_r=(0, 0, 0), axis=(0, 0, 1))),
+    "kid_rod": dict(name="Kid's Fishing Rod", slots=["hand_r"], fn=kid_rod, fit={"critter": {"scale": 0.62}},
+                    hold=dict(style="one_hand_raised", grip_r=(0, 0, 0), axis=(0, 0, 1), follow={"cheer": 0.15})),   # rod stays up while the other fist pumps
     "watering_can": dict(name="Watering Can", slots=["hand_r"], fn=watering_can, fit={"critter": {"scale": 0.62}},
                          hold=dict(style="one_hand_low", grip_r=(0, 0, 0))),
     "crate": dict(name="Crate", slots=["hand_r"], fn=crate, hold=dict(style="two_hand_front", grip_r=(-0.125, 0, 0), grip_l=(0.125, 0, 0))),
