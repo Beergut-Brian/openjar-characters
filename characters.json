@@ -113,9 +113,15 @@
       "voice": "characters/bobber/voice/",
       "model_3d": "characters/bobber/refs/jarling/bobber.glb",
       "jarling_params": "characters/bobber/jarling.json",
-      "pixel": null,
+      "pixel": {
+        "alt_form": "the-hill pixel",
+        "source": "tools/pixel/bobber.py",
+        "function": "bobber"
+      },
       "barks": [],
-      "alt_forms": []
+      "alt_forms": [
+        "the-hill pixel: proposed"
+      ]
     },
     {
       "id": "boxbot",
