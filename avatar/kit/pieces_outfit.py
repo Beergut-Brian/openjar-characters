@@ -5,6 +5,7 @@ a layer inherits `color`/`accent` from the top/bottoms dict):
   vstripes     accent "#1A1A1E", count 12 (top) / 8 (bottoms), offset 0.0 (turns, 0.5 = stripe edge at the front)
   vacation     accent "#FF6F91" (flowers), accent2 "#2FA88A" (leaves), center "#FFE066", count 14, seed 7, size 1.0
   hstripe      accent "#F2F2EE", v 0.58, width 0.10, edge null (thin edge lines colour, e.g. silver on hi-vis)
+  hstripes     accent "#F1E7CF", count 5, width 0.5 (band height as a fraction of each period), v0 0.30 / v1 0.92 (top; bottoms 0 / 1): even horizontal stripes
   stars        accent "#FFE066", count 26 (top) / 14 (bottoms), size 1.0, seed 3
   patches      accent "#E8A33D", accent2 "#5B8FD6", stitch null (default darker accent), count 3 (2 or 3)
   emblem       shape "star" ("shield"|"star"|"circle"), accent "#FFD23F", size 0.13 (half height in V), v 0.62, rim null, inner null
@@ -160,6 +161,18 @@ def pat_hstripe(img, U, V, spec, part):
     if spec.get("edge"):
         for e in (v - w / 2, v + w / 2):
             _put(img, np.abs(V - e) - w * 0.08, spec["edge"])
+
+def pat_hstripes(img, U, V, spec, part):
+    """Even horizontal stripes (a striped tee): `count` accent bands between v0 and v1 (in V)."""
+    n = int(spec.get("count", 5))
+    v0, v1 = float(spec.get("v0", 0.30 if part == "top" else 0.0)), float(spec.get("v1", 0.92 if part == "top" else 1.0))
+    p = (v1 - v0) / n
+    w = float(spec.get("width", 0.5)) * p            # band height: a fraction of the period
+    f = (V - v0) / p
+    c = v0 + (np.floor(f) + 0.5) * p                 # centre of this period's band
+    d = np.abs(V - c) - w / 2
+    d = np.where((V < v0) | (V > v1), 1.0, d)
+    _put(img, d, spec.get("accent", "#F1E7CF"))
 
 def _scatter(n, seed, v0, v1, part):
     """Jittered positions (u, v, r) spread evenly around."""
@@ -468,7 +481,7 @@ def pat_jersey(img, U, V, spec, part):
             d = _text_sd(X, Y, spec["text"], th, asp, gap=1.0, bold=1.04)
             _put(img[sl], d, spec.get("text_color", ncol))
 
-for _n, _f in (("vstripes", pat_vstripes), ("vacation", pat_vacation), ("hstripe", pat_hstripe), ("stars", pat_stars),
+for _n, _f in (("vstripes", pat_vstripes), ("vacation", pat_vacation), ("hstripe", pat_hstripe), ("hstripes", pat_hstripes), ("stars", pat_stars),
                ("patches", pat_patches), ("emblem", pat_emblem), ("buttons", pat_buttons), ("vest", pat_vest),
                ("collar", pat_collar), ("bib", pat_bib), ("belly_panel", pat_belly_panel), ("dials", pat_dials),
                ("jersey", pat_jersey)):

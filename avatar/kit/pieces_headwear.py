@@ -18,6 +18,7 @@ Headwear (`headwear.type`; hair mode in HEADWEAR_OPTS):
   bucket_hat    color="#C9B48A", band=<color darker>, brim=0.55 (R), lure=None (colour), lure_deg=50, fit=0.40, tilt_deg=0, separate=False; hair tuck
   sun_hat       color="#E9C97A", band="#E86FA6", brim=1.3 (R), waves=7, flower=None (colour), flower_mid="#FFD23F", flower_deg=40, fit=0.40, tilt_deg=0, separate=False; hair tuck
   cowboy_hat    color="#C8955A", band="#5A3A22", brim_width=0.80 (R), curl=1.0 (side curl-up), crown_height=1.0 (R), pinch=1.0, crease=1.0, fit=0.45, tilt_deg=0, separate=False; hair tuck
+  rain_hat      color="#F6C833", brim_front=0.30 (R), brim_back=0.95 (R), droop=1.0 (how far the back and sides hang down), crown_height=1.0, size=1.0 (1.12 = a size too big), tie=None (colour: thin chin tie), fit=0.30, tilt_deg=0, separate=False; hair tuck
   box_head      color="#C49A6C", tape="#E6CFA0", scale=1.0, hole_w=0.64 (R), tilt_deg=0, separate=False; hair hide
 
 Costume pieces on the head (`costume[]`, each its own separable part named after the piece):
@@ -629,10 +630,64 @@ def cowboy_hat(B, hw):
                    sx=L["hsx"], sy=L["hsy"], sz=L["hsz"])
     place_parts(B, hw, [(g["crown"], felt), (g["band"], bandm), (g["brim"], felt)], hw.get("tilt_deg", 0))
 
+# ---------------------------------------------------------------------------------- rain hat
+def rain_hat_bms(R, fit=0.30, brim_front=0.30, brim_back=0.95, droop=1.0, crown_height=1.0, size=1.0, tie=False,
+                 sx=1.0, sy=1.0, sz=1.0):
+    """Sou'wester rain hat around a head centre at the origin (head radius R): a rounded crown and a
+    brim all round, short and a little turned down at the front, long and drooping at the back and
+    sides. `size` > 1 makes it a size too big (wider crown, brim sitting lower). Returns {"crown",
+    "brim"} (+ "tie", a thin chin tie, when `tie`). Shared by the kit piece and the gear item."""
+    g = size
+    rx, ry = 1.06 * R * sx * g, 1.10 * R * sy * g
+    zb = fit * R * sz - (g - 1.0) * 0.9 * R            # a too-big hat sinks lower on the head
+    ch = 0.95 * crown_height * R * sz * (0.85 + 0.15 * g)
+    rings = [(zb, 0, 0, 0, 0), (zb, rx, ry, 0, 0)]
+    for th in np.linspace(0, math.pi / 2, 14)[1:]:      # one soft dome, no crease (oilskin)
+        f = math.cos(th) ** 0.75
+        rings.append((zb + ch * math.sin(th), rx * f, ry * f, 0, 0))
+    rings.append((zb + ch, 0, 0, 0, 0))
+    crown = lathe(rings, 64)
+    def back_k(a):                                      # 0 at the front .. 1 at the back
+        return ((1 - math.cos(a)) / 2) ** 1.4
+    def brim_pt(u, v):
+        a = 2 * math.pi * u
+        sa, ca = math.sin(a), math.cos(a)
+        k = back_k(a)
+        bw = (brim_front + (brim_back - brim_front) * k) * R * g
+        r_x, r_y = rx * 0.97 + bw * v * (1 - 0.30 * k), ry * 0.97 + bw * v * (1 - 0.30 * k)
+        dz = 0.06 * R * v * (1 - k) ** 3 - 0.95 * droop * k * bw * v ** 1.15 - 0.03 * R * v   # front turned up a touch
+        return (r_x * sa, -r_y * ca, zb + 0.01 * R + dz)
+    brim = solidify_bm(grid_bm(brim_pt, 96, 10, closed_u=True), 0.05 * R)
+    out = {"crown": crown, "brim": brim}
+    if tie:                                             # chin tie: hugs the cheeks from the brim, under the chin
+        tilt = math.radians(38)
+        rr = 1.035 * R
+        t0 = math.asin(max(-0.95, min(0.95, zb / (R * sz) - 0.02)))
+        pts = []
+        for t in np.linspace(t0, -math.pi - t0, 40):
+            x, z = rr * math.cos(t) * sx, rr * math.sin(t) * sz
+            y = -math.sin(tilt) * max(0.0, -z) * 0.85
+            pts.append((x, y * sy, z))
+        out["tie"] = tube_bm(pts, 0.022 * R)
+    return out
+
+def rain_hat(B, hw):
+    L = B.L; R = L["R"]
+    col = hw.get("color", "#F6C833")
+    mat = B.mats.flat("rain_hat", col, rough=0.35, spec=0.5)       # glossy oilskin
+    g = rain_hat_bms(R, fit=float(hw.get("fit", 0.30)), brim_front=float(hw.get("brim_front", 0.30)),
+                     brim_back=float(hw.get("brim_back", 0.95)), droop=float(hw.get("droop", 1.0)),
+                     crown_height=float(hw.get("crown_height", 1.0)), size=float(hw.get("size", 1.0)),
+                     tie=bool(hw.get("tie")), sx=L["hsx"], sy=L["hsy"], sz=L["hsz"])
+    parts = [(g["crown"], mat), (g["brim"], mat)]
+    if "tie" in g:
+        parts.append((g["tie"], B.mats.flat("rain_hat_tie", hw["tie"], rough=0.6, spec=0.3)))
+    place_parts(B, hw, parts, hw.get("tilt_deg", 0))
+
 for _n, _f, _hair in (("hard_hat", hard_hat, "tuck"), ("top_hat", top_hat, "tuck"), ("miner_helmet", miner_helmet, "tuck"),
                       ("colander", colander, "tuck"), ("pot_helmet", pot_helmet, "tuck"), ("nightcap", nightcap, "tuck"),
                       ("chef_hat", chef_hat, "tuck"), ("bucket_hat", bucket_hat, "tuck"), ("sun_hat", sun_hat, "tuck"),
-                      ("cowboy_hat", cowboy_hat, "tuck"), ("box_head", box_head, "hide")):
+                      ("cowboy_hat", cowboy_hat, "tuck"), ("rain_hat", rain_hat, "tuck"), ("box_head", box_head, "hide")):
     kit.HEADWEAR[_n] = _f
     kit.HEADWEAR_OPTS[_n] = {"hair": _hair}
 
