@@ -89,7 +89,7 @@
   "action": "cheer",
   "frame": 13,
   "expression": "happy",
-  "yaw": 28,
+  "yaw": -50,
   "gear": "kid_rod"
  }
 }
