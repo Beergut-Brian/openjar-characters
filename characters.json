@@ -518,7 +518,7 @@
       "default_for": null,
       "body_type": "standard",
       "first_appears": "Life of a Worm.",
-      "approved": false,
+      "approved": true,
       "bible": "characters/old_reel/bible.md",
       "look": "characters/old_reel/look.md",
       "refs": "characters/old_reel/refs/",
@@ -1074,6 +1074,27 @@
     }
   },
   "proposed": [
+    {
+      "id": "bobber",
+      "name": "Bobber",
+      "kind": "universal",
+      "player": null,
+      "playable": false,
+      "default_for": null,
+      "body_type": "standard,",
+      "first_appears": "Life of a Worm (every dock scene).",
+      "approved": true,
+      "bible": "proposals/bobber/bible.md",
+      "look": "proposals/bobber/look.md",
+      "refs": "proposals/bobber/refs/",
+      "voice": "proposals/bobber/voice/",
+      "model_3d": null,
+      "jarling_params": null,
+      "pixel": null,
+      "barks": [],
+      "alt_forms": [],
+      "status": "proposed"
+    },
     {
       "id": "cow",
       "name": "Patience the Cow",
