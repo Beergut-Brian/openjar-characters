@@ -98,6 +98,26 @@
       ]
     },
     {
+      "id": "bobber",
+      "name": "Bobber",
+      "kind": "universal",
+      "player": null,
+      "playable": true,
+      "default_for": null,
+      "body_type": "standard",
+      "first_appears": "Life of a Worm (every dock scene).",
+      "approved": true,
+      "bible": "characters/bobber/bible.md",
+      "look": "characters/bobber/look.md",
+      "refs": "characters/bobber/refs/",
+      "voice": "characters/bobber/voice/",
+      "model_3d": "characters/bobber/refs/jarling/bobber.glb",
+      "jarling_params": "characters/bobber/jarling.json",
+      "pixel": null,
+      "barks": [],
+      "alt_forms": []
+    },
+    {
       "id": "boxbot",
       "name": "Boxbot",
       "kind": "universal",
@@ -822,6 +842,7 @@
     "astro_ana",
     "big_tiny",
     "bloom",
+    "bobber",
     "boxbot",
     "captain_crumbs",
     "coach_whistle",
@@ -1074,27 +1095,6 @@
     }
   },
   "proposed": [
-    {
-      "id": "bobber",
-      "name": "Bobber",
-      "kind": "universal",
-      "player": null,
-      "playable": false,
-      "default_for": null,
-      "body_type": "standard,",
-      "first_appears": "Life of a Worm (every dock scene).",
-      "approved": true,
-      "bible": "proposals/bobber/bible.md",
-      "look": "proposals/bobber/look.md",
-      "refs": "proposals/bobber/refs/",
-      "voice": "proposals/bobber/voice/",
-      "model_3d": null,
-      "jarling_params": null,
-      "pixel": null,
-      "barks": [],
-      "alt_forms": [],
-      "status": "proposed"
-    },
     {
       "id": "cow",
       "name": "Patience the Cow",

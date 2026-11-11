@@ -1,6 +1,6 @@
 # Bobber
 
-**Kind:** universal. **Playable:** true (proposed: standard body, kid build; look pending Kaden's pick). **Default for:** none. **Body:** standard, kid build. **Home game:** Life of a Worm. **First appears:** Life of a Worm (every dock scene).
+**Kind:** universal. **Playable:** true (proposed: standard body, kid build; look pending Kaden's pick). **Default for:** none. **Body:** standard (kid build). **Home game:** Life of a Worm. **First appears:** Life of a Worm (every dock scene).
 
 **Status:** proposed (bible approved D89; look pending Kaden's pick).
 
