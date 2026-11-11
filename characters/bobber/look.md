@@ -49,8 +49,31 @@ No green lettuce and nothing red in the sandwich, so it never reads as a player 
 
 ## Per-technique notes
 
-### Jarling 3D
-See "Jarling 3D (as built)" below.
+### Jarling 3D (as built)
+Built 2026-11-11 from `characters/bobber/jarling.json` (standard humanoid body, kit v2; same skeleton, actions, ten slots and
+gameplay collision as every playable character).
+- **body:** `regular`, height 0.85, leg_scale 0.85, width 0.9, belly 0.15 ("about six" = the short end of the range, short legs,
+  slim); head `round` size 1.05 (a kid's big head). About 1.09 m to the top of the hat; the brim comes to about Old Reel's chin.
+- **skin** `#F0B488`; **hair** `short` `#8A5A34` under the hat (sides and back; no fringe tuft: it poked through the brim)
+- **face:** round eyes, `grin_gap`, `freckles_big`, blush. Kit slots: neutral = gap-toothed grin; happy = arc eyes, big open grin;
+  surprised = `o`; determined = **the squint** (new kit expression key `wink` "R": one eye shut, the other narrowed, mouth `set`)
+- **headwear:** new kit piece `rain_hat` (sou'wester) `#F6C833`, `size` 1.12 (a size too big), fit 0.32 (low on the brow),
+  brim_front 0.28, brim_back 0.95 (long drooping back brim), chin `tie` `#C99A22`. Also head-slot gear `avatar/gear/rain_hat`.
+- **top:** `tee` `#2FA7A0` with the new `hstripes` pattern (cream `#F1E7CF`, 5 stripes)
+- **bottoms:** `shorts` `#3D5A88` with the new rolled `cuff` `#5873A0`; **shoes:** `sandals` `#9A6A3C`
+- **gear:** new `avatar/gear/kid_rod` (blue rod, cream reel, short line, hook, a triangle cheese sandwich: bread `#E8C48A`, crust
+  `#C08A4E`, cheese `#F2C94C`), `one_hand_raised`, hand closed round the handle; fist-to-grip 0.00 mm in idle, cheer and run.
+- **ref action:** `cheer` frame 13, happy, yaw -50, with the kid rod (the fist pump with the free hand)
+- Weak spots: the cuff is only a little lighter than the shorts; the sandwich is edge-on from straight in front (reads at 3/4);
+  from the front the chin tie draws a thin ring under the face (left out of the pixel form). The "nuh-uh" arms-crossed pose is not
+  built (no arms-crossed pose in the kit yet); the squint is the face for it.
+
+### Refs
+- `refs/jarling/bobber.glb`: the 3D master (idle, run, kick, cheer; ten slots)
+- `refs/jarling/bobber_turnaround.png`, `bobber_expressions.png` (grin, happy, surprised, squint), `bobber_cheer.png`, `bobber_hold.png`
+- `refs/jarling/bobber_side.png`, `bobber_side_sprite.png`: side view and its sprite-scale tracing base
+- `refs/pixel/`: the pixel form (see below); `../bobber_read_check.png`; `../bobber_lineup.png` (Jeff, Chuck, Old Reel, Bobber at true
+  scale; also the shot of Bobber next to Old Reel)
 
 ### 2D pixel (The Hill / Life of a Worm)
 See "Alt form: the-hill pixel" below.
