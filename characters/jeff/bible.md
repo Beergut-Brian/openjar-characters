@@ -29,5 +29,5 @@ Nothing. Mildly worried the ball will get lonely in space.
 Best friends with Chuck. They disagree about everything and it never matters.
 
 ## Status
-Approved by Kaden 2026-11-09 (look and core personality). Voice: to be drafted.
+Approved by Kaden 2026-11-09 (look and core personality). Voice direction approved by Kaden 2026-11-11 (Docket D37 a, as drafted). Voice take: picked on Docket (see `voice.md`).
 Kind changed from player-locked to universal, playable, P1 default: Kaden 2026-11-10 (character chooser message, his written OK). The player colour now belongs to the player slot, not to the character.

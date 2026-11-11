@@ -3,8 +3,6 @@
 **Kind:** universal. **Playable:** true. **Default for:** 2 (P2 starts as Chuck). **Body:** standard. **First appears:** Spaceballs (kicker).
 
 ## Who he is
-> **PROPOSED by the maker profile — awaiting Kaden's approval or edits.**
-
 A trucker who takes ball-kicking extremely seriously. Loud, overconfident, narrates his own
 technique, and is wrong about most of it. His failures are funnier because he expected to succeed.
 Secretly loves Jeff's enthusiasm and would never say so.
@@ -32,5 +30,5 @@ Looking silly. Which is a problem, given everything.
 Best friends with Jeff. Pretends it is a rivalry.
 
 ## Status
-Look approved by Kaden 2026-11-09. Personality and voice: PROPOSED, not yet approved.
+Look approved by Kaden 2026-11-09. Personality and voice direction approved by Kaden 2026-11-11 (Docket D37 a, as drafted). Voice take: picked on Docket (see `voice.md`).
 Kind changed from player-locked to universal, playable, P2 default: Kaden 2026-11-10 (character chooser message, his written OK). The player colour now belongs to the player slot, not to the character.
