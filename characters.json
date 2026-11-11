@@ -746,6 +746,41 @@
       ]
     },
     {
+      "id": "yoji",
+      "name": "Yoji",
+      "kind": "universal",
+      "player": null,
+      "playable": true,
+      "default_for": null,
+      "body_type": "standard",
+      "first_appears": "any game (universal: no home game).",
+      "approved": false,
+      "bible": "characters/yoji/bible.md",
+      "look": "characters/yoji/look.md",
+      "refs": "characters/yoji/refs/",
+      "voice": "characters/yoji/voice/",
+      "model_3d": "characters/yoji/refs/jarling/yoji.glb",
+      "jarling_params": "characters/yoji/jarling.json",
+      "pixel": {
+        "alt_form": "the-hill pixel",
+        "source": "tools/pixel/yoji.py",
+        "function": "yoji"
+      },
+      "barks": [
+        "cheer",
+        "join",
+        "lose",
+        "oops",
+        "ready",
+        "swap_in",
+        "wait",
+        "win"
+      ],
+      "alt_forms": [
+        "the-hill pixel: proposed"
+      ]
+    },
+    {
       "id": "zorp",
       "name": "Zorp",
       "kind": "universal",
@@ -802,6 +837,7 @@
     "scrap",
     "sir_clank",
     "snooze",
+    "yoji",
     "zorp"
   ],
   "defaults": {

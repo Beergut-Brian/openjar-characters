@@ -14,6 +14,7 @@ a layer inherits `color`/`accent` from the top/bottoms dict):
   bib          accent "#3E6FB0", top 0.66 (V), width 0.22 (half width in U), button "#F2D16B"
   belly_panel  accent "#FFE38A", v 0.42, width 0.22 (half width in U), height 0.34 (half height in V), soft 0.02
   dials        accent "#FF9F1C", line "#2A2A33", size 1.35
+  jersey       accent "#F2B632" (collar band), number "55" (digits), number_color "#F7F7F5", outline null (thin number edge colour; null = accent), front true, back true, size 0.36 (number height in V), v 0.56, v_back 0.50, text null (block letters across the upper back, A-Z 0-9 and space), text_v 0.83, text_size 0.065, aspect 0.62 (glyph width squash: the torso texture is wider than tall)
 Shoes (`outfit.shoes.style`; `color` is per side, `size`/`socks` are the core's):
   sandals          color "#8B5A2B" (straps; the sole is a darker shade), foot_size 1.0; the foot is B.skin
   moon_boots       color "#D9DCE3", sole "#7C808A", rings 2
@@ -24,6 +25,7 @@ Shoes (`outfit.shoes.style`; `color` is per side, `size`/`socks` are the core's)
   footies          color = the shoes colour (match the onesie)
   wrestling_boots  color "#2A3A8C", lace "#F7F7F5", sole null, height 0.235
   chunky_boots     color "#8B5A2B", sole "#3A3330", cap null (toe cap, default darker color)
+  high_tops        color "#1A1A1E" (upper), accent "#2A6FD6" (side panel, collar, heel stripe), sole "#F7F7F5", lace "#F7F7F5", height 0.15 (top of the collar, m above ground)
 Costume (`costume: [{"piece": name, ...}]`):
   whistle_cord  color "#FFD23F" (whistle), cord "#2A6FD6", t 0.56 (height on the torso), x 0.0 (turn off centre, radians), size 1.0 (whistle scale; Coach Whistle uses 1.5)
   sash          color "#C8A2F0", side "L" (the shoulder it goes over), width 0.17 (in torso height)
@@ -32,6 +34,7 @@ Costume (`costume: [{"piece": name, ...}]`):
   dino_tail     (part "tail") color "#5FB85A", spikes null (colour: adds soft spikes along the top), length 1.0
   box_torso     color "#C49A6C", accent "#FF9F1C" (dial fills), line "#3A2A1E" (marker)
   hose_arms     color "#B8BCC4", rings 9
+  shoulder_pads  color <top colour> (the pads under the shirt), size 1.0, stripes null (colour: two rings round each short sleeve), hem null (colour: sleeve hem ring); part of the top, on the spine bone, so raised arms swing out from under them
   long_skirt    color "#6A5ACD", length 1.0 (0 = just below the hips, 1 = the ankles), flare 1.0, mud null (colour)
 The `whistle` piece in pieces_hill.py sits at a fixed depth (made for the beard), use `whistle_cord` on other bodies.
 """
@@ -397,9 +400,78 @@ def pat_dials(img, U, V, spec, part):
     sl, X, Y = w
     _dials(img[sl], X / k, Y / k + 0.58, spec.get("accent", "#FF9F1C"), spec.get("line", "#2A2A33"), lw=0.0045 / k)
 
+
+# block font (5 x 7), for jersey numbers and names: rows top to bottom
+_GLYPHS = {
+    "0": ["01110", "10001", "10011", "10101", "11001", "10001", "01110"], "1": ["00100", "01100", "00100", "00100", "00100", "00100", "01110"],
+    "2": ["01110", "10001", "00001", "00110", "01000", "10000", "11111"], "3": ["11110", "00001", "00001", "01110", "00001", "00001", "11110"],
+    "4": ["00010", "00110", "01010", "10010", "11111", "00010", "00010"], "5": ["11111", "10000", "11110", "00001", "00001", "10001", "01110"],
+    "6": ["00110", "01000", "10000", "11110", "10001", "10001", "01110"], "7": ["11111", "00001", "00010", "00100", "01000", "01000", "01000"],
+    "8": ["01110", "10001", "10001", "01110", "10001", "10001", "01110"], "9": ["01110", "10001", "10001", "01111", "00001", "00010", "01100"],
+    "A": ["01110", "10001", "10001", "11111", "10001", "10001", "10001"], "B": ["11110", "10001", "10001", "11110", "10001", "10001", "11110"],
+    "C": ["01111", "10000", "10000", "10000", "10000", "10000", "01111"], "D": ["11110", "10001", "10001", "10001", "10001", "10001", "11110"],
+    "E": ["11111", "10000", "10000", "11110", "10000", "10000", "11111"], "F": ["11111", "10000", "10000", "11110", "10000", "10000", "10000"],
+    "G": ["01111", "10000", "10000", "10011", "10001", "10001", "01111"], "H": ["10001", "10001", "10001", "11111", "10001", "10001", "10001"],
+    "I": ["11111", "00100", "00100", "00100", "00100", "00100", "11111"], "J": ["00111", "00010", "00010", "00010", "00010", "10010", "01100"],
+    "K": ["10001", "10010", "10100", "11000", "10100", "10010", "10001"], "L": ["10000", "10000", "10000", "10000", "10000", "10000", "11111"],
+    "M": ["10001", "11011", "10101", "10101", "10001", "10001", "10001"], "N": ["10001", "11001", "10101", "10011", "10001", "10001", "10001"],
+    "O": ["01110", "10001", "10001", "10001", "10001", "10001", "01110"], "P": ["11110", "10001", "10001", "11110", "10000", "10000", "10000"],
+    "Q": ["01110", "10001", "10001", "10001", "10101", "10010", "01101"], "R": ["11110", "10001", "10001", "11110", "10100", "10010", "10001"],
+    "S": ["01111", "10000", "10000", "01110", "00001", "00001", "11110"], "T": ["11111", "00100", "00100", "00100", "00100", "00100", "00100"],
+    "U": ["10001", "10001", "10001", "10001", "10001", "10001", "01110"], "V": ["10001", "10001", "10001", "10001", "10001", "01010", "00100"],
+    "W": ["10001", "10001", "10001", "10101", "10101", "11011", "10001"], "X": ["10001", "10001", "01010", "00100", "01010", "10001", "10001"],
+    "Y": ["10001", "10001", "01010", "00100", "00100", "00100", "00100"], "Z": ["11111", "00001", "00010", "00100", "01000", "10000", "11111"],
+    " ": ["00000"] * 7,
+}
+
+def _text_sd(X, Y, text, h, aspect, gap=1.0, bold=1.0):
+    """Signed distance (V units) to block text centred at (0, 0), cap height h. Each lit cell of the
+    5 x 7 glyph is a box; boxes overlap a little (bold) so strokes join."""
+    cell = h / 7.0; cw = cell * aspect
+    n = len(text)
+    total = n * 5 * cw + (n - 1) * gap * cw
+    d = np.full(X.shape, 1e3, np.float32)
+    for i, ch in enumerate(text.upper()):
+        rows = _GLYPHS.get(ch, _GLYPHS[" "])
+        x0 = -total / 2 + i * (5 + gap) * cw
+        for r, row in enumerate(rows):
+            for c_, bit in enumerate(row):
+                if bit == "1":
+                    cx = x0 + (c_ + 0.5) * cw; cy = h / 2 - (r + 0.5) * cell
+                    d = np.minimum(d, _sd_rect(X, Y, cx, cy, cw * 0.5 * bold, cell * 0.5 * bold))
+    return d
+
+def pat_jersey(img, U, V, spec, part):
+    acc = spec.get("accent", "#F2B632")
+    # collar band and a thin hem-side trim
+    _put(img, np.abs(V - 0.955) - 0.022, acc)
+    num = str(spec.get("number", "55")); ncol = spec.get("number_color", "#F7F7F5")
+    out = spec.get("outline") or acc
+    asp = float(spec.get("aspect", 0.62)); sz = float(spec.get("size", 0.36))
+    places = []
+    if spec.get("front", True):
+        places.append((0.5, float(spec.get("v", 0.56))))
+    if spec.get("back", True):
+        places.append((0.0, float(spec.get("v_back", 0.50))))
+    for uc, vc in places:
+        w = _window(U, V, uc, vc, sz * 0.75)
+        if w is None: continue
+        sl, X, Y = w
+        d = _text_sd(X, Y, num, sz, asp, gap=1.2, bold=1.04)
+        _put(img[sl], d - sz * 0.03, out)
+        _put(img[sl], d, ncol)
+    if spec.get("text") and spec.get("back", True):
+        th = float(spec.get("text_size", 0.065)); tv = float(spec.get("text_v", 0.83))
+        w = _window(U, V, 0.0, tv, th * 0.8)
+        if w is not None:
+            sl, X, Y = w
+            d = _text_sd(X, Y, spec["text"], th, asp, gap=1.0, bold=1.04)
+            _put(img[sl], d, spec.get("text_color", ncol))
+
 for _n, _f in (("vstripes", pat_vstripes), ("vacation", pat_vacation), ("hstripe", pat_hstripe), ("stars", pat_stars),
                ("patches", pat_patches), ("emblem", pat_emblem), ("buttons", pat_buttons), ("vest", pat_vest),
-               ("collar", pat_collar), ("bib", pat_bib), ("belly_panel", pat_belly_panel), ("dials", pat_dials)):
+               ("collar", pat_collar), ("bib", pat_bib), ("belly_panel", pat_belly_panel), ("dials", pat_dials),
+               ("jersey", pat_jersey)):
     kit.PATTERNS[_n] = _f
 
 # ===================================================================================== shoes
@@ -584,9 +656,48 @@ def shoe_chunky_boots(B, s, side, ank, shoes):
         z = 0.08 + k * 0.025
         B.add(ellipsoid_bm((x, -0.066 + 0.0, z), (0.02, 0.006, 0.004), segs=12, rings=6), sole, leg)
 
+
+def shoe_high_tops(B, s, side, ank, shoes):
+    """Basketball high-tops: a sneaker foot with a padded shaft rising above the ankle, a coloured
+    side panel, collar and heel stripe, a thick white sole and criss-cross laces. No logos."""
+    bone, leg = f"foot.{side}", f"leg.{side}"; x = ank.x
+    sfx = shoes.get("_side", "")
+    up = _mat(B, "hightop" + sfx, shoes.get("color", "#1A1A1E"), rough=0.45, spec=0.4)
+    acc = _mat(B, "hightop_accent", shoes.get("accent", "#2A6FD6"), rough=0.45, spec=0.4)
+    sole = _mat(B, "hightop_sole", _sole(shoes, "#F7F7F5"), rough=0.6, spec=0.3)
+    lace = _mat(B, "hightop_lace", shoes.get("lace", "#F7F7F5"), rough=0.6, spec=0.3)
+    B.add(ellipsoid_bm((x, -0.03, 0.058), (0.066, 0.112, 0.054), floor=0.026, segs=32), up, bone)
+    B.add(lathe([(0.0, 0, 0, x, -0.03), (0.0, 0.066, 0.114, x, -0.03), (0.004, 0.071, 0.121, x, -0.03),
+                 (0.028, 0.071, 0.121, x, -0.03), (0.033, 0.066, 0.115, x, -0.03), (0.033, 0, 0, x, -0.03)], 36, power=2.6),
+          sole, bone)
+    B.add(ellipsoid_bm((x, -0.112, 0.042), (0.05, 0.04, 0.03), floor=0.028, segs=24, rings=10), sole, bone)   # toe bumper
+    for d in (-1, 1):      # side panels: a swept blue patch on both sides of the upper
+        B.add(ellipsoid_bm((x + d * 0.052, -0.005, 0.07), (0.018, 0.07, 0.026),
+                           rot=Matrix.Rotation(d * 0.0, 3, "Z") @ Matrix.Rotation(-0.35, 3, "X"), segs=20, rings=10), acc, bone)
+    top = float(shoes.get("height", 0.15))
+    r0 = 0.06
+    rings = [(0.05, 0, 0, x, 0.004)]
+    for k in range(6):
+        t = k / 5; z = 0.05 + (top - 0.05) * t
+        r = r0 + 0.004 * math.sin(t * math.pi)
+        rings.append((z, r, r * 0.97, x, 0.004))
+    rings.append((top, 0, 0, x, 0.004))
+    B.add(lathe(rings, 32), up, leg)
+    B.add(tube_bm(_ring((x, 0.004), r0 + 0.003, top - 0.006, (r0 + 0.003) * 0.97), 0.011, cyclic=True), acc, leg)   # padded collar
+    B.add(tube_bm([(x, r0 * 0.97 + 0.006, 0.05), (x, r0 * 0.97 + 0.009, top - 0.02)], 0.009), acc, leg)            # heel stripe
+    ry = -(r0 * 0.97) - 0.002
+    n = 4
+    z0, z1 = 0.075, top - 0.03
+    for k in range(n):
+        za, zb = z0 + (z1 - z0) * k / n, z0 + (z1 - z0) * (k + 1) / n
+        for d in (-1, 1):
+            B.add(tube_bm([(x - d * 0.016, ry, za), (x, ry - 0.003, (za + zb) / 2), (x + d * 0.016, ry, zb)], 0.0045), lace, leg)
+    B.add(tube_bm([(x, -0.108, 0.07), (x, -0.075, 0.098), (x, ry, z0)], 0.0045), lace, bone)
+    B.add(ellipsoid_bm((x, ry - 0.004, top - 0.02), (0.02, 0.008, 0.024), segs=14, rings=8), up, leg)                # tongue tab
+
 for _n, _f in (("sandals", shoe_sandals), ("moon_boots", shoe_moon_boots), ("rain_boots", shoe_rain_boots),
                ("clogs", shoe_clogs), ("slippers", shoe_slippers), ("dress", shoe_dress), ("footies", shoe_footies),
-               ("wrestling_boots", shoe_wrestling_boots), ("chunky_boots", shoe_chunky_boots)):
+               ("wrestling_boots", shoe_wrestling_boots), ("chunky_boots", shoe_chunky_boots), ("high_tops", shoe_high_tops)):
     kit.SHOES[_n] = _f
 
 # ==================================================================================== costume
@@ -815,6 +926,46 @@ def long_skirt(B, piece):
             B.add(ellipsoid_bm(p - nrm * 0.002, (0.03, 0.0035, 0.022), rot=rot, segs=16, rings=8), mud, bone)
             B.add(ellipsoid_bm(p - nrm * 0.002 + Vector((s * 0.018, 0, -0.016)), (0.014, 0.003, 0.011), rot=rot, segs=12, rings=6), mud, bone)
 
+
+def shoulder_pads(B, piece):
+    """Football shoulder pads under the shirt: a broad padded yoke over both shoulders (top colour),
+    on the spine bone so the arms swing out from under them. Optional sleeve stripes and hem on the
+    short sleeves (arm bones)."""
+    L = B.L
+    top = B.P["outfit"]["top"]
+    col = piece.get("color") or top.get("sleeve", top["color"])
+    m = B.mats.flat("shoulder_pads", col, rough=0.75, spec=0.25)
+    k = float(piece.get("size", 1.0))
+    tw, limb = L["tw"], L["limb"]
+    ar = 0.04 * limb
+    for sgn in (1, -1):
+        sh = Vector((sgn * tw * 0.92, 0, L["shoulder_z"]))
+        c = Vector((sgn * tw * 0.80, 0.0, L["shoulder_z"] + 0.028 * k))
+        rot = Matrix.Rotation(-sgn * 0.42, 3, "Y")
+        B.add(ellipsoid_bm(c, (0.078 * k * limb, 0.088 * k * limb, 0.040 * k), rot=rot, segs=28, rings=14), m, "spine")
+        B.add(ellipsoid_bm(c + Vector((sgn * 0.03 * k, 0, -0.022 * k)), (0.05 * k * limb, 0.074 * k * limb, 0.045 * k),
+                           rot=rot, segs=24, rings=12), m, "spine")
+    # the yoke between the pads, low enough to stay under the chin
+    B.add(ellipsoid_bm((0, 0, L["shoulder_z"] + 0.02 * k), (tw * 0.80, 0.075 * k * limb, 0.034 * k), segs=32, rings=12), m, "spine")
+    for side, sgn in (("L", 1), ("R", -1)):
+        sh, wr = B.arm_pts[side]
+        d = (wr - sh); dn = d.normalized()
+        def ring_at(t, r, w, mat):
+            p = sh + d * t
+            pts = []
+            a1 = dn.orthogonal().normalized(); a2 = dn.cross(a1)
+            for a in np.linspace(0, 2 * math.pi, 28, endpoint=False):
+                pts.append(tuple(p + (a1 * math.cos(a) + a2 * math.sin(a)) * r))
+            B.add(tube_bm(pts, w, cyclic=True), mat, f"arm.{side}")
+        if piece.get("stripes"):
+            sm = B.mats.flat("sleeve_stripe", piece["stripes"], rough=0.75, spec=0.25)
+            for t in (0.25, 0.32):
+                ring_at(t, ar * 1.19, 0.0045, sm)
+        if piece.get("hem"):
+            hm = B.mats.flat("sleeve_hem", piece["hem"], rough=0.75, spec=0.25)
+            ring_at(0.41, ar * 1.16, 0.005, hm)
+
 for _n, _f in (("whistle_cord", whistle_cord), ("sash", sash), ("cape", cape), ("back_spikes", back_spikes),
-               ("dino_tail", dino_tail), ("box_torso", box_torso), ("hose_arms", hose_arms), ("long_skirt", long_skirt)):
+               ("dino_tail", dino_tail), ("box_torso", box_torso), ("hose_arms", hose_arms), ("long_skirt", long_skirt),
+               ("shoulder_pads", shoulder_pads)):
     kit.COSTUME[_n] = _f

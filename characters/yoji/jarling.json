@@ -1,0 +1,112 @@
+{
+ "id": "yoji",
+ "name": "Yoji",
+ "notes": "From characters/yoji/look.md (Kaden's sheet 2026-11-10; proposed, playtest build).",
+ "head": {
+  "shape": "round",
+  "size": 1.0,
+  "ears": "round"
+ },
+ "skin": "#E8B48A",
+ "face": {
+  "eyes": "round",
+  "brows": "thick",
+  "brow_color": "#4A3220",
+  "nose": "bump",
+  "mouth": "grin",
+  "lid": 0.0,
+  "lid_tilt": 0.0,
+  "brow_tilt": -0.1,
+  "brow_raise": 0.04,
+  "blush": 0.3,
+  "expressions": {
+   "neutral": {
+    "mouth": "grin"
+   },
+   "happy": {
+    "eye_mode": "arc",
+    "mouth": "grin_top",
+    "brow_raise": 0.06,
+    "blush_add": 0.25
+   },
+   "surprised": {
+    "mouth": "o",
+    "brow_raise": 0.1
+   },
+   "determined": {
+    "mouth": "grit",
+    "lid": 0.3,
+    "lid_tilt": 0.18,
+    "brow_tilt": 0.3,
+    "brow_raise": -0.02
+   }
+  }
+ },
+ "hair": {
+  "style": "short",
+  "color": "#6B4A2E"
+ },
+ "headwear": {
+  "type": "cowboy_hat",
+  "color": "#C8955A",
+  "band": "#5A3A22",
+  "brim_width": 0.8,
+  "crown_height": 1.1,
+  "tilt_deg": 0,
+  "fit": 0.45
+ },
+ "body": {
+  "build": "stocky",
+  "height": 1.0,
+  "leg_scale": 1.0,
+  "width": 1.15,
+  "belly": 0.25
+ },
+ "outfit": {
+  "top": {
+   "style": "tee",
+   "color": "#1F3A6B",
+   "pattern": {
+    "type": "jersey",
+    "accent": "#F2B632",
+    "number": "55",
+    "number_color": "#F7F7F5",
+    "text": "CHAMPIONS",
+    "text_size": 0.075,
+    "aspect": 0.55
+   }
+  },
+  "bottoms": {
+   "style": "boxers",
+   "color": "#F7F7F5",
+   "band": "#F2B632",
+   "pattern": {
+    "type": "stars",
+    "accent": "#1F3A6B",
+    "count": 34,
+    "size": 2.0
+   }
+  },
+  "shoes": {
+   "style": "high_tops",
+   "color": "#1A1A1E",
+   "accent": "#2A6FD6",
+   "sole": "#F7F7F5",
+   "lace": "#F7F7F5"
+  }
+ },
+ "costume": [
+  {
+   "piece": "shoulder_pads",
+   "color": "#1F3A6B",
+   "stripes": "#F2B632",
+   "hem": "#F7F7F5"
+  }
+ ],
+ "ref_action": {
+  "action": "cheer",
+  "frame": 13,
+  "expression": "happy",
+  "yaw": -28
+ }
+}

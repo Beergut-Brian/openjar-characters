@@ -17,6 +17,7 @@ Headwear (`headwear.type`; hair mode in HEADWEAR_OPTS):
   chef_hat      color="#FBFBF7", band=<color>, badge=None (colour), height=1.0, fit=0.32, tilt_deg=0, separate=False; hair tuck
   bucket_hat    color="#C9B48A", band=<color darker>, brim=0.55 (R), lure=None (colour), lure_deg=50, fit=0.40, tilt_deg=0, separate=False; hair tuck
   sun_hat       color="#E9C97A", band="#E86FA6", brim=1.3 (R), waves=7, flower=None (colour), flower_mid="#FFD23F", flower_deg=40, fit=0.40, tilt_deg=0, separate=False; hair tuck
+  cowboy_hat    color="#C8955A", band="#5A3A22", brim_width=0.80 (R), curl=1.0 (side curl-up), crown_height=1.0 (R), pinch=1.0, crease=1.0, fit=0.45, tilt_deg=0, separate=False; hair tuck
   box_head      color="#C49A6C", tape="#E6CFA0", scale=1.0, hole_w=0.64 (R), tilt_deg=0, separate=False; hair hide
 
 Costume pieces on the head (`costume[]`, each its own separable part named after the piece):
@@ -572,10 +573,66 @@ def box_head(B, hw):
     parts.append((rbox((0, D + 0.004 * R, cz + H - 0.12 * R), 0.17 * R * k, 0.012 * R, 0.13 * R, power=6), tape))
     place_parts(B, hw, parts, hw.get("tilt_deg", 0))
 
+
+# ---------------------------------------------------------------------------------- cowboy hat
+def cowboy_bms(R, fit=0.45, brim_width=0.80, crown_height=1.0, pinch=1.0, crease=1.0, curl=1.0, grow=1.0,
+               sx=1.0, sy=1.0, sz=1.0):
+    """Cattleman cowboy hat around a head centre at the origin (head radius R): an oval crown with
+    two front pinch dents and a long centre crease along the top, a band, and a wide brim that
+    curls up at the left and right and dips a little front and back (level overall).
+    Returns {"crown", "band", "brim"} bmeshes. Shared by the kit piece and the gear item."""
+    rx, ry = 1.04 * R * sx * grow, 1.13 * R * sy * grow
+    zb = fit * R * sz
+    ch = 0.95 * crown_height * R * sz
+    def pinch_k(a, t):                                  # front pinch dents, either side of the front
+        k = sum(math.exp(-((math.atan2(math.sin(a - c0), math.cos(a - c0))) / 0.32) ** 2) for c0 in (0.62, -0.62))
+        return 1 - 0.20 * pinch * k * max(0.0, min(1.0, (t - 0.30) / 0.55)) ** 1.5
+    def top_z(x, rho):                                  # crown top: soft dome, long centre crease
+        cw = 0.30 * rx
+        return zb + ch + 0.10 * R * (1 - rho * rho) - 0.30 * R * crease * math.exp(-(x / cw) ** 2) * (0.55 + 0.45 * (1 - rho * rho))
+    def wall(a, t):
+        k = pinch_k(a, t) * (1 - 0.07 * t) * (1 - 0.05 * max(0.0, (t - 0.85) / 0.15) ** 2)
+        x, y = rx * k * math.sin(a), -ry * k * math.cos(a)
+        z0 = zb - 0.02 * R
+        return x, y, z0 + (top_z(x, 1.0) - z0) * t
+    NA = 72
+    def crown_pt(u, v):
+        a = 2 * math.pi * u
+        if v <= 0.7:
+            return wall(a, v / 0.7)
+        s = (v - 0.7) / 0.3                              # 0 rim of the top .. 1 centre
+        x, y, _ = wall(a, 1.0)
+        rho = 1 - s
+        x, y = x * rho, y * rho
+        return (x, y, top_z(x, rho))
+    crown = grid_bm(crown_pt, NA, 24, closed_u=True)
+    bmesh.ops.remove_doubles(crown, verts=crown.verts, dist=1e-6)
+    bmesh.ops.recalc_face_normals(crown, faces=crown.faces)
+    band = lathe([(zb + 0.0 * R, rx * 1.012, ry * 1.012, 0, 0), (zb + 0.20 * R, rx * 0.995, ry * 0.995, 0, 0)], 72)
+    bw = brim_width * R * grow
+    def brim_pt(u, v):
+        a = 2 * math.pi * u
+        sa, ca = math.sin(a), math.cos(a)
+        bx, by = rx * 0.97 + bw * v, ry * 0.97 + bw * 0.92 * v
+        z = zb + 0.01 * R + (0.50 * curl * R * sa * sa * v ** 2.2 - 0.10 * R * ca * ca * v ** 1.6)
+        return (bx * sa, -by * ca, z)
+    brim = solidify_bm(grid_bm(brim_pt, 96, 8, closed_u=True), 0.045 * R)
+    return {"crown": crown, "band": band, "brim": brim}
+
+def cowboy_hat(B, hw):
+    L = B.L; R = L["R"]
+    felt = B.mats.flat("cowboy_hat", hw.get("color", "#C8955A"), rough=0.8, spec=0.25)
+    bandm = B.mats.flat("cowboy_band", hw.get("band", "#5A3A22"), rough=0.6, spec=0.3)
+    g = cowboy_bms(R, fit=float(hw.get("fit", 0.45)), brim_width=float(hw.get("brim_width", 0.80)),
+                   crown_height=float(hw.get("crown_height", 1.0)), pinch=float(hw.get("pinch", 1.0)),
+                   crease=float(hw.get("crease", 1.0)), curl=float(hw.get("curl", 1.0)),
+                   sx=L["hsx"], sy=L["hsy"], sz=L["hsz"])
+    place_parts(B, hw, [(g["crown"], felt), (g["band"], bandm), (g["brim"], felt)], hw.get("tilt_deg", 0))
+
 for _n, _f, _hair in (("hard_hat", hard_hat, "tuck"), ("top_hat", top_hat, "tuck"), ("miner_helmet", miner_helmet, "tuck"),
                       ("colander", colander, "tuck"), ("pot_helmet", pot_helmet, "tuck"), ("nightcap", nightcap, "tuck"),
                       ("chef_hat", chef_hat, "tuck"), ("bucket_hat", bucket_hat, "tuck"), ("sun_hat", sun_hat, "tuck"),
-                      ("box_head", box_head, "hide")):
+                      ("cowboy_hat", cowboy_hat, "tuck"), ("box_head", box_head, "hide")):
     kit.HEADWEAR[_n] = _f
     kit.HEADWEAR_OPTS[_n] = {"hair": _hair}
 

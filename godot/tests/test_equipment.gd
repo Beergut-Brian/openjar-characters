@@ -123,6 +123,30 @@ func _initialize() -> void:
 		j.queue_free()
 		await process_frame
 
+	print("[yoji] model, actions, slots, cowboy hat gear")
+	var ry := make("yoji")
+	var jy: Node3D = ry[0]
+	var eqy: JarlingEquipment = ry[1]
+	var apy: AnimationPlayer = jy.find_child("AnimationPlayer", true, false)
+	for a in ["idle", "run", "kick", "cheer"]:
+		check(apy != null and apy.has_animation(a), "yoji has action %s" % a)
+	check(Equipment.SLOTS.all(func(s): return eqy.slot_node(s) != jy), "yoji has all %d slots" % Equipment.SLOTS.size())
+	check(eqy.body_parts().has(&"headwear"), "yoji's cowboy hat is the headwear part")
+	var cowboy := gear("cowboy_hat")
+	check(cowboy.slots == [&"head"] and cowboy.replaces_body_part == [&"headwear"], "cowboy_hat: slot head, replaces headwear")
+	check(eqy.equip(cowboy) and eqy.equipped(&"head") == cowboy, "cowboy_hat equips on yoji")
+	check(eqy.slot_node(&"head").get_node_or_null("gear_cowboy_hat") != null, "cowboy_hat sits under slot_head")
+	check(eqy.is_part_hidden(&"headwear") and not jy.find_child("*_part_headwear", true, false).visible, "cowboy_hat hides yoji's own hat")
+	check(eqy.equip(gear("sneakers")) and eqy.is_part_hidden(&"foot_l") and eqy.is_part_hidden(&"foot_r"), "sneakers replace yoji's high-tops")
+	eqy.unequip_all()
+	check(eqy.body_parts().all(func(p): return not eqy.is_part_hidden(p)), "yoji's own hat and shoes back after unequip_all")
+	jy.queue_free()
+	await process_frame
+	var rj := make("jeff")
+	check(rj[1].equip(gear("cowboy_hat")) and rj[1].is_part_hidden(&"headwear"), "cowboy_hat also fits Jeff (head slot)")
+	rj[0].queue_free()
+	await process_frame
+
 	print("%d checks, %d failed" % [checks, fails])
 	print("RESULT: %s" % ("PASS" if fails == 0 else "FAIL"))
 	quit(1 if fails else 0)

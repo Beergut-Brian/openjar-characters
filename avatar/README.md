@@ -173,7 +173,7 @@ Every key is optional: missing keys fall back to `DEFAULTS` in `jarling_kit.py`.
            "width": 1.0, "belly": 0.0},          // kit v2: fat/skinny, see docs/kit-v2.md
   "outfit": {
     "top": {"style": "tee|long|stripe|tiedye|costume", "color": "...", "accent": "..."},
-    "bottoms": {"style": "pants|flared|shorts|skirt", "color": "..."},
+    "bottoms": {"style": "pants|flared|shorts|boxers|skirt", "color": "...", "band": "..."},
     "shoes": {"style": "sneaker|boots|barefoot", "color": "...", "sole": "...", "stitch": "..."}
   },
   "costume": [{"piece": "wing_tips|tail_feathers|jeans_stitch", "color": "..."}],
