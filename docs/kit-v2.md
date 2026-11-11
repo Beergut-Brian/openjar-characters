@@ -100,6 +100,8 @@ fit ignores hair pieces (it follows the scalp), so a tall hairdo can poke throug
 | `headwear.scale` on `beanie` | 0.45 = the smallest beanie perched on the crown |
 | `face.extras` | drawn face details (table below) |
 | `face.mouth_width` | scales the mouth |
+| `face.expressions.<name>.wink` | `"L"`/`"R"`: that eye (the character's side) is closed in a squint line, the other eye keeps the expression's lid (Bobber's squint); default off |
+| `outfit.bottoms.cuff` | shorts only: a colour for a rolled-up cuff band at the hem; default off |
 | `face.expressions.neutral` | overrides for the resting face, e.g. `{"eye_mode": "arc"}` for eyes closed in happy arcs |
 
 For plug-in authors: `kit.HEADWEAR`, `HEADWEAR_OPTS`, `COSTUME`, `SHOES`, `PATTERNS`, `FACE_EXTRAS`,
@@ -204,6 +206,7 @@ Headwear (`headwear.type`; hair mode in HEADWEAR_OPTS):
 | `bucket_hat` | color="#C9B48A", band=<color darker>, brim=0.55 (R), lure=None (colour), lure_deg=50, fit=0.40, tilt_deg=0, separate=False; hair tuck |
 | `sun_hat` | color="#E9C97A", band="#E86FA6", brim=1.3 (R), waves=7, flower=None (colour), flower_mid="#FFD23F", flower_deg=40, fit=0.40, tilt_deg=0, separate=False; hair tuck |
 | `cowboy_hat` | color="#C8955A", band="#5A3A22", brim_width=0.80 (R), curl=1.0 (side curl-up), crown_height=1.0 (R), pinch=1.0, crease=1.0, fit=0.45, tilt_deg=0, separate=False; hair tuck |
+| `rain_hat` | color="#F6C833", brim_front=0.30 (R), brim_back=0.95 (R), droop=1.0 (how far the back and sides hang down), crown_height=1.0, size=1.0 (1.12 = a size too big), tie=None (colour: thin chin tie), fit=0.30, tilt_deg=0, separate=False; hair tuck |
 | `box_head` | color="#C49A6C", tape="#E6CFA0", scale=1.0, hole_w=0.64 (R), tilt_deg=0, separate=False; hair hide |
 
 Costume pieces on the head (`costume[]`, each its own separable part named after the piece):
@@ -230,6 +233,7 @@ a layer inherits `color`/`accent` from the top/bottoms dict):
 | `vstripes` | accent "#1A1A1E", count 12 (top) / 8 (bottoms), offset 0.0 (turns, 0.5 = stripe edge at the front) |
 | `vacation` | accent "#FF6F91" (flowers), accent2 "#2FA88A" (leaves), center "#FFE066", count 14, seed 7, size 1.0 |
 | `hstripe` | accent "#F2F2EE", v 0.58, width 0.10, edge null (thin edge lines colour, e.g. silver on hi-vis) |
+| `hstripes` | accent "#F1E7CF", count 5, width 0.5 (band height as a fraction of each period), v0 0.30 / v1 0.92 (top; bottoms 0 / 1): even horizontal stripes |
 | `stars` | accent "#FFE066", count 26 (top) / 14 (bottoms), size 1.0, seed 3 |
 | `patches` | accent "#E8A33D", accent2 "#5B8FD6", stitch null (default darker accent), count 3 (2 or 3) |
 | `emblem` | shape "star" ("shield"/"star"/"circle"), accent "#FFD23F", size 0.13 (half height in V), v 0.62, rim null, inner null |

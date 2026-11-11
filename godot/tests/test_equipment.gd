@@ -147,6 +147,35 @@ func _initialize() -> void:
 	rj[0].queue_free()
 	await process_frame
 
+	print("[bobber] model, actions, slots, rain hat gear, kid rod")
+	var rb := make("bobber")
+	var jb: Node3D = rb[0]
+	var eqb: JarlingEquipment = rb[1]
+	var apb: AnimationPlayer = jb.find_child("AnimationPlayer", true, false)
+	for a in ["idle", "run", "kick", "cheer"]:
+		check(apb != null and apb.has_animation(a), "bobber has action %s" % a)
+	check(Equipment.SLOTS.all(func(s): return eqb.slot_node(s) != jb), "bobber has all %d slots" % Equipment.SLOTS.size())
+	check(eqb.body_parts().has(&"headwear"), "bobber's rain hat is the headwear part")
+	var rain := gear("rain_hat")
+	check(rain.slots == [&"head"] and rain.replaces_body_part == [&"headwear"], "rain_hat: slot head, replaces headwear")
+	check(eqb.equip(rain) and eqb.equipped(&"head") == rain, "rain_hat equips on bobber")
+	check(eqb.slot_node(&"head").get_node_or_null("gear_rain_hat") != null, "rain_hat sits under slot_head")
+	check(eqb.is_part_hidden(&"headwear") and not jb.find_child("*_part_headwear", true, false).visible, "rain_hat hides bobber's own hat")
+	var kid := gear("kid_rod")
+	check(kid.slots == [&"hand_r"], "kid_rod: slot hand_r")
+	check(eqb.equip(kid) and eqb.equipped(&"hand_r") == kid, "kid_rod equips in bobber's hand_r")
+	check(eqb.hold_style(&"hand_r") == "one_hand_raised" and eqb.is_part_hidden(&"hand_r"), "kid_rod: one_hand_raised, hand closed")
+	check(eqb.equip(gear("fishing_rod")) and eqb.equipped(&"hand_r").id == &"fishing_rod", "fishing_rod also equips in bobber's hand_r")
+	eqb.unequip_all()
+	check(eqb.body_parts().all(func(p): return not eqb.is_part_hidden(p)), "bobber's own hat and hands back after unequip_all")
+	jb.queue_free()
+	await process_frame
+	var rj2 := make("jeff")
+	check(rj2[1].equip(gear("rain_hat")) and rj2[1].is_part_hidden(&"headwear"), "rain_hat also fits Jeff (head slot)")
+	check(rj2[1].equip(gear("kid_rod")) and rj2[1].hold_style(&"hand_r") == "one_hand_raised", "kid_rod also fits Jeff (hand_r)")
+	rj2[0].queue_free()
+	await process_frame
+
 	print("%d checks, %d failed" % [checks, fails])
 	print("RESULT: %s" % ("PASS" if fails == 0 else "FAIL"))
 	quit(1 if fails else 0)

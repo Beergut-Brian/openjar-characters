@@ -193,6 +193,10 @@ costume pieces `gnome_beard`, `vest_stripes`, `clipboard`, `whistle`, `mane_bear
 `cloth_club` (`clipboard` and `cloth_club` take `"hand": "L"|"R"` and are part `prop`); actions
 `march`, `write`, `salute`, `polish`, `point`, `wave`.
 
+Bobber (2026-11-11): headwear `rain_hat` (sou'wester; `size` for a too-big hat, `tie` chin tie), top pattern
+`hstripes`, shorts `cuff`, expression key `wink` ("L"/"R"); gear `rain_hat` (head) and `kid_rod` (hand_r,
+`one_hand_raised`, a cheese sandwich on the hook). See `docs/kit-v2.md`.
+
 Character-specific headwear options: `chicken_hood` takes `comb`, `beak`, `headband`, `opening_deg`
 and `beak_deg`. `trucker` takes `brim`, `piping`, `patch`, `tilt_deg` and `lift`.
 
