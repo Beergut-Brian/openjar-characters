@@ -92,7 +92,16 @@
         "source": "tools/pixel/bloom.py",
         "function": "bloom"
       },
-      "barks": [],
+      "barks": [
+        "cheer",
+        "join",
+        "lose",
+        "oops",
+        "ready",
+        "swap_in",
+        "wait",
+        "win"
+      ],
       "alt_forms": [
         "the-hill pixel: proposed"
       ]
@@ -530,7 +539,16 @@
         "source": "tools/pixel/old_reel.py",
         "function": "old_reel"
       },
-      "barks": [],
+      "barks": [
+        "cheer",
+        "join",
+        "lose",
+        "oops",
+        "ready",
+        "swap_in",
+        "wait",
+        "win"
+      ],
       "alt_forms": [
         "the-hill pixel: proposed"
       ]
